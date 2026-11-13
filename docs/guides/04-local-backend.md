@@ -30,7 +30,7 @@ local-specific — **what this machine will pick**, in order, and how far you ca
 | clips (`video_clip`) | ComfyUI's choice | small canvases locally; a long clip wants 48 GB |
 | Cast training | CUDA | minutes on a big card is exactly what a laptop should not do (D12) |
 | upscale | CUDA (Guaardvark plugin) | better than Lanczos on hard edges |
-| sound effects | — | **nothing to run**: a CC0 library, never generated |
+| sound effects | CUDA (Stable Audio Open, 47 s cap) or MPS behind `AUDIO_FOUNDRY_SAO_MPS=1` | **the capability is real**; the *default* is a CC0 library, and generation is an explicit opt-in |
 
 `kwik doctor` reports this table **for your machine**, with the backend's own reason when something
 cannot run — it does not keep a static list, because a static list goes stale and a stale capability

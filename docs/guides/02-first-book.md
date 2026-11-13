@@ -93,8 +93,10 @@ kwik music --page p1 --duration 30 --loop      # a bed, 1 credit per *started* m
 ```
 
 A 30 s bed is **1 credit**, not 2: a partial minute is a full minute, and there is no floor. Beds are
-generated (ACE-Step). **Sound effects are never generated** — they come from a curated CC0 library you
-choose during setup, which is why `thunder` or `crickets` costs nothing:
+generated (ACE-Step). **Sound effects come from a library, not a model** — a curated CC0 set you choose
+during setup, which is why `thunder` or `crickets` costs nothing. Generation does exist locally (Stable
+Audio Open) and is an opt-in, not the default: a different-sounding door on every take is not a
+feature.
 
 ```bash
 kwik sfx list

@@ -39,7 +39,7 @@ credits.
 | **page art** — `cast_render` | Z-Image Turbo + your Cast LoRAs (CUDA → MPS → CPU) | Ada-24, returns a 1536×1024 PNG | **2 cr / image** | cloud **available**; local needs a backend |
 | **narration** — `tts_speak` | Kokoro voices, CPU-capable | CPU endpoint | **1 cr / started minute** | decided, not built |
 | **music bed** — `music_bed` | ACE-Step (CUDA → MPS → CPU), 240 s cap | GPU | **1 cr / started minute** | decided, not built |
-| **sound effects** | **a curated CC0 library — never generated** | — | **free** | decided, not built |
+| **sound effects** | **a curated CC0 library by default** — generation exists (Stable Audio Open) and is off the default path: licence, consistency, no GPU needed | — | **free** | library decided, not built |
 | **clips** — `video_clip` | ComfyUI image-to-video | 48 GB pool | **5 cr / second** (6 s default, 15 s cap, 60 s per job) | no worker yet |
 | **Cast LoRA** — `cast_train` | local trainer (CUDA) | GPU, minutes | **40 cr / LoRA** | no worker yet |
 | **upscale** — `lanczos` | inside `kwik`, deterministic | — | **free** | decided, not built |

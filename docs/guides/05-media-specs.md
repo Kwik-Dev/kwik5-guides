@@ -45,7 +45,7 @@ Two invariants, because breaking them is invisible until someone looks at the pa
 | --- | --- |
 | narration | **WAV, mono PCM** — no lossy step; Solar2D loads it directly |
 | music beds | **MP3**, stereo 44.1 kHz, up to 240 s, loopable |
-| sound effects | **WAV** one-shots, ≤ 3 s, from a curated CC0 library — never generated |
+| sound effects | **WAV** one-shots, ≤ 3 s, from a curated CC0 library by default; local generation exists (Stable Audio Open, ≤ 47 s, 44.1 kHz) and is an opt-in |
 | billing unit | minutes of produced audio, rounded up: 30 s = 1 credit, 61 s = 2 |
 | a declared file that does not exist | a **build error**, not silence — plus an explicit `ungenerated: true` if you mean it |
 

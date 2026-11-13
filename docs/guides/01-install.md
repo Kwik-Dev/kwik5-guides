@@ -100,6 +100,7 @@ files-and-code step above are a few megabytes and are installed regardless — o
 *models*, not features. With option 1 you still get, offline and free:
 
 | still works with option 1 | needs the models, so option 1 sends it to the cloud |
+| --- | --- |
 | `kwik new` / `book` / `page` / `layer` / `asset check` / `run` | page art — 2 credits |
 | **Lanczos upscale**, the bleed crop, per-layer PNGs | the local Guaardvark upscaler (a quality option, not a feature) |
 | `page.psd`, the emitted Lua, the md5 gate | narration — 1 credit/started min |

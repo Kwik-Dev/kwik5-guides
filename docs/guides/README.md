@@ -26,6 +26,7 @@ page says which one.
 | [04 — The local backend](04-local-backend.md) | Guaardvark + ComfyUI on your own machine, native or Docker, and what each device can and cannot do | power user |
 | [05 — Media specs](05-media-specs.md) | the numbers: frames, formats, codecs, alpha, durations, sizes, retention | author, designer, agent |
 | [06 — Troubleshooting](06-troubleshooting.md) | what each exit code and error body means, and the one thing to do next | everyone |
+| [07 — Configuration](07-configuration.md) | every setting that matters: the CLI's `0600` config and `KWIK_*`, the local backend's media-relevant variables, and what is deliberately not yours | author, power user |
 
 ## The one rule these pages follow
 

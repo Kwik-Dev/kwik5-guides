@@ -33,13 +33,18 @@ credits.
 **This is the one table of features.** 1 credit = $0.10. `Available` means shipped and exercised;
 `decided` means agreed in `decisions.md` with no implementation yet — a spec, not a feature.
 
+Every **local backend** cell is a *generator* running on your own machine — that is what the local
+backend is for. The one exception is labelled: sound effects default to a set of CC0 files, with
+generation available as an opt-in.
+
 | feature | local backend | cloud | cost | status |
 | --- | --- | --- | --- | --- |
 | project, pages, scenes, layers, asset check, Simulator (`kwik new` / `book` / `page` / `layer` / `asset check` / `run`) | all of it — no models involved | — | **free** | **available** |
 | **page art** — `cast_render` | Z-Image Turbo + your Cast LoRAs (CUDA → MPS → CPU) | Ada-24, returns a 1536×1024 PNG | **2 cr / image** | cloud **available**; local needs a backend |
-| **narration** — `tts_speak` | Kokoro voices, CPU-capable | CPU endpoint | **1 cr / started minute** | decided, not built |
+| **narration** — `tts_speak` | Kokoro-82M, 31 voices, CPU-capable | CPU endpoint | **1 cr / started minute** | decided, not built |
 | **music bed** — `music_bed` | ACE-Step (CUDA → MPS → CPU), 240 s cap | GPU | **1 cr / started minute** | decided, not built |
-| **sound effects** | **a curated CC0 library by default** — generation exists (Stable Audio Open) and is off the default path: licence, consistency, no GPU needed | — | **free** | library decided, not built |
+| **sound effects** — *library* (the default) | a curated **CC0** set, no model involved | — | **free** | decided, not built |
+| **sound effects** — *generated* (opt-in) | **Stable Audio Open** locally: CUDA, or MPS behind `AUDIO_FOUNDRY_SAO_MPS=1`, ≤ 47 s, 44.1 kHz | **no** — never in the cloud (D15) | **free** (local only) | exists upstream; not a shipped tool |
 | **clips** — `video_clip` | ComfyUI image-to-video | 48 GB pool | **5 cr / second** (6 s default, 15 s cap, 60 s per job) | no worker yet |
 | **Cast LoRA** — `cast_train` | local trainer (CUDA) | GPU, minutes | **40 cr / LoRA** | no worker yet |
 | **upscale** — `lanczos` | inside `kwik`, deterministic | — | **free** | decided, not built |

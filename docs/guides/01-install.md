@@ -33,24 +33,28 @@ credits.
 **This is the one table of features.** 1 credit = $0.10. `Available` means shipped and exercised;
 `decided` means agreed in `decisions.md` with no implementation yet — a spec, not a feature.
 
-Every **local backend** cell is a *generator* running on your own machine — that is what the local
-backend is for. The one exception is labelled: sound effects default to a set of CC0 files, with
-generation available as an opt-in.
+The **on your machine** column has two kinds of entry, and the difference is the whole point of the
+install menu:
 
-| feature | local backend | cloud | cost | status |
+- **`kwik` itself** — works with **nothing installed**. Resizing, cropping, layers, the PSD, the Lua,
+  the md5 gate, `ogv`, and the CC0 sound library are all files and code, not models.
+- **backend** — needs Guaardvark and model weights. This is the generation side, and it is the only
+  thing the install menu's gigabytes buy.
+
+| feature | on your machine | cloud | cost | status |
 | --- | --- | --- | --- | --- |
-| project, pages, scenes, layers, asset check, Simulator (`kwik new` / `book` / `page` / `layer` / `asset check` / `run`) | all of it — no models involved | — | **free** | **available** |
-| **page art** — `cast_render` | Z-Image Turbo + your Cast LoRAs (CUDA → MPS → CPU) | Ada-24, returns a 1536×1024 PNG | **2 cr / image** | cloud **available**; local needs a backend |
-| **narration** — `tts_speak` | Kokoro-82M, 31 voices, CPU-capable | CPU endpoint | **1 cr / started minute** | decided, not built |
-| **music bed** — `music_bed` | ACE-Step (CUDA → MPS → CPU), 240 s cap | GPU | **1 cr / started minute** | decided, not built |
-| **sound effects** — *library* (the default) | a curated **CC0** set, no model involved | — | **free** | decided, not built |
-| **sound effects** — *generated* (opt-in) | **Stable Audio Open** locally: CUDA, or MPS behind `AUDIO_FOUNDRY_SAO_MPS=1`, ≤ 47 s, 44.1 kHz | **no** — never in the cloud (D15) | **free** (local only) | exists upstream; not a shipped tool |
-| **clips** — `video_clip` | ComfyUI image-to-video | 48 GB pool | **5 cr / second** (6 s default, 15 s cap, 60 s per job) | no worker yet |
-| **Cast LoRA** — `cast_train` | local trainer (CUDA) | GPU, minutes | **40 cr / LoRA** | no worker yet |
-| **upscale** — `lanczos` | inside `kwik`, deterministic | — | **free** | decided, not built |
-| **upscale** — `local` | Guaardvark's upscaling plugin | — | **free** | exists upstream |
+| project, pages, scenes, layers, asset check, Simulator (`kwik new` / `book` / `page` / `layer` / `asset check` / `run`) | **`kwik` itself** — works with nothing installed | — | **free** | **available** |
+| **page art** — `cast_render` | **backend**: Z-Image Turbo + your Cast LoRAs (CUDA → MPS → CPU) | Ada-24, returns a 1536×1024 PNG | **2 cr / image** | cloud **available**; local needs a backend |
+| **narration** — `tts_speak` | **backend**: Kokoro-82M, 31 voices, CPU-capable | CPU endpoint | **1 cr / started minute** | decided, not built |
+| **music bed** — `music_bed` | **backend**: ACE-Step (CUDA → MPS → CPU), 240 s cap | GPU | **1 cr / started minute** | decided, not built |
+| **sound effects** — *library* (the default) | **`kwik` itself** — a curated **CC0** set, a few MB, shipped or pointed at; no model | — | **free** | decided, not built |
+| **sound effects** — *generated* (opt-in) | **backend**: Stable Audio Open locally: CUDA, or MPS behind `AUDIO_FOUNDRY_SAO_MPS=1`, ≤ 47 s, 44.1 kHz | **no** — never in the cloud (D15) | **free** (local only) | exists upstream; not a shipped tool |
+| **clips** — `video_clip` | **backend**: ComfyUI image-to-video | 48 GB pool | **5 cr / second** (6 s default, 15 s cap, 60 s per job) | no worker yet |
+| **Cast LoRA** — `cast_train` | **backend**: local trainer (CUDA) | GPU, minutes | **40 cr / LoRA** | no worker yet |
+| **upscale** — `lanczos` | **`kwik` itself** — deterministic, works with nothing installed | — | **free** | decided, not built |
+| **upscale** — `local` | **backend**: Guaardvark's upscaling plugin | — | **free** | exists upstream |
 | **upscale** — `cloud` | — | Ada-24 | **1 cr / image** | decided, not built |
-| **build**: bleed crop, per-layer PNGs, `page.psd`, Lua, md5 gate, `ogv` | inside `kwik` — no Python, no Adobe | — | **free** | decided, not built (D18) |
+| **build**: bleed crop, per-layer PNGs, `page.psd`, Lua, md5 gate, `ogv` | **`kwik` itself** — no Python, no Adobe, no models | — | **free** | decided, not built (D18) |
 | **publish** | **your** host — Pages, Netlify, itch.io (D5) | — | **free** | not built |
 
 Three consequences worth reading before you pick a menu option:
@@ -82,14 +86,28 @@ It is what produced every asset in `biscuit-comes-home`.
 `kwik setup` asks one question and installs nothing until you answer:
 
 ```
-  Local backend — choose what to install (nothing is downloaded until you pick)
+  Local backend — what should generation use? (nothing downloads until you pick)
 
-  ▸ 1  nothing — cloud only                    0 GB    (you'll need a Polar key)
+  ▸ 1  no local models — cloud generation     0 GB    (needs a Polar key)
     2  page art only         Z-Image Turbo     ~12 GB   (recommended for local use)
     3  art + narration       + Kokoro          ~13 GB
     4  art + narration + music  + ACE-Step     ~27 GB
     5  everything            + a video model   ~41 GB
 ```
+
+The gigabytes are **model weights only**. `kwik` itself, the CC0 sound library and every
+files-and-code step above are a few megabytes and are installed regardless — option 1 removes
+*models*, not features. With option 1 you still get, offline and free:
+
+| still works with option 1 | needs the models, so option 1 sends it to the cloud |
+| `kwik new` / `book` / `page` / `layer` / `asset check` / `run` | page art — 2 credits |
+| **Lanczos upscale**, the bleed crop, per-layer PNGs | the local Guaardvark upscaler (a quality option, not a feature) |
+| `page.psd`, the emitted Lua, the md5 gate | narration — 1 credit/started min |
+| `ogv` encoding (needs an ffmpeg with libtheora, not a model) | music beds — 1 credit/started min |
+| the **CC0 sound-effect library**, and `kwik sfx` | generated SFX (local-only in v1 — with option 1, not at all; use the library) |
+| publish to your own host | clips, Cast LoRA training |
+
+So: **option 1 is "generate in the cloud, assemble locally"** — not "cloud only".
 
 Rules the command must honour:
 
@@ -122,10 +140,11 @@ With nothing installed you will see this, and it is correct:
 
 ```
 $ kwik doctor
-  art       no local model (12 GB) — cloud only
-  narration no local model (1 GB) — cloud only
-  music     no local model (14 GB) — cloud only
-  clips     no local model (14 GB) — cloud only
+  art       no local model (12 GB) — cloud: 2 credits/image
+  narration no local model (1 GB)  — cloud: 1 credit/started min
+  music     no local model (14 GB) — cloud: 1 credit/started min
+  clips     no local model (14 GB) — cloud: 5 credits/second
+  local     lanczos upscale ✓  build ✓  psd ✓  ogv ✓  sfx library ✓
   cloud     signed in, 30 credits
 
 $ kwik render --page p1

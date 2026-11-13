@@ -28,6 +28,36 @@ Two things exist, and they are independent:
 You need a Polar key and a network connection; every media tool then runs in the cloud and costs
 credits.
 
+## What you get, and where it runs
+
+**This is the one table of features.** 1 credit = $0.10. `Available` means shipped and exercised;
+`decided` means agreed in `decisions.md` with no implementation yet — a spec, not a feature.
+
+| feature | local backend | cloud | cost | status |
+| --- | --- | --- | --- | --- |
+| project, pages, scenes, layers, asset check, Simulator (`kwik new` / `book` / `page` / `layer` / `asset check` / `run`) | all of it — no models involved | — | **free** | **available** |
+| **page art** — `cast_render` | Z-Image Turbo + your Cast LoRAs (CUDA → MPS → CPU) | Ada-24, returns a 1536×1024 PNG | **2 cr / image** | cloud **available**; local needs a backend |
+| **narration** — `tts_speak` | Kokoro voices, CPU-capable | CPU endpoint | **1 cr / started minute** | decided, not built |
+| **music bed** — `music_bed` | ACE-Step (CUDA → MPS → CPU), 240 s cap | GPU | **1 cr / started minute** | decided, not built |
+| **sound effects** | **a curated CC0 library — never generated** | — | **free** | decided, not built |
+| **clips** — `video_clip` | ComfyUI image-to-video | 48 GB pool | **5 cr / second** (6 s default, 15 s cap, 60 s per job) | no worker yet |
+| **Cast LoRA** — `cast_train` | local trainer (CUDA) | GPU, minutes | **40 cr / LoRA** | no worker yet |
+| **upscale** — `lanczos` | inside `kwik`, deterministic | — | **free** | decided, not built |
+| **upscale** — `local` | Guaardvark's upscaling plugin | — | **free** | exists upstream |
+| **upscale** — `cloud` | — | Ada-24 | **1 cr / image** | decided, not built |
+| **build**: bleed crop, per-layer PNGs, `page.psd`, Lua, md5 gate, `ogv` | inside `kwik` — no Python, no Adobe | — | **free** | decided, not built (D18) |
+| **publish** | **your** host — Pages, Netlify, itch.io (D5) | — | **free** | not built |
+
+Three consequences worth reading before you pick a menu option:
+
+- **The free path is real, not a trial.** Everything above marked *local* costs nothing, forever —
+  that is D2. The cloud exists because a laptop without a GPU cannot do the rows that need one.
+- **The rows you cannot buy yet are marked.** `video_clip`, `cast_train`, `tts_speak` and `music_bed`
+  are priced and catalogued but have no worker deployed: a call must refuse with `tool_unavailable`
+  and release the hold, never `500`.
+- **A missing model changes the executor, not the feature.** Without the art weights, `cast_render`
+  runs in the cloud for 2 credits; with them, it runs on your machine for nothing.
+
 ## What `kwik` needs
 
 | | |

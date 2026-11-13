@@ -33,18 +33,17 @@ one of those, treat it as compromised and rotate it.
 
 ## Prices
 
-| tool | unit | price | notes |
-| --- | --- | --- | --- |
-| `cast_render` | 1 image | **2 cr** | Z-Image Turbo + your Cast LoRAs, 1536×1024 |
-| `tts_speak` | started minute | **1 cr** | Kokoro voices; narration of one page ≈ 1 minute |
-| `music_bed` | started minute | **1 cr** | a 30 s bed = 1 credit; no floor | **decided, not built** |
-| `video_clip` | second of output | **5 cr** | 6 s default, 15 s hard cap, 60 s per job | **no worker yet** |
-| `cast_train` | 1 LoRA | **40 cr** | minutes on a big card — the canonical cloud job (D12) | **no worker yet** |
-| `upscale` | 1 image | **1 cr** | the *cloud* engine; `lanczos` local is free | **decided, not built** |
-| `job_status`, `credits` | — | free | |
+The one table of features, local-vs-cloud and prices, is
+[01 — Install § What you get, and where it runs](01-install.md#what-you-get-and-where-it-runs). The
+cloud-specific rules are:
 
-Rounding is always up: a partial unit is a full unit, which is how every metered service works and
-what the CLI prints.
+| | |
+| --- | --- |
+| unit | always the *tool's* unit, never GPU-seconds: images, started minutes, seconds of output, LoRAs |
+| rounding | **always up** — a partial unit is a full unit, which is how every metered service works and what the CLI prints in advance |
+| free tier | 30 credits once per customer (D16), not monthly and not per key |
+| failure | a failed job releases the hold: you are not charged for an artifact you did not receive |
+| settlement | the actual units × price, **clamped to the hold** — a worker reporting more than the estimate is an estimate bug, not a charge |
 
 ## What a refusal looks like
 

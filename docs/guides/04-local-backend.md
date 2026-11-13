@@ -18,15 +18,19 @@ Nothing here is required. With no local backend, every media tool runs in the cl
 
 ## What runs where
 
-| tool | local backend | device order | the honest label |
-| --- | --- | --- | --- |
-| art (`cast_render`) | Z-Image Turbo + Cast LoRAs | CUDA → MPS → CPU | runs anywhere; a 24 GB card is ~10× a laptop |
-| narration (`tts_speak`) | Kokoro-82M (31 voices, default `af_heart`) | CPU-capable | runs anywhere; it is the cheapest call |
-| music (`music_bed`) | ACE-Step v1 3.5B, 240 s cap, 48 kHz | CUDA → MPS → CPU | MPS works; CPU is slow |
-| clips (`video_clip`) | ComfyUI image-to-video workflows | ComfyUI's choice | small canvases locally; a long clip wants 48 GB |
-| Cast training | `lora_trainer`, or `runpod_lora_trainer` | CUDA | minutes on a big card is exactly what a laptop should not do (D12) |
-| sound effects | **nothing** | — | a CC0 library, never generated (§1d of the media contract) |
-| upscale | Guaardvark's upscaling plugin | CUDA | better than Lanczos on hard edges; free |
+Which features exist, what they cost and whether they are built:
+[01 — Install](01-install.md#what-you-get-and-where-it-runs). This table is only the part that is
+local-specific — **what this machine will pick**, in order, and how far you can trust the result:
+
+| tool | device order | honest label |
+| --- | --- | --- |
+| art (`cast_render`) | CUDA → MPS → CPU | runs anywhere; a 24 GB card is ~10× a laptop |
+| narration (`tts_speak`) | CPU-capable | runs anywhere; it is the cheapest call |
+| music (`music_bed`) | CUDA → MPS → CPU | MPS works; CPU is slow |
+| clips (`video_clip`) | ComfyUI's choice | small canvases locally; a long clip wants 48 GB |
+| Cast training | CUDA | minutes on a big card is exactly what a laptop should not do (D12) |
+| upscale | CUDA (Guaardvark plugin) | better than Lanczos on hard edges |
+| sound effects | — | **nothing to run**: a CC0 library, never generated |
 
 `kwik doctor` reports this table **for your machine**, with the backend's own reason when something
 cannot run — it does not keep a static list, because a static list goes stale and a stale capability

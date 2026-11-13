@@ -13,6 +13,7 @@ One page, end to end, on the cheap: 2 credits for the art, 1 for the narration, 
 That is 4 credits — 40 cents — and it is the whole loop you will repeat for the other nine pages.
 
 | step | command | cost | status |
+| --- | --- | --- | --- |
 | 1 | `kwik new my-book` | free | **available** |
 | 2 | `kwik book set my-book p1 --tags ellie,meadow --action "@ellie walks through @meadow."` | free | **available** |
 | 3 | `kwik render --book my-book --page p1` | 2 credits (cloud) / free (local) | cloud **available**, local **decided not built** |

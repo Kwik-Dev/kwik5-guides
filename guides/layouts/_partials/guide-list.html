@@ -1,0 +1,13 @@
+{{/* `page` is the ordered guide slice, passed in by the caller. */}}
+<nav class="guide-list" aria-label="Guides">
+  {{ range . }}
+    <a class="guide-card" href="{{ .RelPermalink }}">
+      <span class="guide-num">{{ with .Params.order }}{{ printf "%02d" . }}{{ end }}</span>
+      <span class="guide-text">
+        <span class="guide-title">{{ .Title }}</span>
+        {{ with .Description }}<span class="guide-desc">{{ . }}</span>{{ end }}
+        {{ with .Params.audience }}<span class="guide-audience">for {{ . }}</span>{{ end }}
+      </span>
+    </a>
+  {{ end }}
+</nav>

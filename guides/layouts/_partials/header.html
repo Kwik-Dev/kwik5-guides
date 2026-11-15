@@ -1,0 +1,20 @@
+{{ $home := site.Home.RelPermalink }}
+<header class="site-header">
+  <a class="brand" href="{{ $home }}">
+    <span class="brand-mark">Kwik</span>
+  </a>
+
+  <nav class="site-nav" aria-label="Main">
+    <a href="{{ $home }}#how">How it works</a>
+    <a href="{{ $home }}#features">Features</a>
+    <a href="{{ $home }}#pricing">Pricing</a>
+    <a href="{{ $home }}#faq">FAQ</a>
+    <a href="{{ "credits/" | relURL }}">Credits</a>
+    <a href="{{ "about/" | relURL }}">About</a>
+    <a href="{{ "guides/" | relURL }}">Guides</a>
+  </nav>
+
+  {{ with site.Params.githubURL }}
+    <a class="nav-cta" href="{{ . }}" rel="noopener">GitHub ↗</a>
+  {{ end }}
+</header>

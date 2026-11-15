@@ -1,0 +1,29 @@
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div>
+      <p class="footer-title">Kwik</p>
+      <p class="muted small">A Photoshop panel and Solar2D editor for interactive storybooks and games.</p>
+    </div>
+    <div>
+      <p class="footer-title">Product</p>
+      <a href="{{ "guides/" | relURL }}">Guides</a>
+      <a href="{{ site.Home.RelPermalink }}#pricing">Pricing</a>
+      <a href="{{ "credits/" | relURL }}">Buy credits</a>
+      <a href="{{ site.Home.RelPermalink }}#faq">FAQ</a>
+    </div>
+    <div>
+      <p class="footer-title">Elsewhere</p>
+      {{ with site.Params.githubURL }}<a href="{{ . }}" rel="noopener">GitHub</a>{{ end }}
+      {{ with site.Params.archiveURL }}<a href="{{ . }}" rel="noopener">Old site (archive)</a>{{ end }}
+    </div>
+  </div>
+  <p class="muted small footer-legal">
+    <a href="{{ "about/" | relURL }}">About</a> ·
+    <a href="{{ "privacy/" | relURL }}">Privacy</a> ·
+    <a href="{{ "credits/" | relURL }}">Credits</a>
+    {{ with site.Params.archiveURL }}· <a href="{{ . }}" rel="noopener">Old site (archive)</a>{{ end }}
+  </p>
+  <p class="muted small footer-legal">
+    Prices and credit costs come from the decision log; each guide names the decisions it rests on.
+  </p>
+</footer>

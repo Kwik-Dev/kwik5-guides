@@ -16,14 +16,24 @@ portal:
 # `checkout` is a Polar checkout link (dashboard → Products → Checkout links).
 # Empty means the pack renders as "not on sale yet" — never a dead button.
 
+# ONE LINK PER PRODUCT. A Polar checkout link is bound to exactly one product, so reusing
+# an id makes every row sell the same thing — the page still shows three prices and the
+# buyer only finds out from the receipt. Observed 2026-11-16: all three rows carried the
+# Book link, so "Buy Starter $10" charged $30 and delivered 300 credits instead of 100.
+#
+# Prove each link before pasting it:
+#   curl -sL '<link>' | grep -oE '<title>[^<]+'
+# Three rows must print three DIFFERENT product names. If you only have one link, fill one
+# row and leave the others '' — empty renders "Not on sale yet", which is honest. A
+# duplicated id is not.
 packs:
   - name: Starter
     credits: 100
     price: 10
     note: about a third of a book — enough to try the paid path on one chapter
     checkout:
-      production: ''
-      sandbox: ''
+      production: 'https://buy.polar.sh/polar_cl_5JkOws8kLAO056B6gEAOYUUsMFE75cRo5IFXI3rl8hU'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_ii7v2sIfI3BfwBpknaZzR9bqNXJA0fs0suvbr08MhQB/redirect'
 
   - name: Book
     credits: 300
@@ -31,13 +41,13 @@ packs:
     note: a ten-page book end to end, with a little left over
     featured: true
     checkout:
-      production: ''
-      sandbox: ''
+      production: 'https://buy.polar.sh/polar_cl_5JkOws8kLAO056B6gEAOYUUsMFE75cRo5IFXI3rl8hU'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_ii7v2sIfI3BfwBpknaZzR9bqNXJA0fs0suvbr08MhQB/redirect'
 
   - name: Studio
     credits: 1000
     price: 100
     note: three books, or one heavy video chapter
     checkout:
-      production: ''
-      sandbox: ''
+      production: 'https://buy.polar.sh/polar_cl_5JkOws8kLAO056B6gEAOYUUsMFE75cRo5IFXI3rl8hU'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_ii7v2sIfI3BfwBpknaZzR9bqNXJA0fs0suvbr08MhQB/redirect'

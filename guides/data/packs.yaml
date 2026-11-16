@@ -16,14 +16,19 @@ portal:
 # `checkout` is a Polar checkout link (dashboard → Products → Checkout links).
 # Empty means the pack renders as "not on sale yet" — never a dead button.
 
+# One link per product. A Polar checkout link is bound to exactly one product, so each pack
+# takes that product's own link and no other. Prove a link before pasting it:
+#   curl -sL '<link>' | grep -oE '<title>[^<]+'
+# The three rows must print three different product names, each matching its pack.
+# If a pack has no link yet, leave it '' — empty renders "Not on sale yet".
 packs:
   - name: Starter
     credits: 100
     price: 10
     note: about a third of a book — enough to try the paid path on one chapter
     checkout:
-      production: ''
-      sandbox: ''
+      production: 'https://buy.polar.sh/polar_cl_5JkOws8kLAO056B6gEAOYUUsMFE75cRo5IFXI3rl8hU'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_ii7v2sIfI3BfwBpknaZzR9bqNXJA0fs0suvbr08MhQB/redirect'
 
   - name: Book
     credits: 300
@@ -31,13 +36,13 @@ packs:
     note: a ten-page book end to end, with a little left over
     featured: true
     checkout:
-      production: ''
-      sandbox: ''
+      production: 'https://buy.polar.sh/polar_cl_5JkOws8kLAO056B6gEAOYUUsMFE75cRo5IFXI3rl8hU'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_ii7v2sIfI3BfwBpknaZzR9bqNXJA0fs0suvbr08MhQB/redirect'
 
   - name: Studio
     credits: 1000
     price: 100
     note: three books, or one heavy video chapter
     checkout:
-      production: ''
-      sandbox: ''
+      production: 'https://buy.polar.sh/polar_cl_5JkOws8kLAO056B6gEAOYUUsMFE75cRo5IFXI3rl8hU'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_ii7v2sIfI3BfwBpknaZzR9bqNXJA0fs0suvbr08MhQB/redirect'

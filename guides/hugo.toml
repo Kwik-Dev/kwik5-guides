@@ -1,0 +1,71 @@
+# kwiksher.com
+#
+# Two surfaces, one static output:
+#   /            the landing page (this project, for now)
+#   /guides/     the manual, rendered from docs/guides/*.md
+#
+# Long term docs/new-site-plan.md wants the landing page in Astro (`site/`) and
+# Hugo to own only /guides/. This project builds both so the whole site can be
+# reviewed and deployed from one command; the split is a copy step, not a rewrite.
+#
+#   hugo            → public/      (serve at the domain root)
+#   hugo server     → http://localhost:1313/
+
+baseURL = 'https://kwiksher.com/'
+title = 'Kwik'
+locale = 'en'
+defaultContentLanguage = 'en'
+enableRobotsTXT = true
+
+disableKinds = ['taxonomy', 'term']
+
+[build]
+  writeStats = false
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = false
+  [markup.highlight]
+    style = 'github'
+    lineNos = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+[params]
+  tagline = 'Build interactive storybooks and games directly from Photoshop.'
+  description = 'Kwik is a free Photoshop panel and Solar2D editor for interactive storybooks and games. Render plates, narrate, score, and ship to iOS, Android and desktop.'
+  githubURL = 'https://github.com/kwik-dev'
+  archiveURL = 'https://archive.kwiksher.com/'
+  # The Polar checkout button ships with the Astro landing page; until then the
+  # landing CTA points at the guides, which are real.
+  checkoutURL = ''
+  # 'sandbox' or 'production'. The sandbox is a separate Polar server with its
+  # own org, products, tokens and test cards — see docs/polar-sandbox-testing.md
+  polarMode = 'sandbox'
+  preview = true
+
+# The manual. docs/guides/*.md are mounted, never copied: editing the planning
+# repo edits this site.
+[module]
+  [[module.mounts]]
+    source = '../docs/guides'
+    target = 'content/guides'
+    # guides are numbered NN-name.md; README.md is the repo's index, not a page.
+    # (`excludeFiles` is deprecated and `!README.md` negation is not honoured here.)
+    files = ['[0-9][0-9]-*.md']
+  [[module.mounts]]
+    source = 'content'
+    target = 'content'
+  [[module.mounts]]
+    source = 'data'
+    target = 'data'
+  [[module.mounts]]
+    source = 'layouts'
+    target = 'layouts'
+  [[module.mounts]]
+    source = 'assets'
+    target = 'assets'
+  [[module.mounts]]
+    source = 'static'
+    target = 'static'

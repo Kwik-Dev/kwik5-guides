@@ -1,0 +1,4 @@
+# build output and caches — the site is generated, never committed
+public/
+resources/
+.hugo_build.lock

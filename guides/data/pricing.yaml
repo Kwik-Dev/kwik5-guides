@@ -1,0 +1,34 @@
+# Pricing, from docs/decisions.md D13 (1 credit = $0.10) and D16 (30 credits,
+# free, once per customer). The software is free (D2); the cloud is what costs.
+#
+# The numbers below are decisions, not measurements. kwik-cloud-plan.md §8 still
+# holds indicative timings until `make bench` runs on the ADA_24 pool.
+
+creditUSD: 0.10
+freeCredits: 30
+freeNote: once per customer, not per key — 15 page images, or one page rendered, narrated and scored
+
+tools:
+  - name: Page image (cast_render)
+    credits: 2
+    note: one page plate, 24 GB pool
+  - name: Narration (tts_speak)
+    credits: 1
+    unit: per started minute
+  - name: Music bed (music_bed)
+    credits: 1
+    unit: per started minute
+  - name: Video clip (video_clip)
+    credits: 5
+    unit: per second of output
+  - name: Cast LoRA training (cast_train)
+    credits: 40
+    note: one subject, trained once, reused across pages
+  - name: Upscale
+    credits: 1
+    note: per image, cloud engine; local upscale is free
+
+book:
+  credits: 290
+  label: a ten-page book
+  note: 40 images, 10 minutes of narration, 10 four-second clips

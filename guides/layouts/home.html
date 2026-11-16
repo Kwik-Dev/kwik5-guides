@@ -1,0 +1,113 @@
+{{ define "main" }}
+
+{{ if site.Params.preview }}
+  <p class="preview-strip">
+    <strong>Structure preview.</strong> Landing copy is draft, the proof strip and testimonials are
+    placeholders, and the Polar checkout button arrives with the Astro build. The guides are real.
+  </p>
+{{ end }}
+
+<section class="hero-landing">
+  <p class="eyebrow">Photoshop → Solar2D</p>
+  <h1>{{ site.Params.tagline }}</h1>
+  <p class="hero-sub">
+    A free Photoshop panel and Solar2D editor for interactive storybooks and games. Your layers
+    become pages, your pages run on iOS, Android and desktop — and the cloud renders the parts your
+    machine cannot.
+  </p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{{ "guides/" | relURL }}">Read the guides</a>
+    <a class="btn" href="#pricing">What it costs</a>
+    <a class="btn" href="{{ "credits/" | relURL }}">Buy credits</a>
+  </div>
+  <ul class="hero-facts">
+    <li>No licence gate</li>
+    <li>Local or cloud rendering</li>
+    <li>Free tier: 30 credits</li>
+  </ul>
+</section>
+
+{{/* TODO: 4–6 real covers from kwik5-sample-books, each captioned with the old
+     showcase credit line. Placeholder until those assets are chosen. */}}
+<section class="proof" aria-label="Sample books">
+  <p class="proof-note">TODO — proof strip: sample books and games, captioned with their credits.</p>
+  <div class="proof-grid">
+    {{ range seq 1 4 }}<div class="proof-tile"><span>cover</span></div>{{ end }}
+  </div>
+</section>
+
+<section id="how" class="section">
+  <h2>How it works</h2>
+  <ol class="steps">
+    {{ range hugo.Data.features.steps }}
+      <li>
+        <h3>{{ .title }}</h3>
+        <p>{{ .body }}</p>
+      </li>
+    {{ end }}
+  </ol>
+</section>
+
+<section id="features" class="section">
+  <h2>Features</h2>
+  <div class="feature-grid">
+    {{ range hugo.Data.features.features }}
+      <article class="feature">
+        <h3>{{ .title }}</h3>
+        <p>{{ .body }}</p>
+      </article>
+    {{ end }}
+  </div>
+</section>
+
+<section id="pricing" class="section">
+  <h2>Pricing</h2>
+  <p class="section-lede">
+    The software is free. Credits buy cloud GPU time, at <strong>${{ hugo.Data.pricing.creditUSD }}</strong>
+    per credit, and a ten-page book is about <strong>{{ hugo.Data.pricing.book.credits }} credits</strong>.
+  </p>
+
+  <div class="price-grid">
+    <div class="price-card">
+      <p class="price-label">{{ hugo.Data.pricing.book.label }}</p>
+      <p class="price-amount"><span>{{ hugo.Data.pricing.book.credits }}</span> credits</p>
+      <p class="price-note">{{ hugo.Data.pricing.book.note }}</p>
+    </div>
+    <div class="price-card price-card-free">
+      <p class="price-label">Free tier</p>
+      <p class="price-amount"><span>{{ hugo.Data.pricing.freeCredits }}</span> credits</p>
+      <p class="price-note">{{ hugo.Data.pricing.freeNote }}</p>
+    </div>
+  </div>
+
+  <table class="price-table">
+    <thead><tr><th>Cloud tool</th><th>Credits</th><th></th></tr></thead>
+    <tbody>
+      {{ range hugo.Data.pricing.tools }}
+        <tr>
+          <td>{{ .name }}</td>
+          <td>{{ .credits }}</td>
+          <td class="muted">{{ with .unit }}{{ . }}{{ else }}{{ .note }}{{ end }}</td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  <p class="muted small">
+    Credits are decisions (D13, D16), not measured timings. Already bought credits? Sign in with
+    your licence key — <code>kwik cloud login</code>.
+  </p>
+</section>
+
+<section id="faq" class="section">
+  <h2>FAQ</h2>
+  <div class="faq">
+    {{ range hugo.Data.faq.items }}
+      <details>
+        <summary>{{ .q }}</summary>
+        <p>{{ .a }}</p>
+      </details>
+    {{ end }}
+  </div>
+</section>
+
+{{ end }}

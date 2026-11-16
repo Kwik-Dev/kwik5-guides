@@ -1,0 +1,43 @@
+# Credit packs, sold through Polar.
+#
+# Two environments, no "test mode": production at polar.sh, an isolated sandbox
+# server at sandbox.polar.sh. Tokens, products, orgs and customers are separate
+# in each. `site.Params.polarMode` in hugo.toml picks which column is used.
+#
+# Credits: 1 credit = $0.10 (D13). A ten-page book is ~290 credits, so a pack
+# smaller than that cannot finish a book on its own — say so on the page.
+#
+# Process for the sandbox: docs/polar-sandbox-testing.md.
+
+portal:
+  production: https://polar.sh/kwiksher/portal
+  sandbox: https://sandbox.polar.sh/kwiksher/portal
+
+# `checkout` is a Polar checkout link (dashboard → Products → Checkout links).
+# Empty means the pack renders as "not on sale yet" — never a dead button.
+
+packs:
+  - name: Starter
+    credits: 100
+    price: 10
+    note: about a third of a book — enough to try the paid path on one chapter
+    checkout:
+      production: ''
+      sandbox: ''
+
+  - name: Book
+    credits: 300
+    price: 30
+    note: a ten-page book end to end, with a little left over
+    featured: true
+    checkout:
+      production: ''
+      sandbox: ''
+
+  - name: Studio
+    credits: 1000
+    price: 100
+    note: three books, or one heavy video chapter
+    checkout:
+      production: ''
+      sandbox: ''

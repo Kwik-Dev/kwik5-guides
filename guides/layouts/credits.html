@@ -1,0 +1,66 @@
+{{ define "main" }}
+<article class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+  <div class="page-body">{{ .Content }}</div>
+</article>
+
+{{ $mode := site.Params.polarMode | default "sandbox" }}
+
+{{ if eq $mode "sandbox" }}
+  <p class="preview-strip"><strong>Sandbox.</strong> These are test products on Polar’s sandbox server. Test card <code>4242 4242 4242 4242</code>, any future expiry — nothing is charged, and credits bought here do not exist in production.</p>
+{{ end }}
+
+<section class="section section-tight">
+  <h2>Pick a pack</h2>
+  <div class="pack-grid">
+    {{ $mode := site.Params.polarMode | default "sandbox" }}
+  {{ range hugo.Data.packs.packs }}
+      <div class="pack{{ if .featured }} pack-featured{{ end }}">
+        <p class="pack-name">{{ .name }}</p>
+        <p class="pack-price">${{ .price }}</p>
+        <p class="pack-credits">{{ .credits }} credits</p>
+        <p class="pack-note">{{ .note }}</p>
+        {{ $url := index .checkout $mode }}
+        {{ if $url }}
+          <a class="btn btn-primary" href="{{ $url }}">Buy {{ .name }}</a>
+        {{ else }}
+          <span class="btn btn-disabled" aria-disabled="true">Not on sale yet</span>
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+  <p class="muted small">
+    The packs above are placeholders until a Polar checkout link exists for each one. Prices come
+    from D13 (1 credit = $0.10); nothing here is charged until a checkout link is configured.
+  </p>
+</section>
+
+<section class="section section-tight">
+  <h2>Already bought credits?</h2>
+  <ol class="steps steps-two">
+    <li>
+      <h3>Find your key</h3>
+      <p>
+        Your licence key <em>is</em> your account — there is no password. Polar holds it for you:
+        <a href="{{ index hugo.Data.packs.portal $mode }}" rel="noopener">open the {{ $mode }} customer portal</a> and
+        ask for a sign-in link by email.
+      </p>
+    </li>
+    <li>
+      <h3>Sign in from the terminal</h3>
+      <p>
+        Paste the key when prompted, or pipe it in:
+        <code>kwik cloud login --key-stdin</code>. Then
+        <code>kwik cloud credits</code> shows your balance and <code>kwik cloud status</code> the
+        endpoint you are talking to.
+      </p>
+    </li>
+  </ol>
+  <p class="muted small">
+    Balance and job history are read with the key against the API. A browser view of the same
+    numbers is not built yet: the Worker sends no CORS headers, so a page on this domain cannot call
+    it. See <a href="{{ site.Params.githubURL }}/issues" rel="noopener">the issue tracker</a>.
+  </p>
+</section>
+{{ end }}

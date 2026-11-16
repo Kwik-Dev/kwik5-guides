@@ -1,0 +1,20 @@
+# FAQ. Answers are constrained by docs/decisions.md — where a decision exists,
+# the answer cites it, and nothing here promises a feature that is not built.
+
+items:
+  - q: Does Kwik cost anything?
+    a: The exporter, editor and runtime are free and open source — there is no licence gate (D2). You only pay when you use cloud GPU rendering, in credits.
+  - q: Do I need a GPU?
+    a: No. Local generation is first-class and works on your own machine (D14), and the cloud exists for the machines that cannot. A fallback to the cloud is never silent.
+  - q: What do credits cost?
+    a: One credit is $0.10. A page image is 2 credits, narration and music are 1 credit per started minute, a video clip is 5 credits per second of output. A ten-page book is about 290 credits.
+  - q: Is there a free tier?
+    a: 30 credits, once per customer — not per key, not monthly. That is 15 page images, or one page rendered, narrated and scored (D16).
+  - q: Which Photoshop and OS versions?
+    a: The panel is UXP, so a current Photoshop is required. TODO — name the minimum version, and the macOS/Windows split, before launch.
+  - q: Can I run it offline?
+    a: Yes. Books run in the Solar2D simulator and build for iOS, Android and desktop without the cloud; only the cloud tools need a key.
+  - q: Where do docs live?
+    a: Right here in the guides, written from the same decision log the software follows.
+  - q: What happened to the old site?
+    a: It is archived, and the guides replace the parts of it that were still true. Links to the archive are kept alive rather than rewritten.

@@ -16,16 +16,11 @@ portal:
 # `checkout` is a Polar checkout link (dashboard → Products → Checkout links).
 # Empty means the pack renders as "not on sale yet" — never a dead button.
 
-# ONE LINK PER PRODUCT. A Polar checkout link is bound to exactly one product, so reusing
-# an id makes every row sell the same thing — the page still shows three prices and the
-# buyer only finds out from the receipt. Observed 2026-11-16: all three rows carried the
-# Book link, so "Buy Starter $10" charged $30 and delivered 300 credits instead of 100.
-#
-# Prove each link before pasting it:
+# One link per product. A Polar checkout link is bound to exactly one product, so each pack
+# takes that product's own link and no other. Prove a link before pasting it:
 #   curl -sL '<link>' | grep -oE '<title>[^<]+'
-# Three rows must print three DIFFERENT product names. If you only have one link, fill one
-# row and leave the others '' — empty renders "Not on sale yet", which is honest. A
-# duplicated id is not.
+# The three rows must print three different product names, each matching its pack.
+# If a pack has no link yet, leave it '' — empty renders "Not on sale yet".
 packs:
   - name: Starter
     credits: 100

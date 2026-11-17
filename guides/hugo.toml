@@ -11,7 +11,11 @@
 #   hugo            → public/      (serve at the domain root)
 #   hugo server     → http://localhost:1313/
 
-baseURL = 'https://kwiksher.com/'
+# The site lives under /cloud/ on the existing WordPress host: a real directory in public_html
+# takes precedence over WordPress's rewrite, so /cloud/ and /cloud/credits/ are ours while
+# / , /about-us/ , /blog/ … stay WordPress. Local `hugo server` keeps the path too, so dev and
+# production agree (`http://localhost:1313/cloud/`).
+baseURL = 'https://kwiksher.com/cloud/'
 title = 'Kwik'
 locale = 'en'
 defaultContentLanguage = 'en'

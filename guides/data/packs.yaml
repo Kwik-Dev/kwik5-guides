@@ -27,8 +27,8 @@ packs:
     price: 10
     note: about a third of a book — enough to try the paid path on one chapter
     checkout:
-      production: 'https://buy.polar.sh/polar_cl_5JkOws8kLAO056B6gEAOYUUsMFE75cRo5IFXI3rl8hU'
-      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_ii7v2sIfI3BfwBpknaZzR9bqNXJA0fs0suvbr08MhQB/redirect'
+      production: 'https://buy.polar.sh/polar_cl_nip01ow6GGdVOwjhnSH6fTvo8etrfeiT43FqI1JGf1w'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_p7MVNHLqKA86YT4fgivdA0DvF4y6kVdEyyVIg0HPaZO/redirect'
 
   - name: Book
     credits: 300
@@ -44,5 +44,5 @@ packs:
     price: 100
     note: three books, or one heavy video chapter
     checkout:
-      production: 'https://buy.polar.sh/polar_cl_5JkOws8kLAO056B6gEAOYUUsMFE75cRo5IFXI3rl8hU'
-      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_ii7v2sIfI3BfwBpknaZzR9bqNXJA0fs0suvbr08MhQB/redirect'
+      production: 'https://buy.polar.sh/polar_cl_Ed7aElSNf7T4fr2Q7Jr55jVdo395SpgaM8aro2MtboL'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_DxmlKuzVY498dKl6WD25b2i67xLX4jJIxY1Lq31tjY8/redirect'

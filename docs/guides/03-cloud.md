@@ -19,7 +19,7 @@ assets, running the Simulator — is free and local (D2).
 | --- | --- |
 | 1 credit | **$0.10** |
 | free tier | **30 credits, once per customer** (D16) — not monthly, not per key |
-| top-up | <https://kwiksher.com/credits> |
+| top-up | <https://kwiksher.com/cloud/credits/> |
 | identity | your **Polar licence key**. There is no account and no password: the key bought the credits, so the key is the identity |
 
 ```bash
@@ -53,7 +53,7 @@ A refusal is a **decision, not an error to retry**:
 { "error": "insufficient_credits",
   "message": "This job needs 2 credits; 0 available.",
   "credits_available": 0, "estimated_cost": 2,
-  "top_up_url": "https://kwiksher.com/credits", "retry_after": 0 }
+  "top_up_url": "https://kwiksher.com/cloud/credits/", "retry_after": 0 }
 ```
 
 HTTP `402`. Never `403`, never `500`. Over MCP the same body arrives as a **tool result** with
@@ -94,7 +94,7 @@ the runner's own execution limit owns it.
 
 | | |
 | --- | --- |
-| endpoint | `POST https://api.kwiksher.com/mcp` (JSON-RPC: `initialize`, `tools/list`, `tools/call`) |
+| endpoint | `POST https://kwik5-cloud-api.kwiksher.workers.dev/mcp` (JSON-RPC: `initialize`, `tools/list`, `tools/call`) — the Worker's own hostname; there is no `api.kwiksher.com` record |
 | auth | the same Polar key as a bearer token |
 | discovery | `GET /v1/tools.json` — machine-readable; `GET /v1/skill` — the Markdown an agent reads |
 | local facade | `kwik mcp` over stdio lists the cloud tools and proxies them, so an agent sees one toolbox and does not need to know which tool is paid |

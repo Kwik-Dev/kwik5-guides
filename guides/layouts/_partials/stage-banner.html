@@ -1,0 +1,14 @@
+{{/*
+  Shown only when `stage = true` (deploy/site.sh cloud-sandbox).
+
+  Why a banner and not a separate theme: the stage build serves the same content as production,
+  from a different path, against a different Worker and a different Polar organisation. The one
+  thing a reader must never be able to confuse is "this page is where I spend money", so the
+  banner says which build this is, and the credits page underneath carries sandbox checkout links
+  that cannot charge a card (`polarMode = 'sandbox'` in hugo.toml).
+*/}}
+<div class="stage-banner" role="note">
+  <strong>Stage</strong> — this is the <code>cloud-sandbox</code> build. Test keys only; nothing on
+  this page charges money. The live page is
+  <a href="https://kwiksher.com/cloud/credits/">kwiksher.com/cloud/credits/</a>.
+</div>

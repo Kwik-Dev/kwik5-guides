@@ -76,6 +76,7 @@ That is not trivia: each of those, left on, looks like a model bug when it fails
 Every artifact records where it came from:
 
 | label | means |
+| --- | --- |
 | `mps/dev` | a dev render on this Mac — exercises the code path, **not** a parity result, **not** a bench number |
 | `cuda/local` | the local backend on an NVIDIA card |
 | `ada24/bench` | the 24 GB bench the cost model is calibrated on |

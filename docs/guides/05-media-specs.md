@@ -15,6 +15,7 @@ from a decoder; none of them is a style preference.
 ## Geometry
 
 | | value | why |
+| --- | --- | --- |
 | page frame | **1920 × 1280** (3:2) | every layer coordinate is in these pixels; changing it invalidates every PSD |
 | device plate | **2776 × 1440** (1.928:1) | the Simulator/canvas aspect. The bleed exists only to cover this difference |
 | render preset `page` | **1536 × 1024** | exactly 0.8× of the frame — the single upscale to 1920×1280 happens on your machine |

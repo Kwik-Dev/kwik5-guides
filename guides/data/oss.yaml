@@ -10,8 +10,8 @@
 
 lede: >-
   Everything you run on your own machine is open source — MIT or Apache-2.0, no licence key,
-  no phone-home (D2). The only thing sold is GPU time you do not have. One entry below is a fork,
-  and it says so: guaardvark belongs to its authors, not to us.
+  no phone-home (D2). The only thing sold is GPU time you do not have. Two entries below were not
+  written by us — guaardvark, a fork, and Solar2D, the engine everything stands on — and both say so.
 
 components:
   - name: kwik5-exporter
@@ -39,9 +39,17 @@ components:
   - name: kwik5-sample-books
     artifact: books
     role: Sample books, including biscuit-comes-home — the book the proof strip above is made from.
+  - name: Solar2D
+    url: https://solar2d.com/
+    artifact: engine
+    role: The engine the book runs on — one code base for iOS, tvOS, Android, macOS, Windows, Linux and HTML5, with a simulator you iterate in.
+    credit: >-
+      Also not ours. MIT-licensed, the official open-source fork of Corona SDK, community-maintained
+      since Corona Labs stopped supporting the original (principal developer Vlad Shcherban). Kwik is a
+      plugin and a pipeline on top of it, not a private runtime.
 
 footnote: >-
   Self-host the whole thing and you owe nothing. The paid part is the queue, the models and
-  the GPUs behind the cloud tools, which is the one piece a laptop cannot fake. Guaardvark is the
-  one thing here we did not write: it is Albenze, Inc.'s project under the MIT licence, and this is
-  a fork of it, credited as one.
+  the GPUs behind the cloud tools, which is the one piece a laptop cannot fake. Two entries are not
+  ours and are credited as what they are: Solar2D, the engine everything is built on, and guaardvark,
+  Albenze, Inc.'s MIT project, which this fork of ours depends on.

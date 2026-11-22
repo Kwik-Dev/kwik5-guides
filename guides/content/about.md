@@ -23,10 +23,13 @@ runtime on [Solar2D](https://solar2d.com) that ships them to iOS, Android and de
 never been "no code for its own sake" — it is that an illustrator should not need a developer to put
 a book on a phone.
 
-One piece is not ours: the local generation backend is [guaardvark](https://github.com/guaardvark/guaardvark),
-Albenze, Inc.'s MIT-licensed project. Kwik forks it
-([Kwik-Dev/guaardvark](https://github.com/Kwik-Dev/guaardvark)), tracks upstream, and credits it as a
-fork everywhere the site names it.
+Two pieces are not ours. The foundation is [Solar2D](https://solar2d.com/): a mature, MIT-licensed 2D
+engine, the official open-source fork of Corona SDK, maintained by its community after Corona Labs
+stopped supporting the original. Kwik is a plugin and a pipeline on top of it — we do not ship a
+private runtime, and a Solar2D book stays a Solar2D book. The second is the local generation backend,
+[guaardvark](https://github.com/guaardvark/guaardvark), Albenze, Inc.'s MIT-licensed project: Kwik
+forks it ([Kwik-Dev/guaardvark](https://github.com/Kwik-Dev/guaardvark)), tracks upstream, and credits
+it as a fork everywhere the site names it.
 
 Kwiksher was the first *Official Partner* of the Corona Labs partner program, which is the lineage
 Solar2D continues.

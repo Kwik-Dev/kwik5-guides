@@ -12,8 +12,9 @@
   <h1>{{ site.Params.tagline }}</h1>
   <p class="hero-sub">
     A free Photoshop panel and Solar2D editor for interactive storybooks and games. Your layers
-    become pages, your pages run on iOS, Android and desktop — and the cloud renders the parts your
-    machine cannot.
+    become pages, your pages run on iOS, Android and desktop. Draw the art yourself, generate it on
+    your own machine with the open-source backend, or rent a cloud GPU — that is an option, never a
+    requirement.
   </p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="{{ "guides/" | relURL }}">Read the guides</a>
@@ -22,8 +23,9 @@
   </div>
   <ul class="hero-facts">
     <li>No licence gate</li>
-    <li>Local or cloud rendering</li>
-    <li>Free tier: 30 credits</li>
+    <li>Your own art, drawn in Photoshop</li>
+    <li>Local generation is free and open source</li>
+    <li>Cloud GPU optional: 30 free credits</li>
   </ul>
 </section>
 
@@ -80,6 +82,23 @@
   </ol>
 </section>
 
+{{/* Where the art comes from. The load-bearing claim: hand-drawn Photoshop art is a complete
+     path on its own — no GPU, no account — and the cloud is only ever acceleration (D14). */}}
+<section id="art" class="section">
+  <h2>Your art, or generated art — your machine, or ours</h2>
+  <p class="section-lede">{{ hugo.Data.paths.lede }}</p>
+
+  <div class="feature-grid">
+    {{ range hugo.Data.paths.paths }}
+      <article class="feature">
+        <h3>{{ .title }} <span class="chip">{{ .tag }}</span></h3>
+        <p>{{ .body }}</p>
+        <p class="muted small">{{ .note }}</p>
+      </article>
+    {{ end }}
+  </div>
+</section>
+
 <section id="features" class="section">
   <h2>Features</h2>
   <div class="feature-grid">
@@ -90,6 +109,27 @@
       </article>
     {{ end }}
   </div>
+</section>
+
+{{/* Everything the customer runs is OSS (D2); only the hosted GPU endpoints, the ledger and
+     the Cast LoRA store are not (D3). Names come from kwik-cloud-plan.md §1. */}}
+<section id="oss" class="section">
+  <h2>Everything you run is open source</h2>
+  <p class="section-lede">{{ hugo.Data.oss.lede }}</p>
+
+  <table class="price-table oss-table">
+    <thead><tr><th>Component</th><th>Ships as</th><th></th></tr></thead>
+    <tbody>
+      {{ range hugo.Data.oss.components }}
+        <tr>
+          <td><code>{{ .name }}</code></td>
+          <td class="muted">{{ .artifact }}</td>
+          <td>{{ .role }}</td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  <p class="muted small">{{ hugo.Data.oss.footnote }}</p>
 </section>
 
 <section id="pricing" class="section">

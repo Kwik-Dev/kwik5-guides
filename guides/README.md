@@ -75,6 +75,14 @@ renamed guide breaks the build instead of the link. A link to a file this site d
 `params.preview = true` renders the strip at the top saying the copy is draft. Turn it off when the
 copy is final.
 
+## Layout lookup, and the trap in it
+
+Hugo 0.146+ resolves a content page to `layouts/page.html` **before** the legacy
+`layouts/single.html`, so a `single.html` that exists beside `page.html` never renders. The guide
+pages (sidebar, prev/next, in-page TOC) therefore live in `layouts/guides/page.html`, not at the
+root: `layouts/page.html` is what `/about/`, `/privacy/` and `/credits/` use. Moving the guide
+layout back to `layouts/single.html` silently drops the sidebar and the pager and nothing fails.
+
 ## Deliberately not done
 
 - **Polar checkout.** `params.checkoutURL` is empty, so no buy button renders. Copy is real; the

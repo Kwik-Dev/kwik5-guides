@@ -236,6 +236,14 @@ img { max-width: 100%; height: auto; }
 .feature { background: var(--bg); padding: 1.35rem 1.25rem; }
 .feature h3 { margin: 0 0 .35rem; font-size: 1rem; }
 .feature p { margin: 0; color: var(--fg-soft); font-size: .925rem; }
+.feature h3 .chip {
+  margin-left: .35rem;
+  vertical-align: .12em;
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.feature p + p { margin-top: .6rem; }
 
 /* ============ pricing ============ */
 
@@ -256,6 +264,10 @@ img { max-width: 100%; height: auto; }
 .price-table th, .price-table td { text-align: left; padding: .55rem .6rem; border-bottom: 1px solid var(--line); }
 .price-table th { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--fg-soft); font-weight: 600; }
 .price-table td:nth-child(2) { font-variant-numeric: tabular-nums; width: 5rem; }
+
+/* the OSS table reuses the price table, but its second column is a name, not a number */
+.oss-table td:nth-child(2) { width: 9rem; white-space: nowrap; font-size: .875rem; }
+.oss-table td:nth-child(3) { color: var(--fg-soft); }
 
 /* ============ faq ============ */
 

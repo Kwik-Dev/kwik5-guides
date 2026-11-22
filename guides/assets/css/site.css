@@ -155,20 +155,41 @@ img { max-width: 100%; height: auto; }
 }
 .hero-facts li::before { content: "· "; color: var(--accent); }
 
-/* ============ proof strip (placeholder) ============ */
+/* ============ proof strip — real art from biscuit-comes-home ============ */
+/* A film strip: every tile is the same height and keeps its own aspect ratio, so nothing is
+   cropped. The video loops in place; with reduced-motion the poster is shown instead. */
 
-.proof { max-width: var(--wide); margin: 0 auto; padding: 0 1.5rem 1rem; }
-.proof-note { font-size: .8rem; color: var(--fg-soft); margin: 0 0 .75rem; }
-.proof-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; }
-.proof-tile {
-  aspect-ratio: 3 / 4;
-  border: 1px dashed var(--line);
+.proof { max-width: var(--wide); margin: 0 auto; padding: 0 1.5rem 1.75rem; }
+.proof-note { font-size: .85rem; color: var(--fg-soft); margin: 0 0 .9rem; max-width: 48rem; }
+.proof-grid {
+  display: flex;
+  gap: .9rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.proof-tile { margin: 0; }
+.proof-tile img,
+.proof-tile video {
+  display: block;
+  height: 210px;
+  width: auto;
+  max-width: 100%;
   border-radius: var(--radius);
-  display: grid;
-  place-items: center;
-  color: var(--fg-soft);
-  font-size: .75rem;
+  border: 1px solid var(--line);
   background: var(--bg-soft);
+}
+.proof-tile figcaption {
+  font-size: .72rem;
+  color: var(--fg-soft);
+  margin-top: .35rem;
+  letter-spacing: .01em;
+}
+.proof-tile figcaption b { color: var(--fg); font-weight: 600; }
+/* the poster is the reduced-motion fallback for the clip */
+.proof-tile--video .proof-poster { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .proof-tile--video video { display: none; }
+  .proof-tile--video .proof-poster { display: block; }
 }
 
 /* ============ how it works ============ */
@@ -423,7 +444,7 @@ img { max-width: 100%; height: auto; }
 
 @media (max-width: 64rem) {
   .steps, .feature-grid, .footer-cols { grid-template-columns: 1fr 1fr; }
-  .proof-grid { grid-template-columns: repeat(2, 1fr); }
+  .proof-tile img, .proof-tile video { height: 160px; }
   .price-grid { grid-template-columns: 1fr; }
 }
 

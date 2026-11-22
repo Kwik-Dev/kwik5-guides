@@ -27,12 +27,43 @@
   </ul>
 </section>
 
-{{/* TODO: 4–6 real covers from kwik5-sample-books, each captioned with the old
-     showcase credit line. Placeholder until those assets are chosen. */}}
-<section class="proof" aria-label="Sample books">
-  <p class="proof-note">TODO — proof strip: sample books and games, captioned with their credits.</p>
+{{/* Real art, not placeholders: every tile below is a file in this repository, copied from
+     `biscuit-comes-home` and captioned with the book/page it came from. `deploy/site.sh` does not
+     assert on this section — if an asset is missing the page shows a broken image, which is a
+     visible failure rather than a silent one. */}}
+<section class="proof" aria-label="From a Photoshop page to a playable scene">
+  <p class="proof-note">
+    One book, four artefacts — the cover, the cast sheet, a sprite still, and a 1.6-second clip
+    rendered for a single page. All of it ships in
+    <code>biscuit-comes-home</code>.
+  </p>
   <div class="proof-grid">
-    {{ range seq 1 4 }}<div class="proof-tile"><span>cover</span></div>{{ end }}
+    <figure class="proof-tile">
+      <img src="{{ "img/biscuit/cover.jpg" | relURL }}" width="1400" height="934" decoding="async"
+           alt="The cover of Biscuit Comes Home: Ellie kneeling beside Biscuit in front of a cottage">
+      <figcaption><b>biscuit</b> · cover</figcaption>
+    </figure>
+    <figure class="proof-tile">
+      <img src="{{ "img/biscuit/design-biscuit.jpg" | relURL }}" width="760" height="1140" loading="lazy" decoding="async"
+           alt="Biscuit the dog, full body, on a plain cream background">
+      <figcaption><b>biscuit_design</b> · image</figcaption>
+    </figure>
+    <figure class="proof-tile">
+      <img src="{{ "img/biscuit/sprites-still.jpg" | relURL }}" width="302" height="402" loading="lazy" decoding="async"
+           alt="A painted still of Biscuit used to build the sprite set">
+      <figcaption><b>biscuit_sprites</b> · still_01</figcaption>
+    </figure>
+    <figure class="proof-tile proof-tile--video">
+      <video autoplay loop muted playsinline preload="metadata"
+             width="512" height="288" poster="{{ "img/biscuit/bounds-out.jpg" | relURL }}"
+             aria-label="A short clip of Biscuit bounding out of frame, looping">
+        <source src="{{ "img/biscuit/bounds-out.mp4" | relURL }}" type="video/mp4">
+        <source src="{{ "img/biscuit/bounds-out.webm" | relURL }}" type="video/webm">
+      </video>
+      <img class="proof-poster" src="{{ "img/biscuit/bounds-out.jpg" | relURL }}" width="512" height="288"
+           loading="lazy" decoding="async" alt="Biscuit mid-bound, the first frame of the clip">
+      <figcaption><b>biscuit-video</b> · biscuit-bounds-out</figcaption>
+    </figure>
   </div>
 </section>
 

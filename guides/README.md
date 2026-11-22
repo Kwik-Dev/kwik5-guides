@@ -65,6 +65,8 @@ renamed guide breaks the build instead of the link. A link to a file this site d
 | file | what it holds |
 |---|---|
 | `data/features.yaml` | the three "how it works" steps and the six features |
+| `data/paths.yaml` | the three ways to get page art — own Photoshop art, local Guaardvark, cloud GPU (D14) |
+| `data/oss.yaml` | the open-source components, named as `kwik-cloud-plan.md` §1 names them (D2) |
 | `data/pricing.yaml` | credit price (D13), free tier (D16), per-tool costs, the ten-page-book figure |
 | `data/faq.yaml` | the FAQ — answers cite decisions and never promise an unbuilt feature |
 | `hugo.toml` `[params]` | tagline, description, GitHub/archive URLs, `preview` |

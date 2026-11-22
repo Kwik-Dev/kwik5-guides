@@ -117,7 +117,10 @@
 </section>
 
 {{/* Everything the customer runs is OSS (D2); only the hosted GPU endpoints, the ledger and
-     the Cast LoRA store are not (D3). Names come from kwik-cloud-plan.md §1. */}}
+     the Cast LoRA store are not (D3). Names come from kwik-cloud-plan.md §1.
+
+     `upstream`/`credit` exist for forks. guaardvark is Albenze, Inc.'s project and is labelled as
+     a fork wherever the page names it — the credit is not an afterthought in the footer. */}}
 <section id="oss" class="section">
   <h2>Everything you run is open source</h2>
   <p class="section-lede">{{ hugo.Data.oss.lede }}</p>
@@ -126,10 +129,21 @@
     <thead><tr><th>Component</th><th>Ships as</th><th></th></tr></thead>
     <tbody>
       {{ range hugo.Data.oss.components }}
+        {{ $c := . }}
         <tr>
-          <td><code>{{ .name }}</code></td>
-          <td class="muted">{{ .artifact }}</td>
-          <td>{{ .role }}</td>
+          <td>
+            {{ with $c.url }}<a href="{{ . }}" rel="noopener">{{ end }}<code>{{ $c.name }}</code>{{ with $c.url }}</a>{{ end }}
+          </td>
+          <td class="muted">{{ $c.artifact }}</td>
+          <td>
+            {{ $c.role }}
+            {{ with $c.credit }}
+              <p class="muted small oss-credit">
+                {{ . }}
+                {{ with $c.fork }}<a href="{{ . }}" rel="noopener">Kwik-Dev fork ↗</a>{{ end }}
+              </p>
+            {{ end }}
+          </td>
         </tr>
       {{ end }}
     </tbody>

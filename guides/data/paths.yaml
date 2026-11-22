@@ -21,9 +21,9 @@ paths:
   - title: Generate locally
     tag: free, open source
     body: >-
-      Guaardvark — MIT, runs on your own machine — does art, narration and music locally, from
-      the same job envelope the cloud uses, so a local render and a cloud render of the same
-      page are comparable. The command is kwik setup — it installs the backend,
+      Guaardvark — a fork of guaardvark/guaardvark, MIT, © Albenze, Inc. — does art, narration and
+      music locally, from the same job envelope the cloud uses, so a local render and a cloud
+      render of the same page are comparable. The command is kwik setup — it installs the backend,
       native or Docker.
     note: Needs a GPU of your own. Nothing leaves the machine.
 

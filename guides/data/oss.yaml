@@ -3,10 +3,15 @@
 #
 # Only the hosted GPU endpoints, the credit ledger and the Cast LoRA store are
 # proprietary (D3). Everything listed here is MIT/Apache and self-hostable.
+#
+# `url` links the project's own home; `upstream` + `credit` mark a fork and say
+# whose work it is. A fork that hides its upstream is a lie about provenance, so
+# guaardvark is labelled everywhere it is named.
 
 lede: >-
   Everything you run on your own machine is open source — MIT or Apache-2.0, no licence key,
-  no phone-home (D2). The only thing sold is GPU time you do not have.
+  no phone-home (D2). The only thing sold is GPU time you do not have. One entry below is a fork,
+  and it says so: guaardvark belongs to its authors, not to us.
 
 components:
   - name: kwik5-exporter
@@ -22,12 +27,21 @@ components:
     artifact: template
     role: The skeleton a new book starts from — Solar2D config, build settings, the page tree wire format.
   - name: guaardvark
+    url: https://github.com/guaardvark/guaardvark
+    fork: https://github.com/Kwik-Dev/guaardvark
     artifact: local backend
     role: The local generation stack (its own GPU server + ComfyUI). Art, narration and music on your own machine, free and offline.
+    credit: >-
+      A fork of guaardvark/guaardvark — MIT, © 2025–2026 Albenze, Inc. The original
+      project, its author and its documentation keep the credit for everything that is upstream;
+      our changes live on the fork's own branch and are ours to answer for. Upstream is not ours to
+      relicense or to speak for.
   - name: kwik5-sample-books
     artifact: books
     role: Sample books, including biscuit-comes-home — the book the proof strip above is made from.
 
 footnote: >-
   Self-host the whole thing and you owe nothing. The paid part is the queue, the models and
-  the GPUs behind the cloud tools, which is the one piece a laptop cannot fake.
+  the GPUs behind the cloud tools, which is the one piece a laptop cannot fake. Guaardvark is the
+  one thing here we did not write: it is Albenze, Inc.'s project under the MIT licence, and this is
+  a fork of it, credited as one.

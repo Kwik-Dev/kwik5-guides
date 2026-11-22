@@ -77,6 +77,11 @@
       <li>
         <h3>{{ .title }}</h3>
         <p>{{ .body }}</p>
+        {{ with .points }}
+          <ul class="step-points">
+            {{ range . }}<li>{{ . }}</li>{{ end }}
+          </ul>
+        {{ end }}
       </li>
     {{ end }}
   </ol>

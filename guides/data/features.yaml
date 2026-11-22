@@ -8,6 +8,10 @@ steps:
     body: The Kwik panel turns layer groups into pages, sets bleed and overscan, and writes the page tree.
   - title: Build with Solar2D
     body: Run it in the simulator or build for iOS, Android and desktop. Same art, four screens.
+    points:
+      - "The runtime plugin ships Kwik's editor: book and page navigation, and manual editing of the page in front of you."
+      - It works through kwik-CLI, so an AI agent can drive the same commands where you would click — animation, transitions, interactions, page logic.
+      - You pick the surface, click or script; both write the same Lua that the simulator and the device builds run.
 
 features:
   - title: Retina export

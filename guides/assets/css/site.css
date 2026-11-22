@@ -210,8 +210,8 @@ img { max-width: 100%; height: auto; }
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
-.steps li { counter-increment: step; }
-.steps li::before {
+.steps > li { counter-increment: step; }
+.steps > li::before {
   content: counter(step);
   display: block;
   font-size: .8rem;
@@ -221,6 +221,10 @@ img { max-width: 100%; height: auto; }
 }
 .steps h3 { margin: 0 0 .3rem; font-size: 1.05rem; }
 .steps p { margin: 0; color: var(--fg-soft); font-size: .95rem; }
+
+/* a step may carry detail as bullets; they must not inherit the step counter */
+.step-points { list-style: disc; margin: .65rem 0 0; padding-left: 1.1rem; }
+.step-points li { margin: .25rem 0; color: var(--fg-soft); font-size: .9rem; }
 
 /* ============ features ============ */
 

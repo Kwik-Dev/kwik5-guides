@@ -11,7 +11,7 @@ lede: >-
 components:
   - name: kwik5-exporter
     artifact: .ccx
-    role: The Photoshop panel that turns layer groups into pages, sets bleed and overscan, and writes the page tree.
+    role: Kwik Exporter — the UXP plugin for Photoshop that turns layer groups into pages, sets bleed and overscan, and writes the page tree.
   - name: kwik5-CLI
     artifact: kwik
     role: The whole pipeline without Photoshop or Python — upscale, bleed crop, layered page.psd, Lua, the md5 asset gate, the ogv transcode (D18).

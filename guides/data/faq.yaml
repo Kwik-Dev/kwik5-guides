@@ -11,7 +11,7 @@ items:
   - q: Is there a free tier?
     a: 30 credits, once per customer — not per key, not monthly. That is 15 page images, or one page rendered, narrated and scored (D16).
   - q: Which Photoshop and OS versions?
-    a: The panel is UXP, so a current Photoshop is required. TODO — name the minimum version, and the macOS/Windows split, before launch.
+    a: Kwik Exporter is a UXP plugin, so a current Photoshop is required. TODO — name the minimum version, and the macOS/Windows split, before launch.
   - q: Can I run it offline?
     a: Yes. Books run in the Solar2D simulator and build for iOS, Android and desktop without the cloud; only the cloud tools need a key.
   - q: Where do docs live?

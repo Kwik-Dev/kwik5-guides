@@ -18,7 +18,7 @@ For support, privacy requests or anything else: **support@kwiksher.com**.
 
 ## What Kwik is
 
-A Photoshop panel that turns layer groups into pages, an editor for what those pages do, and a
+Kwik Exporter, a UXP plugin that turns layer groups into pages; an editor for what those pages do; and a
 runtime on [Solar2D](https://solar2d.com) that ships them to iOS, Android and desktop. The point has
 never been "no code for its own sake" — it is that an illustrator should not need a developer to put
 a book on a phone.

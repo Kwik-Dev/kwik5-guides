@@ -4,8 +4,8 @@
 steps:
   - title: Draw in Photoshop
     body: Your pages are PSD files, one group per layer. No new tool to learn, no export dance.
-  - title: Publish from the panel
-    body: The Kwik panel turns layer groups into pages, sets bleed and overscan, and writes the page tree.
+  - title: Publish from Kwik Exporter
+    body: The UXP plugin turns layer groups into pages, sets bleed and overscan, and writes the page tree.
   - title: Build with Solar2D
     body: Run it in the simulator or build for iOS, Android and desktop. Same art, four screens.
     points:
@@ -22,6 +22,6 @@ features:
   - title: Lua when you want it
     body: Scripted pages and editor servers for the parts a designer should not have to click.
   - title: Two editor surfaces
-    body: UXP inside Photoshop for the panel, and Lua for everything the book does at runtime.
+    body: UXP inside Photoshop for Kwik Exporter, and Lua for everything the book does at runtime.
   - title: Free and open
     body: The exporter, the editor and the runtime are open source. No licence gate, no phone-home.

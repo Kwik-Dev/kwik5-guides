@@ -41,7 +41,6 @@ Solar2D continues.
 | May 2011 | Kwik 1.0 ships. |
 | February 2012 | Kwiksher LLC is founded in Florida, by **Alex Souza**, who created the original plugin for designers, illustrators, and anyone who was not already a developer. |
 | 2014 | Alex steps away; Naoya Yamamoto takes over in September. |
-| — | **Kutt**, the second Photoshop plugin, slices one design into every mobile resolution and writes a developer report with it. |
 | 2026 | The exporter, editor and runtime become free and open source, and the paid thing becomes **cloud GPU rendering** — because that is the only part that genuinely costs money to run. See the decision log in the repository. |
 
 ## What we do not do

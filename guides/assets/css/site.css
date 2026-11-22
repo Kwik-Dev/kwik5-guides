@@ -185,6 +185,13 @@ img { max-width: 100%; height: auto; }
   letter-spacing: .01em;
 }
 .proof-tile figcaption b { color: var(--fg); font-weight: 600; }
+/* the sprite sheet is a band, not a tile: it takes the whole row at its own aspect ratio */
+.proof-tile--sheet { flex: 1 0 100%; }
+.proof-tile--sheet img {
+  height: auto;
+  width: 100%;
+  max-width: 100%;
+}
 /* the poster is the reduced-motion fallback for the clip */
 .proof-tile--video .proof-poster { display: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -445,6 +452,7 @@ img { max-width: 100%; height: auto; }
 @media (max-width: 64rem) {
   .steps, .feature-grid, .footer-cols { grid-template-columns: 1fr 1fr; }
   .proof-tile img, .proof-tile video { height: 160px; }
+  .proof-tile--sheet img { height: auto; }
   .price-grid { grid-template-columns: 1fr; }
 }
 

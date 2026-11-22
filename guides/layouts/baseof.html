@@ -2,6 +2,7 @@
 <html lang="{{ site.Language.Locale | default "en" }}" dir="ltr">
 {{ partial "head.html" . }}
 <body>
+  {{ if partial "is-stage.html" . }}{{ partial "stage-banner.html" . }}{{ end }}
   {{ partial "header.html" . }}
   <main id="main">
     {{ block "main" . }}{{ end }}

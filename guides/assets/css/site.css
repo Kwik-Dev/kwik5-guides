@@ -500,3 +500,21 @@ img { max-width: 100%; height: auto; }
 .page-body h2 { margin-top: 2.2rem; }
 .footer-legal a { color: inherit; }
 .footer-legal a:hover { color: var(--accent); }
+
+/* ============ stage banner (/cloud-sandbox/ builds only) ============ */
+
+.stage-banner {
+  background: var(--warn);
+  color: #1c1d20;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 0.55rem 1.5rem;
+  text-align: center;
+}
+.stage-banner strong { letter-spacing: 0.04em; text-transform: uppercase; }
+.stage-banner code {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  padding: 0.05rem 0.3rem;
+}
+.stage-banner a { color: #1c1d20; text-decoration: underline; }

@@ -46,6 +46,11 @@ disableKinds = ['taxonomy', 'term']
   checkoutURL = ''
   # 'sandbox' or 'production'. The sandbox is a separate Polar server with its
   # own org, products, tokens and test cards — see docs/polar-sandbox-testing.md
+  #
+  # This is global and it is load-bearing: the /cloud-sandbox/ build relies on it to hand out
+  # links that cannot charge a card. Publishing /cloud/ for real money therefore needs a
+  # `--params polarMode=production` build, not just this default. deploy/site.sh cloud warns
+  # when it sees sandbox links in a production build.
   polarMode = 'sandbox'
   preview = true
 

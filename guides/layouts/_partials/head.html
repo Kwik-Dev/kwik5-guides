@@ -5,6 +5,12 @@
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
   <link rel="canonical" href="{{ .Permalink }}">
 
+  {{/* A stage build is reachable, unauthenticated, and looks like a shop. It must never be
+       indexed, and it must never compete with the live page in a search result. "Stage" is
+       derived from the build's own baseURL — see layouts/_partials/is-stage.html — so the
+       production build cannot be marked noindex by accident. */}}
+  {{ if partial "is-stage.html" . }}<meta name="robots" content="noindex, nofollow">{{ end }}
+
   {{ $css := resources.Get "css/site.css" | resources.Minify | resources.Fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 
@@ -14,4 +20,5 @@
   <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
   <meta property="og:url" content="{{ .Permalink }}">
   <meta name="twitter:card" content="summary_large_image">
+  {{ if partial "is-stage.html" . }}<meta name="kwik-build" content="stage">{{ end }}
 </head>

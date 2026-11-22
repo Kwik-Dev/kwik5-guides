@@ -1,0 +1,15 @@
+{{/*
+  "Is this the stage build?" — derived from `baseURL`, not from a param.
+
+  Why: the baseURL is *already* the one thing that differs between the two outputs, and it is the
+  thing the page is actually served under, so there is no second flag to drift out of sync or to
+  be set to the string "false" (which every Hugo template reads as truthy). `deploy/site.sh
+  cloud-sandbox` passes `--baseURL https://kwiksher.com/cloud-sandbox/`; this returns "stage" for
+  that build and "" for every other, and `{{ if partial "is-stage.html" . }}` is the whole API.
+
+  Consumers, all three of which deploy/site.sh asserts:
+    layouts/_partials/head.html     → <meta name="robots" content="noindex, nofollow">
+    layouts/baseof.html             → the stage banner
+    layouts/credits.html            → links resolved by hugo.toml's polarMode ('sandbox')
+*/}}
+{{- if strings.Contains site.BaseURL "/cloud-sandbox/" -}}stage{{- end -}}

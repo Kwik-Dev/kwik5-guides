@@ -37,8 +37,8 @@ disableKinds = ['taxonomy', 'term']
     endLevel = 3
 
 [params]
-  tagline = 'Build interactive storybooks and games directly from Photoshop.'
-  description = 'Kwik is a free Photoshop panel and Solar2D editor for interactive storybooks and games. Render plates, narrate, score, and ship to iOS, Android and desktop.'
+  tagline = 'Your PSD is the project. Draw it, generate it, refine it.'
+  description = 'Kwik reads a layered PSD — hand-drawn, or AI-generated and then refined — and turns it into an interactive storybook or game for iOS, Android and desktop. Every layer stays yours to change.'
   githubURL = 'https://github.com/kwik-dev'
   archiveURL = 'https://archive.kwiksher.com/'
   # The Polar checkout button ships with the Astro landing page; until then the

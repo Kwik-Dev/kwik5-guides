@@ -1,4 +1,5 @@
 {{ define "main" }}
+{{ $d := partial "lang-data.html" . }}
 <article class="page-head">
   <h1>{{ .Title }}</h1>
   {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
@@ -8,14 +9,14 @@
 {{ $mode := site.Params.polarMode | default "sandbox" }}
 
 {{ if eq $mode "sandbox" }}
-  <p class="preview-strip"><strong>Sandbox.</strong> These are test products on Polar’s sandbox server. Test card <code>4242 4242 4242 4242</code>, any future expiry — nothing is charged, and credits bought here do not exist in production.</p>
+  <p class="preview-strip">{{ i18n "credits.sandbox_strip_html" | safeHTML }}</p>
 {{ end }}
 
 <section class="section section-tight">
-  <h2>Pick a pack</h2>
+  <h2>{{ i18n "credits.pick_pack" }}</h2>
   <div class="pack-grid">
     {{ $mode := site.Params.polarMode | default "sandbox" }}
-  {{ range hugo.Data.packs.packs }}
+  {{ range $d.packs.packs }}
       <div class="pack{{ if .featured }} pack-featured{{ end }}">
         <p class="pack-name">{{ .name }}</p>
         <p class="pack-price">${{ .price }}</p>
@@ -23,44 +24,28 @@
         <p class="pack-note">{{ .note }}</p>
         {{ $url := index .checkout $mode }}
         {{ if $url }}
-          <a class="btn btn-primary" href="{{ $url }}">Buy {{ .name }}</a>
+          <a class="btn btn-primary" href="{{ $url }}">{{ i18n "credits.buy" (dict "name" .name) }}</a>
         {{ else }}
-          <span class="btn btn-disabled" aria-disabled="true">Not on sale yet</span>
+          <span class="btn btn-disabled" aria-disabled="true">{{ i18n "credits.not_on_sale" }}</span>
         {{ end }}
       </div>
     {{ end }}
   </div>
-  <p class="muted small">
-    The packs above are placeholders until a Polar checkout link exists for each one. Prices come
-    from D13 (1 credit = $0.10); nothing here is charged until a checkout link is configured.
-  </p>
+  <p class="muted small">{{ i18n "credits.packs_note" }}</p>
 </section>
 
 <section class="section section-tight">
-  <h2>Already bought credits?</h2>
+  <h2>{{ i18n "credits.already_bought" }}</h2>
   <ol class="steps steps-two">
     <li>
-      <h3>Find your key</h3>
-      <p>
-        Your licence key <em>is</em> your account — there is no password. Polar holds it for you:
-        <a href="{{ index hugo.Data.packs.portal $mode }}" rel="noopener">open the {{ $mode }} customer portal</a> and
-        ask for a sign-in link by email.
-      </p>
+      <h3>{{ i18n "credits.step1_title" }}</h3>
+      <p>{{ i18n "credits.step1_body_html" (dict "portal" (index $d.packs.portal $mode) "mode" $mode) | safeHTML }}</p>
     </li>
     <li>
-      <h3>Sign in from the terminal</h3>
-      <p>
-        Paste the key when prompted, or pipe it in:
-        <code>kwik cloud login --key-stdin</code>. Then
-        <code>kwik cloud credits</code> shows your balance and <code>kwik cloud status</code> the
-        endpoint you are talking to.
-      </p>
+      <h3>{{ i18n "credits.step2_title" }}</h3>
+      <p>{{ i18n "credits.step2_body_html" | safeHTML }}</p>
     </li>
   </ol>
-  <p class="muted small">
-    Balance and job history are read with the key against the API. A browser view of the same
-    numbers is not built yet: the Worker sends no CORS headers, so a page on this domain cannot call
-    it. See <a href="{{ site.Params.githubURL }}/issues" rel="noopener">the issue tracker</a>.
-  </p>
+  <p class="muted small">{{ i18n "credits.api_note_html" (dict "issues" (printf "%s/issues" site.Params.githubURL)) | safeHTML }}</p>
 </section>
 {{ end }}

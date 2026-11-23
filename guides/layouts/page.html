@@ -3,7 +3,7 @@
   <h1>{{ .Title }}</h1>
   {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
   <p class="doc-meta">
-    {{ with .Params.updated }}<span class="muted">updated {{ . }}</span>{{ end }}
+    {{ with .Params.updated }}<span class="muted">{{ i18n "doc.updated" (dict "date" .) }}</span>{{ end }}
   </p>
 </article>
 
@@ -11,7 +11,7 @@
   {{ with .TableOfContents }}
     {{ if gt (len .) 100 }}
       <nav class="toc page-toc" aria-label="On this page">
-        <p class="toc-title">On this page</p>
+        <p class="toc-title">{{ i18n "doc.toc" }}</p>
         {{ . }}
       </nav>
     {{ end }}

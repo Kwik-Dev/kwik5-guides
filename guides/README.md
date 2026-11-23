@@ -71,6 +71,33 @@ renamed guide breaks the build instead of the link. A link to a file this site d
 | `data/faq.yaml` | the FAQ — answers cite decisions and never promise an unbuilt feature |
 | `hugo.toml` `[params]` | tagline, description, GitHub/archive URLs, `preview` |
 | `layouts/home.html` | section order and markup |
+| `i18n/<lang>.yaml` | every interface string: nav, headings, buttons, footer, errors. A missing key renders the key name, so the key sets must match |
+| `data/<lang>/*.yaml` | translatable page copy (features, art paths, FAQ, pricing, packs, OSS). `layouts/_partials/lang-data.html` merges the current language over `en`, so a partial translation falls back to English instead of rendering empty sections |
+
+## Languages
+
+English is at the URLs that already exist and Japanese lives beside it at `/ja/`
+(`defaultContentLanguageInSubdir = false` — flipping that moves every URL, including the credits
+page a Worker 402 points at). `content/en/` and `content/ja/` are mounted per language; the manual
+(`docs/guides`) is mounted for English only, because it has not been translated.
+
+Links use `layouts/_partials/lang-url.html`, which asks each language's content graph for a real
+page and falls back to English. `relLangURL` would happily produce `/ja/credits/` for a page that
+does not exist — a 404 with a confident tone. The `/reference/` tree is published outside Hugo, so
+it is linked with `relURL` and is deliberately not language-scoped.
+
+## Translating
+
+```bash
+translate/run.py --lang ja              # translate what changed (local qwen3.8:27b-mlx)
+translate/run.py --lang ja --force      # retranslate everything for that surface
+translate/run.py --lang ja --check      # checks only, no model calls
+```
+
+`translate/` (repo root, not in `guides/`) also holds `glossary.yaml` — do-not-translate tokens and
+preferred renderings — and `state.json`, which records the hash of the English string each
+translation came from, so an unchanged string is never re-translated. Machine translations are
+marked as such in the file header and need a human pass before launch.
 
 `params.preview = true` renders the strip at the top saying the copy is draft. Turn it off when the
 copy is final.

@@ -13,4 +13,6 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-{{- return ($pages.ByParam "order") -}}
+{{/* A language without a /guides section (Japanese, today) gets an empty slice, not an error:
+       ByParam on a []interface{} panics, and a half-translated site must still build. */}}
+{{- with $pages -}}{{ return (.ByParam "order") }}{{- else -}}{{ return $pages }}{{- end -}}

@@ -1,8 +1,7 @@
 {{ define "main" }}
 <article class="hero">
-  <h1>That page isn’t here</h1>
-  <p class="lede">The guides only publish six pages, so a link may have moved or a planning note may have
-  leaked into the manual.</p>
-  <p><a href="{{ site.Home.RelPermalink }}">All guides</a></p>
+  <h1>{{ i18n "notfound.title" }}</h1>
+  <p class="lede">{{ i18n "notfound.body" }}</p>
+  <p><a href="{{ site.Home.RelPermalink }}">{{ i18n "notfound.back" }}</a></p>
 </article>
 {{ end }}

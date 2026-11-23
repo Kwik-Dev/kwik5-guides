@@ -1,32 +1,24 @@
 {{ define "main" }}
+{{ $d := partial "lang-data.html" . }}
 
 {{ if site.Params.preview }}
-  <p class="preview-strip">
-    <strong>Structure preview.</strong> Landing copy is draft, the proof strip and testimonials are
-    placeholders, and the Polar checkout button arrives with the Astro build. The guides are real.
-  </p>
+  <p class="preview-strip">{{ i18n "preview.strip_html" | safeHTML }}</p>
 {{ end }}
 
 <section class="hero-landing">
-  <p class="eyebrow">Layered PSD → Solar2D</p>
-  <h1>{{ site.Params.tagline }}</h1>
-  <p class="hero-sub">
-    Kwik Exporter — a free UXP plugin for Photoshop — and a Solar2D editor for interactive
-    storybooks and games. Layers become pages, and pages run on Solar2D — iOS, Android and desktop.
-    Hand-draw
-    the art, generate it, or take a model's draft and fix it — either way it lands in a layered PSD,
-    and every layer stays yours to change. The cloud GPU is an option, never a requirement.
-  </p>
+  <p class="eyebrow">{{ i18n "hero.eyebrow" }}</p>
+  <h1>{{ i18n "hero.title" }}</h1>
+  <p class="hero-sub">{{ i18n "hero.sub" }}</p>
   <div class="hero-actions">
-    <a class="btn btn-primary" href="{{ "guides/" | relURL }}">Read the guides</a>
-    <a class="btn" href="#pricing">What it costs</a>
-    <a class="btn" href="{{ "credits/" | relURL }}">Buy credits</a>
+    <a class="btn btn-primary" href="{{ partial "lang-url.html" "guides" }}">{{ i18n "hero.cta_guides" }}</a>
+    <a class="btn" href="#pricing">{{ i18n "hero.cta_pricing" }}</a>
+    <a class="btn" href="{{ partial "lang-url.html" "credits" }}">{{ i18n "hero.cta_credits" }}</a>
   </div>
   <ul class="hero-facts">
-    <li>No licence gate</li>
-    <li>Your own art, drawn in Photoshop</li>
-    <li>Local generation is free and open source</li>
-    <li>Cloud GPU optional: 30 free credits</li>
+    <li>{{ i18n "hero.fact.licence" }}</li>
+    <li>{{ i18n "hero.fact.art" }}</li>
+    <li>{{ i18n "hero.fact.local" }}</li>
+    <li>{{ i18n "hero.fact.cloud" }}</li>
   </ul>
 </section>
 
@@ -35,46 +27,42 @@
      assert on this section — if an asset is missing the page shows a broken image, which is a
      visible failure rather than a silent one. */}}
 <section class="proof" aria-label="From a Photoshop page to a playable scene">
-  <p class="proof-note">
-    One book, four artefacts — the cover, the cast on one page, the first sprite batch, and a 1.6-second clip
-    rendered for a single page. All of it ships in
-    <code>biscuit-comes-home</code>.
-  </p>
+  <p class="proof-note">{{ i18n "proof.note_html" | safeHTML }}</p>
   <div class="proof-grid">
     <figure class="proof-tile">
       <img src="{{ "img/biscuit/cover.jpg" | relURL }}" width="1400" height="934" decoding="async"
-           alt="The cover of Biscuit Comes Home: Ellie kneeling beside Biscuit in front of a cottage">
-      <figcaption><b>biscuit</b> · cover</figcaption>
+           alt="{{ i18n "proof.alt.cover" }}">
+      <figcaption>{{ i18n "proof.caption.cover_html" | safeHTML }}</figcaption>
     </figure>
     <figure class="proof-tile">
       <img src="{{ "img/biscuit/design-image-page.jpg" | relURL }}" width="480" height="320" loading="lazy" decoding="async"
-           alt="The design book's image page: Ellie, Biscuit and Dad rendered as separate cast figures on one canvas">
-      <figcaption><b>biscuit_design</b> · image page — Ellie, Biscuit, Dad</figcaption>
+           alt="{{ i18n "proof.alt.design" }}">
+      <figcaption>{{ i18n "proof.caption.design_html" | safeHTML }}</figcaption>
     </figure>
 
     <figure class="proof-tile proof-tile--video">
       <video autoplay loop muted playsinline preload="metadata"
              width="512" height="288" poster="{{ "img/biscuit/bounds-out.jpg" | relURL }}"
-             aria-label="A short clip of Biscuit bounding out of frame, looping">
+             aria-label="{{ i18n "proof.alt.clip" }}">
         <source src="{{ "img/biscuit/bounds-out.mp4" | relURL }}" type="video/mp4">
         <source src="{{ "img/biscuit/bounds-out.webm" | relURL }}" type="video/webm">
       </video>
       <img class="proof-poster" src="{{ "img/biscuit/bounds-out.jpg" | relURL }}" width="512" height="288"
-           loading="lazy" decoding="async" alt="Biscuit mid-bound, the first frame of the clip">
-      <figcaption><b>biscuit-video</b> · biscuit-bounds-out</figcaption>
+           loading="lazy" decoding="async" alt="{{ i18n "proof.alt.poster" }}">
+      <figcaption>{{ i18n "proof.caption.clip_html" | safeHTML }}</figcaption>
     </figure>
     <figure class="proof-tile proof-tile--sheet">
       <img src="{{ "img/biscuit/sprites-batch.jpg" | relURL }}" width="1400" height="290" loading="lazy" decoding="async"
-           alt="Six painted poses of Biscuit from the first sprite batch: standing, running, play bow, sitting, sleeping, snarl-shake">
-      <figcaption><b>biscuit_sprites</b> · first batch — standing, running, play bow, sitting, sleeping, snarl-shake</figcaption>
+           alt="{{ i18n "proof.alt.sprites" }}">
+      <figcaption>{{ i18n "proof.caption.sprites_html" | safeHTML }}</figcaption>
     </figure>
   </div>
 </section>
 
 <section id="how" class="section">
-  <h2>How it works</h2>
+  <h2>{{ i18n "section.how" }}</h2>
   <ol class="steps">
-    {{ range hugo.Data.features.steps }}
+    {{ range $d.features.steps }}
       <li>
         <h3>{{ .title }}</h3>
         <p>{{ .body }}</p>
@@ -91,11 +79,11 @@
 {{/* Where the art comes from. The load-bearing claim: hand-drawn Photoshop art is a complete
      path on its own — no GPU, no account — and the cloud is only ever acceleration (D14). */}}
 <section id="art" class="section">
-  <h2>Your art, or generated art — your machine, or ours</h2>
-  <p class="section-lede">{{ hugo.Data.paths.lede }}</p>
+  <h2>{{ i18n "section.art" }}</h2>
+  <p class="section-lede">{{ $d.paths.lede }}</p>
 
   <div class="feature-grid">
-    {{ range hugo.Data.paths.paths }}
+    {{ range $d.paths.paths }}
       <article class="feature">
         <h3>{{ .title }} <span class="chip">{{ .tag }}</span></h3>
         <p>{{ .body }}</p>
@@ -106,9 +94,9 @@
 </section>
 
 <section id="features" class="section">
-  <h2>Features</h2>
+  <h2>{{ i18n "section.features" }}</h2>
   <div class="feature-grid">
-    {{ range hugo.Data.features.features }}
+    {{ range $d.features.features }}
       <article class="feature">
         <h3>{{ .title }}</h3>
         <p>{{ .body }}</p>
@@ -123,13 +111,13 @@
      `upstream`/`credit` exist for forks. guaardvark is Albenze, Inc.'s project and is labelled as
      a fork wherever the page names it — the credit is not an afterthought in the footer. */}}
 <section id="oss" class="section">
-  <h2>Everything you run is open source</h2>
-  <p class="section-lede">{{ hugo.Data.oss.lede }}</p>
+  <h2>{{ i18n "section.oss" }}</h2>
+  <p class="section-lede">{{ $d.oss.lede }}</p>
 
   <table class="price-table oss-table">
-    <thead><tr><th>Component</th><th>Ships as</th><th></th></tr></thead>
+    <thead><tr><th>{{ i18n "oss.table.component" }}</th><th>{{ i18n "oss.table.ships_as" }}</th><th></th></tr></thead>
     <tbody>
-      {{ range hugo.Data.oss.components }}
+      {{ range $d.oss.components }}
         {{ $c := . }}
         <tr>
           <td>
@@ -149,33 +137,32 @@
       {{ end }}
     </tbody>
   </table>
-  <p class="muted small">{{ hugo.Data.oss.footnote }}</p>
+  <p class="muted small">{{ $d.oss.footnote }}</p>
 </section>
 
 <section id="pricing" class="section">
-  <h2>Pricing</h2>
+  <h2>{{ i18n "section.pricing" }}</h2>
   <p class="section-lede">
-    The software is free. Credits buy cloud GPU time, at <strong>${{ hugo.Data.pricing.creditUSD }}</strong>
-    per credit, and a ten-page book is about <strong>{{ hugo.Data.pricing.book.credits }} credits</strong>.
+    {{ i18n "pricing.lede_html" (dict "usd" $d.pricing.creditUSD "credits" $d.pricing.book.credits) | safeHTML }}
   </p>
 
   <div class="price-grid">
     <div class="price-card">
-      <p class="price-label">{{ hugo.Data.pricing.book.label }}</p>
-      <p class="price-amount"><span>{{ hugo.Data.pricing.book.credits }}</span> credits</p>
-      <p class="price-note">{{ hugo.Data.pricing.book.note }}</p>
+      <p class="price-label">{{ $d.pricing.book.label }}</p>
+      <p class="price-amount"><span>{{ $d.pricing.book.credits }}</span> {{ i18n "pricing.credits_unit" }}</p>
+      <p class="price-note">{{ $d.pricing.book.note }}</p>
     </div>
     <div class="price-card price-card-free">
-      <p class="price-label">Free tier</p>
-      <p class="price-amount"><span>{{ hugo.Data.pricing.freeCredits }}</span> credits</p>
-      <p class="price-note">{{ hugo.Data.pricing.freeNote }}</p>
+      <p class="price-label">{{ i18n "pricing.free_label" }}</p>
+      <p class="price-amount"><span>{{ $d.pricing.freeCredits }}</span> {{ i18n "pricing.credits_unit" }}</p>
+      <p class="price-note">{{ $d.pricing.freeNote }}</p>
     </div>
   </div>
 
   <table class="price-table">
-    <thead><tr><th>Cloud tool</th><th>Credits</th><th></th></tr></thead>
+    <thead><tr><th>{{ i18n "pricing.table.tool" }}</th><th>{{ i18n "pricing.table.credits" }}</th><th></th></tr></thead>
     <tbody>
-      {{ range hugo.Data.pricing.tools }}
+      {{ range $d.pricing.tools }}
         <tr>
           <td>{{ .name }}</td>
           <td>{{ .credits }}</td>
@@ -184,16 +171,13 @@
       {{ end }}
     </tbody>
   </table>
-  <p class="muted small">
-    Credits are decisions (D13, D16), not measured timings. Already bought credits? Sign in with
-    your licence key — <code>kwik cloud login</code>.
-  </p>
+  <p class="muted small">{{ i18n "pricing.note_html" | safeHTML }}</p>
 </section>
 
 <section id="faq" class="section">
-  <h2>FAQ</h2>
+  <h2>{{ i18n "section.faq" }}</h2>
   <div class="faq">
-    {{ range hugo.Data.faq.items }}
+    {{ range $d.faq.items }}
       <details>
         <summary>{{ .q }}</summary>
         <p>{{ .a }}</p>

@@ -2,30 +2,30 @@
   <div class="footer-cols">
     <div>
       <p class="footer-title">Kwik</p>
-      <p class="muted small">Kwik Exporter — a free UXP plugin for Photoshop — and a Solar2D editor for interactive storybooks and games.</p>
+      <p class="muted small">{{ i18n "footer.blurb" }}</p>
     </div>
     <div>
-      <p class="footer-title">Product</p>
-      <a href="{{ "guides/" | relURL }}">Guides</a>
-      <a href="{{ "reference/" | relURL }}">Reference manual</a>
-      <a href="{{ site.Home.RelPermalink }}#pricing">Pricing</a>
-      <a href="{{ "credits/" | relURL }}">Buy credits</a>
-      <a href="{{ site.Home.RelPermalink }}#faq">FAQ</a>
+      <p class="footer-title">{{ i18n "footer.product" }}</p>
+      <a href="{{ partial "lang-url.html" "guides" }}">{{ i18n "footer.link.guides" }}</a>
+      <a href="{{ "reference/" | relURL }}">{{ i18n "footer.link.reference" }}</a>
+      <a href="{{ site.Home.RelPermalink }}#pricing">{{ i18n "footer.link.pricing" }}</a>
+      <a href="{{ partial "lang-url.html" "credits" }}">{{ i18n "footer.link.credits" }}</a>
+      <a href="{{ site.Home.RelPermalink }}#faq">{{ i18n "footer.link.faq" }}</a>
     </div>
     <div>
-      <p class="footer-title">Elsewhere</p>
-      <a href="https://github.com/Kwik-Dev/kwik5-document" rel="noopener">Docs source</a>
-    {{ with site.Params.githubURL }}<a href="{{ . }}" rel="noopener">GitHub</a>{{ end }}
-      {{ with site.Params.archiveURL }}<a href="{{ . }}" rel="noopener">Old site (archive)</a>{{ end }}
+      <p class="footer-title">{{ i18n "footer.elsewhere" }}</p>
+      <a href="https://github.com/Kwik-Dev/kwik5-document" rel="noopener">{{ i18n "footer.link.docs" }}</a>
+    {{ with site.Params.githubURL }}<a href="{{ . }}" rel="noopener">{{ i18n "footer.link.github" }}</a>{{ end }}
+      {{ with site.Params.archiveURL }}<a href="{{ . }}" rel="noopener">{{ i18n "footer.link.archive" }}</a>{{ end }}
     </div>
   </div>
   <p class="muted small footer-legal">
-    <a href="{{ "about/" | relURL }}">About</a> ·
-    <a href="{{ "privacy/" | relURL }}">Privacy</a> ·
-    <a href="{{ "credits/" | relURL }}">Credits</a>
-    {{ with site.Params.archiveURL }}· <a href="{{ . }}" rel="noopener">Old site (archive)</a>{{ end }}
+    <a href="{{ partial "lang-url.html" "about" }}">{{ i18n "footer.link.about" }}</a> ·
+    <a href="{{ partial "lang-url.html" "privacy" }}">{{ i18n "footer.link.privacy" }}</a> ·
+    <a href="{{ partial "lang-url.html" "credits" }}">{{ i18n "footer.link.credits" }}</a>
+    {{ with site.Params.archiveURL }}· <a href="{{ . }}" rel="noopener">{{ i18n "footer.link.archive" }}</a>{{ end }}
   </p>
   <p class="muted small footer-legal">
-    Prices and credit costs come from the decision log; each guide names the decisions it rests on.
+    {{ i18n "footer.prices_note" }}
   </p>
 </footer>

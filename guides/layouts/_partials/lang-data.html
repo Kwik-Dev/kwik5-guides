@@ -1,0 +1,13 @@
+{{/*
+  Data scoped to the current language, with the default language as fallback.
+
+  `data/<lang>/*.yaml` is where translatable copy lives (features, paths/art paths, faq, pricing,
+  packs). A translation is allowed to be partial: `merge` deep-merges, so a language that has
+  translated `features.yaml` and `paths.yaml` but not yet `faq.yaml` renders English FAQ rather
+  than an empty section. That is deliberate — a half-translated site must still be a site.
+
+  Usage: {{ $d := partial "lang-data.html" . }} then {{ $d.features.steps }}
+*/}}
+{{ $en := index hugo.Data "en" | default dict }}
+{{ $loc := index hugo.Data site.Language.Lang | default dict }}
+{{ return (merge $en $loc) }}

@@ -1,27 +1,43 @@
-# kwiksher.com
+# kwiksher.com — the landing page and the manual, one Hugo build
 #
-# Two surfaces, one static output:
-#   /            the landing page (this project, for now)
-#   /guides/     the manual, rendered from docs/guides/*.md
+#   /                 landing page          (this repo's guides/)
+#   /guides/          the manual, mounted from docs/guides/*.md (never copied)
+#   /about/ /credits/ /privacy/
 #
-# Long term docs/new-site-plan.md wants the landing page in Astro (`site/`) and
-# Hugo to own only /guides/. This project builds both so the whole site can be
-# reviewed and deployed from one command; the split is a copy step, not a rewrite.
+# Two publish targets, one source tree, and the only difference is --baseURL (deploy/site.sh):
+#   cloud-sandbox   https://kwiksher.com/cloud-sandbox/   stage Worker, Polar sandbox, gated
+#   cloud           https://kwiksher.com/cloud/           production (not published yet)
 #
-#   hugo            → public/      (serve at the domain root)
-#   hugo server     → http://localhost:1313/
+# TOP-LEVEL KEYS FIRST. In TOML a bare key after a table header belongs to that table, so
+# `disableKinds` written below [languages.ja.params] silently configures the Japanese params map and
+# the taxonomy pages come back. Everything that is not a table lives above the first [header].
 
-# The site lives under /cloud/ on the existing WordPress host: a real directory in public_html
-# takes precedence over WordPress's rewrite, so /cloud/ and /cloud/credits/ are ours while
-# / , /about-us/ , /blog/ … stay WordPress. Local `hugo server` keeps the path too, so dev and
-# production agree (`http://localhost:1313/cloud/`).
 baseURL = 'https://kwiksher.com/cloud/'
 title = 'Kwik'
-locale = 'en'
-defaultContentLanguage = 'en'
 enableRobotsTXT = true
-
 disableKinds = ['taxonomy', 'term']
+
+# Multilingual, and the one line that must not change later: English stays at the URLs that already
+# exist (/, /about/, /credits/, /guides/), Japanese lives beside it at /ja/. Flip this and every
+# published URL moves, including the credits page a Worker 402 points at.
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
+
+[languages.en]
+  label = 'English'
+  locale = 'en-US'
+  weight = 1
+
+  [languages.en.params]
+    switchLabel = '日本語'
+
+[languages.ja]
+  label = '日本語'
+  locale = 'ja-JP'
+  weight = 2
+
+  [languages.ja.params]
+    switchLabel = 'English'
 
 [build]
   writeStats = false
@@ -37,44 +53,55 @@ disableKinds = ['taxonomy', 'term']
     endLevel = 3
 
 [params]
-  tagline = 'Your PSD is the project. Draw it, generate it, refine it.'
-  description = 'Kwik reads a layered PSD — hand-drawn, or AI-generated and then refined — and turns it into an interactive storybook or game for iOS, Android and desktop. Every layer stays yours to change.'
+  # Translatable prose lives in i18n/*.yaml (hero.title, seo.description) so that a param can never
+  # be the English string in the Japanese build; see guides/README.md.
   githubURL = 'https://github.com/kwik-dev'
   archiveURL = 'https://archive.kwiksher.com/'
-  # The Polar checkout button ships with the Astro landing page; until then the
-  # landing CTA points at the guides, which are real.
+  # The Polar checkout button ships with the Astro landing page; until then the landing CTA points
+  # at the guides, which are real.
   checkoutURL = ''
-  # 'sandbox' or 'production'. The sandbox is a separate Polar server with its
-  # own org, products, tokens and test cards — see docs/polar-sandbox-testing.md
-  #
-  # This is global and it is load-bearing: the /cloud-sandbox/ build relies on it to hand out
-  # links that cannot charge a card. Publishing /cloud/ for real money therefore needs a
-  # `--params polarMode=production` build, not just this default. deploy/site.sh cloud warns
-  # when it sees sandbox links in a production build.
+  # 'sandbox' or 'production'. Load-bearing: the /cloud-sandbox/ build relies on it to hand out links
+  # that cannot charge a card. See docs/polar-sandbox-testing.md.
   polarMode = 'sandbox'
   preview = true
 
-# The manual. docs/guides/*.md are mounted, never copied: editing the planning
-# repo edits this site.
 [module]
+  # Mounts are per language: content/en and content/ja are separate trees, and the manual exists in
+  # English only. Without the restriction a mount lands in every language and Japanese readers get
+  # English text at /ja/guides/.
+  [[module.mounts]]
+    source = 'content/en'
+    target = 'content'
+    [module.mounts.sites.matrix]
+      languages = ['en']
+
+  [[module.mounts]]
+    source = 'content/ja'
+    target = 'content'
+    [module.mounts.sites.matrix]
+      languages = ['ja']
+
+  # The manual, mounted from the planning repo so editing it edits the site.
   [[module.mounts]]
     source = '../docs/guides'
     target = 'content/guides'
     # guides are numbered NN-name.md; README.md is the repo's index, not a page.
-    # (`excludeFiles` is deprecated and `!README.md` negation is not honoured here.)
     files = ['[0-9][0-9]-*.md']
-  [[module.mounts]]
-    source = 'content'
-    target = 'content'
+    [module.mounts.sites.matrix]
+      languages = ['en']
+
   [[module.mounts]]
     source = 'data'
     target = 'data'
+
   [[module.mounts]]
     source = 'layouts'
     target = 'layouts'
+
   [[module.mounts]]
     source = 'assets'
     target = 'assets'
+
   [[module.mounts]]
     source = 'static'
     target = 'static'

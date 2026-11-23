@@ -1,23 +1,34 @@
 {{ $home := site.Home.RelPermalink }}
+{{/* Localized URL for a page path, falling back to the default language when a translation does
+     not exist yet. A missing translation must degrade to English, never to a 404 — the pilot
+     ships /ja/ with one translated page, and its nav still has to work. */}}
 <header class="site-header">
   <a class="brand" href="{{ $home }}">
     <span class="brand-mark">Kwik</span>
   </a>
 
   <nav class="site-nav" aria-label="Main">
-    <a href="{{ $home }}#how">How it works</a>
-    <a href="{{ $home }}#art">Your art</a>
-    <a href="{{ $home }}#features">Features</a>
-    <a href="{{ $home }}#oss">Open source</a>
-    <a href="{{ $home }}#pricing">Pricing</a>
-    <a href="{{ $home }}#faq">FAQ</a>
-    <a href="{{ "credits/" | relURL }}">Credits</a>
-    <a href="{{ "about/" | relURL }}">About</a>
-    <a href="{{ "guides/" | relURL }}">Guides</a>
-    <a href="{{ "reference/" | relURL }}">Reference</a>
+    <a href="{{ $home }}#how">{{ i18n "nav.how" }}</a>
+    <a href="{{ $home }}#art">{{ i18n "nav.art" }}</a>
+    <a href="{{ $home }}#features">{{ i18n "nav.features" }}</a>
+    <a href="{{ $home }}#oss">{{ i18n "nav.oss" }}</a>
+    <a href="{{ $home }}#pricing">{{ i18n "nav.pricing" }}</a>
+    <a href="{{ $home }}#faq">{{ i18n "nav.faq" }}</a>
+    {{ range slice "credits" "about" "guides" }}
+      <a href="{{ partial "lang-url.html" . }}">{{ i18n (printf "nav.%s" .) }}</a>
+    {{ end }}
+    {{/* The manual is published by deploy/site.sh at /reference/, outside Hugo's content graph, and
+         it exists in English only — so it is deliberately not language-scoped. */}}
+    <a href="{{ "reference/" | relURL }}">{{ i18n "nav.reference" }}</a>
   </nav>
 
+  {{ with .Translations }}
+    {{ range . }}
+      <a class="nav-lang" href="{{ .RelPermalink }}" hreflang="{{ .Language.Locale }}" lang="{{ .Language.Lang }}">{{ .Language.Params.switchLabel }}</a>
+    {{ end }}
+  {{ end }}
+
   {{ with site.Params.githubURL }}
-    <a class="nav-cta" href="{{ . }}" rel="noopener">GitHub ↗</a>
+    <a class="nav-cta" href="{{ . }}" rel="noopener">{{ i18n "nav.github" }} ↗</a>
   {{ end }}
 </header>

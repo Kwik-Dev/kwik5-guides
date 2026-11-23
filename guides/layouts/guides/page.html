@@ -10,7 +10,7 @@
 
 <div class="doc-layout">
   <aside class="doc-sidebar" aria-label="All guides">
-    <a class="sidebar-home" href="{{ "guides/" | relURL }}">All guides</a>
+    <a class="sidebar-home" href="{{ "guides/" | relURL }}">{{ i18n "guides.all" }}</a>
     <ol class="sidebar-list">
       {{ range $guides }}
         <li{{ if eq .RelPermalink $.RelPermalink }} class="is-current" aria-current="page"{{ end }}>
@@ -36,7 +36,7 @@
     {{ with .TableOfContents }}
       {{ if gt (len .) 100 }}
         <nav class="toc" aria-label="On this page">
-          <p class="toc-title">On this page</p>
+          <p class="toc-title">{{ i18n "doc.toc" }}</p>
           {{ . }}
         </nav>
       {{ end }}
@@ -45,8 +45,8 @@
     <div class="doc-body">{{ .Content }}</div>
 
     <nav class="doc-pager" aria-label="Previous and next guide">
-      {{ with $prev }}<a class="pager-prev" href="{{ .RelPermalink }}"><span>Previous</span>{{ .Title }}</a>{{ end }}
-      {{ with $next }}<a class="pager-next" href="{{ .RelPermalink }}"><span>Next</span>{{ .Title }}</a>{{ end }}
+      {{ with $prev }}<a class="pager-prev" href="{{ .RelPermalink }}"><span>{{ i18n "doc.pager.prev" }}</span>{{ .Title }}</a>{{ end }}
+      {{ with $next }}<a class="pager-next" href="{{ .RelPermalink }}"><span>{{ i18n "doc.pager.next" }}</span>{{ .Title }}</a>{{ end }}
     </nav>
   </article>
 </div>

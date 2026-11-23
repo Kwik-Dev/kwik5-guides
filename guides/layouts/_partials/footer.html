@@ -7,13 +7,15 @@
     <div>
       <p class="footer-title">Product</p>
       <a href="{{ "guides/" | relURL }}">Guides</a>
+      <a href="{{ "reference/" | relURL }}">Reference manual</a>
       <a href="{{ site.Home.RelPermalink }}#pricing">Pricing</a>
       <a href="{{ "credits/" | relURL }}">Buy credits</a>
       <a href="{{ site.Home.RelPermalink }}#faq">FAQ</a>
     </div>
     <div>
       <p class="footer-title">Elsewhere</p>
-      {{ with site.Params.githubURL }}<a href="{{ . }}" rel="noopener">GitHub</a>{{ end }}
+      <a href="https://github.com/Kwik-Dev/kwik5-document" rel="noopener">Docs source</a>
+    {{ with site.Params.githubURL }}<a href="{{ . }}" rel="noopener">GitHub</a>{{ end }}
       {{ with site.Params.archiveURL }}<a href="{{ . }}" rel="noopener">Old site (archive)</a>{{ end }}
     </div>
   </div>

@@ -15,6 +15,23 @@ updated: 2026-11-13
 > [Guaardvark's own instructions](https://github.com/guaardvark) and the cloud needs nothing at all.
 > This page is the spec the command has to satisfy.
 
+## Requirements
+
+Short list, because it is shorter than people expect:
+
+| what | needed for | notes |
+| **`kwik`** | everything that is files and code | one Go binary, ~10 MB; macOS, Linux, Windows |
+| **Solar2D** | playing and building the book | ~40 MB, fetched by `kwik new` on first use |
+| **A GPU** | local generation, and only that | CUDA or Apple-Silicon MPS; the cloud needs none |
+| **Disk** | local generation, and only that | 12–41 GB of model weights, by the choice in the setup menu — nothing downloads until you pick |
+| **A Polar key + network** | cloud generation, and only that | no key is needed for local work, ever. See [03 — The cloud](03-cloud.md) |
+| **Python, Node, Docker, a compiler, Adobe** | **nothing** | the free path needs none of them |
+
+The local backend is **Guaardvark**, which starts ComfyUI as a plugin and hosts the audio tools — you
+do not install ComfyUI separately. Upstream is what to install; Kwik keeps a fork for one reason, and
+[04 — The local backend](04-local-backend.md#the-local-backend) is where that is explained. Neither is
+required.
+
 ## The short version
 
 Two things exist, and they are independent:

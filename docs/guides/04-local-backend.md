@@ -13,6 +13,14 @@ updated: 2026-11-13
 image generation, an audio foundry, video workflows, upscaling. It is MIT, it is what produced every
 asset in `biscuit-comes-home`, and it starts **ComfyUI** as a plugin when a render needs it.
 
+**Upstream, or Kwik's fork?** Install [upstream](https://github.com/guaardvark/guaardvark) —
+Guaardvark's own instructions are the steps, and the backend Kwik talks to is the same program. Kwik
+also maintains a fork, [Kwik-Dev/guaardvark](https://github.com/Kwik-Dev/guaardvark), whose one
+deliberate difference is that it keeps the cloud chat providers upstream removed; `main` there is a
+pure mirror of upstream, and the fork's work lives on its own branch. If you want those chat
+providers, use the fork; otherwise upstream is the simpler answer, and **nothing on this page changes
+between them** — casting, LoRAs, ComfyUI, the audio tools and the upscaling plugin are all upstream's.
+
 Nothing here is required. With no local backend, every media tool runs in the cloud and costs credits
 ([03 — The cloud](03-cloud.md)).
 

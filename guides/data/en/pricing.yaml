@@ -10,21 +10,27 @@ freeNote: once per customer, not per key — 15 page images, or one page rendere
 
 tools:
   - name: Page image (cast_render)
+    key: cast_render
     credits: 2
     note: one page plate, 24 GB pool
   - name: Narration (tts_speak)
+    key: tts_speak
     credits: 1
     unit: per started minute
   - name: Music bed (music_bed)
+    key: music_bed
     credits: 1
     unit: per started minute
   - name: Video clip (video_clip)
+    key: video_clip
     credits: 5
     unit: per second of output
   - name: Cast LoRA training (cast_train)
+    key: cast_train
     credits: 40
     note: one subject, trained once, reused across pages
   - name: Upscale
+    key: upscale
     credits: 1
     note: per image, cloud engine; local upscale is free
 

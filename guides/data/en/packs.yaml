@@ -9,6 +9,14 @@
 #
 # Process for the sandbox: docs/polar-sandbox-testing.md.
 
+# The stage beta's ceilings, mirrored from `kwik5-cloud/api/wrangler.toml` [env.stage.vars]:
+#   MAX_GRANTED_CREDITS = 100   lifetime granted per customer, so one purchase is all there is
+#   MAX_JOB_CREDITS     = 75    one job, which is exactly the product's largest clip (15 s × 5)
+# Change one side without the other and the credits page lies about what the API will refuse.
+beta:
+  capCredits: 100
+  maxJobCredits: 75
+
 portal:
   production: https://polar.sh/kwiksher/portal
   sandbox: https://sandbox.polar.sh/kwiksher/portal
@@ -33,6 +41,10 @@ packs:
   - name: Book
     credits: 300
     price: 30
+    # Production only. The stage build is a 100-credit beta (2026-11-23): one pack, one purchase, and
+    # the Worker refuses any grant past 100 lifetime credits — so offering a 300-credit pack here
+    # would be selling something the deployment cannot credit.
+    productionOnly: true
     note: a ten-page book end to end, with a little left over
     featured: true
     checkout:
@@ -42,6 +54,7 @@ packs:
   - name: Studio
     credits: 1000
     price: 100
+    productionOnly: true
     note: three books, or one heavy video chapter
     checkout:
       production: 'https://buy.polar.sh/polar_cl_Ed7aElSNf7T4fr2Q7Jr55jVdo395SpgaM8aro2MtboL'

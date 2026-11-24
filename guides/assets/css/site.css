@@ -272,6 +272,14 @@ img { max-width: 100%; height: auto; }
 /* the OSS table reuses the price table, but its second column is a name, not a number */
 .oss-table td:nth-child(2) { width: 9rem; white-space: nowrap; font-size: .875rem; }
 .oss-table td:nth-child(3) { color: var(--fg-soft); }
+
+/* ============ beta ceiling (credits page, stage build only) ============ */
+
+.beta-ceiling { border-top: 1px solid var(--line); }
+.beta-ceiling h3 { margin: 1.6rem 0 .5rem; font-size: 1rem; }
+.beta-refusals { margin: 0; padding-left: 1.1rem; max-width: var(--prose); }
+.beta-refusals li { margin: .4rem 0; color: var(--fg-soft); font-size: .925rem; }
+.beta-refusals code { font-size: .85em; }
 .oss-credit { margin: .45rem 0 0; }
 .oss-credit a { white-space: nowrap; }
 

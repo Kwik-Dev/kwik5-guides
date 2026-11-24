@@ -138,3 +138,33 @@ credits.api_note_html: >-
   Balance and job history are read with the key against the API. A browser view of the same
   numbers is not built yet: the Worker sends no CORS headers, so a page on this domain cannot call
   it. See <a href="{{ .issues }}" rel="noopener">the issue tracker</a>.
+
+# --- the stage beta's ceiling, shown only on the cloud-sandbox build ---
+credits.beta.title: This beta is capped at 100 credits
+credits.beta.lede_html: >-
+  You start at <strong>zero</strong> — the free tier is off on this build — and the $10 Starter pack is
+  the only thing for sale. <strong>One purchase, 100 credits</strong>, and no second top-up: past the
+  ceiling the API refuses the grant instead of taking money it cannot credit.
+credits.beta.col.what: what
+credits.beta.col.credits: credits
+credits.beta.col.of_cap: of the {{ .cap }}
+credits.beta.row.image: one page image
+credits.beta.row.narration: one minute of narration
+credits.beta.row.music: one minute of a music bed
+credits.beta.row.lora: a Cast LoRA, one subject, reused on every page
+credits.beta.row.clip_default: a clip, 6 seconds (the default)
+credits.beta.row.clip_max: a clip, 15 seconds (the maximum the product allows)
+credits.beta.foot_html: >-
+  So: <strong>one 15-second clip, or a chapter of a book — not both.</strong> The largest single job is
+  <strong>{{ .max }} credits</strong>; anything above that is refused before a credit is held.
+credits.beta.refusals_title: Refusals you may see here
+credits.beta.refusal.cap_html: >-
+  <code>409 beta_cap_reached</code> — this account is already at {{ .cap }} credits. A second purchase
+  cannot be credited; mail <a href="mailto:support@kwiksher.com">support@kwiksher.com</a> and we will
+  sort out the payment.
+credits.beta.refusal.large_html: >-
+  <code>400 job_too_large</code> — the job costs more than {{ .max }} credits in one go, for example a
+  60-second clip (300 credits). Nothing was held and nothing was charged; ask for a smaller job.
+credits.beta.refusal.credits_html: >-
+  <code>402 insufficient_credits</code> — the balance is below the job's own price. This is the ordinary
+  "not enough credits" answer, not the beta ceiling.

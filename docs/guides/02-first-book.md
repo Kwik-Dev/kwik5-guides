@@ -12,16 +12,21 @@ updated: 2026-11-13
 One page, end to end, on the cheap: 2 credits for the art, 1 for the narration, 1 for a music bed.
 That is 4 credits — 40 cents — and it is the whole loop you will repeat for the other nine pages.
 
-| step | command | cost | status |
-| --- | --- | --- | --- |
-| 1 | `kwik new my-book` | free | **available** |
-| 2 | `kwik book set my-book p1 --tags ellie,meadow --action "@ellie walks through @meadow."` | free | **available** |
-| 3 | `kwik render --book my-book --page p1` | 2 credits (cloud) / free (local) | cloud **available**, local **decided not built** |
-| 4 | `kwik cloud wait <job_id> --download .kwik/out` | free | **available** |
-| 5 | `kwik build` — upscale, bleed crop, layers, `page.psd`, Lua, md5 gate | free | **decided not built** (D18) |
-| 6 | `kwik music --page p1 --duration 30 --loop` | 1 credit / free | **decided not built** (D15) |
-| 7 | `kwik cloud tts --page p1` | 1 credit / free | **decided not built** |
-| 8 | `kwik asset check && kwik run` | free | **available** |
+**Steps 3, 4 and 7 talk to Kwik Cloud, so they need a licence key.** The free tier is 30 credits,
+which covers this whole page, so nothing has to be bought to finish it. Steps 1, 2, 5 and 8 never
+need a key, an account or a network connection. [03 — The cloud](03-cloud.md) is how you get the key
+in (`kwik cloud login`) and what it costs after the free credits.
+
+| step | command | cost | key? | status |
+| --- | --- | --- | --- | --- |
+| 1 | `kwik new my-book` | free | no | **available** |
+| 2 | `kwik book set my-book p1 --tags ellie,meadow --action "@ellie walks through @meadow."` | free | no | **available** |
+| 3 | `kwik render --book my-book --page p1` | 2 credits (cloud) / free (local) | **yes** — cloud | cloud **available**, local **decided not built** |
+| 4 | `kwik cloud wait <job_id> --download .kwik/out` | free | **yes** — cloud | **available** |
+| 5 | `kwik build` — upscale, bleed crop, layers, `page.psd`, Lua, md5 gate | free | no | **decided not built** (D18) |
+| 6 | `kwik music --page p1 --duration 30 --loop` | 1 credit / free | only for cloud | **decided not built** (D15) |
+| 7 | `kwik cloud tts --page p1` | 1 credit / free | **yes** — cloud | **decided not built** |
+| 8 | `kwik asset check && kwik run` | free | no | **available** |
 
 ## 1. Create the project — free
 
@@ -30,8 +35,11 @@ kwik new my-book
 cd my-book
 ```
 
-Clones the template, installs the Solar2D modules for your platform, writes `.kwik/project.json`.
-No key needed. Nothing leaves the machine.
+Clones the template, installs the **Kwik plugin** modules for your platform, writes
+`.kwik/project.json`. No key needed. Nothing leaves the machine.
+
+The **Solar2D Simulator** is a separate download from [solar2d.com](https://solar2d.com/#download) —
+`kwik new` does not install it. See [01 — Install](01-install.md#requirements).
 
 ## 2. Write one page — free
 
@@ -59,6 +67,11 @@ kwik render --book my-book --page p1              # --local / --cloud / --auto (
 The scene is composed by `kwikcast` into a prompt and a **derived seed** — `sha256(book, page, layer,
 prompt, model, attempt)` — so the same inputs reproduce the same image, and a new take is an explicit
 `attempt` increment rather than a different picture every time.
+
+**This is the first step that needs a key.** Sign in once — `kwik cloud login`, a hidden prompt — and
+the free 30 credits pay for this render. Local art (`--local`) would be free, but it is not built yet,
+so `--auto` sends step 3 to the cloud. The command prints the price and asks before it spends; a
+refusal costs nothing.
 
 The cloud returns a 1536×1024 PNG (the `page` preset: exactly 0.8× of the 1920×1280 page frame). The
 single upscale to 1920×1280 — and the 2776×1440 bleed plate cropped from it — happens on your machine

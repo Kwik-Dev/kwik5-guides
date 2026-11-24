@@ -20,17 +20,22 @@ updated: 2026-11-13
 Short list, because it is shorter than people expect:
 
 | what | needed for | notes |
+| --- | --- | --- |
 | **`kwik`** | everything that is files and code | one Go binary, ~10 MB; macOS, Linux, Windows |
-| **Solar2D** | playing and building the book | ~40 MB, fetched by `kwik new` on first use |
+| **Solar2D Simulator** | playing and building the book | **your download from [solar2d.com](https://solar2d.com/#download)** — `kwik` locates it, never installs it |
 | **A GPU** | local generation, and only that | CUDA or Apple-Silicon MPS; the cloud needs none |
 | **Disk** | local generation, and only that | 12–41 GB of model weights, by the choice in the setup menu — nothing downloads until you pick |
-| **A Polar key + network** | cloud generation, and only that | no key is needed for local work, ever. See [03 — The cloud](03-cloud.md) |
 | **Python, Node, Docker, a compiler, Adobe** | **nothing** | the free path needs none of them |
 
 The local backend is **Guaardvark**, which starts ComfyUI as a plugin and hosts the audio tools — you
 do not install ComfyUI separately. Upstream is what to install; Kwik keeps a fork for one reason, and
 [04 — The local backend](04-local-backend.md#the-local-backend) is where that is explained. Neither is
 required.
+
+**Kwik Cloud is not a requirement either, and not something you install.** It is the optional paid
+product: credits, and the licence key that identifies them, belong to it and are read only when you ask
+the cloud to render something. Nothing above needs an account, a key or a network connection.
+[03 — The cloud](03-cloud.md).
 
 ## The short version
 
@@ -42,47 +47,12 @@ Two things exist, and they are independent:
 | **Local backend** | `kwik` + Guaardvark (+ ComfyUI) | model weights, by choice (12–41 GB) | nothing, forever |
 
 **Installing nothing is a supported answer.** The default in `kwik setup` is *nothing — cloud only*.
-You need a Polar key and a network connection; every media tool then runs in the cloud and costs
-credits.
+You need cloud credits and a network connection; every media tool then runs in the cloud and costs
+credits. The key that identifies those credits is Kwik Cloud's business, not a prerequisite of the
+software.
 
-## What you get, and where it runs
-
-**This is the one table of features.** 1 credit = $0.10. `Available` means shipped and exercised;
-`decided` means agreed in `decisions.md` with no implementation yet — a spec, not a feature.
-
-The **on your machine** column has two kinds of entry, and the difference is the whole point of the
-install menu:
-
-- **`kwik` itself** — works with **nothing installed**. Resizing, cropping, layers, the PSD, the Lua,
-  the md5 gate, `ogv`, and the CC0 sound library are all files and code, not models.
-- **backend** — needs Guaardvark and model weights. This is the generation side, and it is the only
-  thing the install menu's gigabytes buy.
-
-| feature | on your machine | cloud | cost | status |
-| --- | --- | --- | --- | --- |
-| project, pages, scenes, layers, asset check, Simulator (`kwik new` / `book` / `page` / `layer` / `asset check` / `run`) | **`kwik` itself** — works with nothing installed | — | **free** | **available** |
-| **page art** — `cast_render` | **backend**: Z-Image Turbo + your Cast LoRAs (CUDA → MPS → CPU) | Ada-24, returns a 1536×1024 PNG | **2 cr / image** | cloud **available**; local needs a backend |
-| **narration** — `tts_speak` | **backend**: Kokoro-82M, 31 voices, CPU-capable | CPU endpoint | **1 cr / started minute** | decided, not built |
-| **music bed** — `music_bed` | **backend**: ACE-Step (CUDA → MPS → CPU), 240 s cap | GPU | **1 cr / started minute** | decided, not built |
-| **sound effects** — *library* (the default) | **`kwik` itself** — a curated **CC0** set, a few MB, shipped or pointed at; no model | — | **free** | decided, not built |
-| **sound effects** — *generated* (opt-in) | **backend**: Stable Audio Open locally: CUDA, or MPS behind `AUDIO_FOUNDRY_SAO_MPS=1`, ≤ 47 s, 44.1 kHz | **no** — never in the cloud (D15) | **free** (local only) | exists upstream; not a shipped tool |
-| **clips** — `video_clip` | **backend**: ComfyUI image-to-video | 48 GB pool | **5 cr / second** (6 s default, 15 s cap, 60 s per job) | no worker yet |
-| **Cast LoRA** — `cast_train` | **backend**: local trainer (CUDA) | GPU, minutes | **40 cr / LoRA** | no worker yet |
-| **upscale** — `lanczos` | **`kwik` itself** — deterministic, works with nothing installed | — | **free** | decided, not built |
-| **upscale** — `local` | **backend**: Guaardvark's upscaling plugin | — | **free** | exists upstream |
-| **upscale** — `cloud` | — | Ada-24 | **1 cr / image** | decided, not built |
-| **build**: bleed crop, per-layer PNGs, `page.psd`, Lua, md5 gate, `ogv` | **`kwik` itself** — no Python, no Adobe, no models | — | **free** | decided, not built (D18) |
-| **publish** | **your** host — Pages, Netlify, itch.io (D5) | — | **free** | not built |
-
-Three consequences worth reading before you pick a menu option:
-
-- **The free path is real, not a trial.** Everything above marked *local* costs nothing, forever —
-  that is D2. The cloud exists because a laptop without a GPU cannot do the rows that need one.
-- **The rows you cannot buy yet are marked.** `video_clip`, `cast_train`, `tts_speak` and `music_bed`
-  are priced and catalogued but have no worker deployed: a call must refuse with `tool_unavailable`
-  and release the hold, never `500`.
-- **A missing model changes the executor, not the feature.** Without the art weights, `cast_render`
-  runs in the cloud for 2 credits; with them, it runs on your machine for nothing.
+Every tool, on your machine or in the cloud, with its cost and whether it is built:
+[07 — What runs where](07-what-runs-where.md). This page only covers getting the software in place.
 
 ## What `kwik` needs
 
@@ -90,7 +60,7 @@ Three consequences worth reading before you pick a menu option:
 | --- | --- |
 | OS | macOS (Intel or Apple Silicon), Linux, Windows |
 | Runtime | none — `kwik` is a single Go binary that runs its own Lua |
-| Also needed | Solar2D (the runtime your book plays in), fetched by `kwik new` on first use (~40 MB) |
+| Also needed | the **Solar2D Simulator** (the app your book plays in) — a separate download from [solar2d.com](https://solar2d.com/#download); `kwik` finds it in this order: `--solar2d <path>` → `KWIK_SOLAR2D_PATH` → the path recorded in `.kwik/config` |
 | Not needed | Python, Node, Docker, a compiler, a GPU |
 
 `kwik doctor` reports what is present, and `kwik doctor --json` reports it for scripts and agents.
@@ -100,12 +70,55 @@ Three consequences worth reading before you pick a menu option:
 The local backend is **Guaardvark**, which starts **ComfyUI** as a plugin and hosts the audio tools.
 It is what produced every asset in `biscuit-comes-home`.
 
+### Who installs what
+
+This is the question the install menu does not answer, so it is answered here. Nothing below is
+installed by *you* except `kwik` itself.
+
+| component | installed by | from | notes |
+| --- | --- | --- | --- |
+| `kwik` | **you** | one binary, ~10 MB | the only thing you download and place yourself |
+| **Solar2D Simulator** | **you** | [solar2d.com/#download](https://solar2d.com/#download) | the engine and the Simulator; `kwik run` locates it, `kwik` never bundles or downloads it |
+| Kwik **plugin** modules | **`kwik new`** | the plugin release, downloaded into the project | seconds; `--no-exporter` additionally skips the ~25 MB `.ccx` |
+| **Guaardvark** | **`kwik setup`** (`--native` or `--docker`) | **[Kwik-Dev/guaardvark](https://github.com/Kwik-Dev/guaardvark), branch `cloud-plus`**, pinned to a commit | the backend Kwik is built and tested against; `kwik` never runs its own copy of it |
+| **ComfyUI** — if you have none | **`kwik setup`**, as Guaardvark's own dependency | upstream's `requirements`/compose | never installed *alongside* Guaardvark — Guaardvark starts it as a plugin, and its `models/` directory is where clip weights land |
+| **ComfyUI you already run** | **you**, before Kwik ever sees it | your own install, your own path or port | **detected and used as-is.** `kwik` does not install a second copy, does not move or re-index your models, does not add custom nodes to it, and does not restart it unless you say so. `kwik doctor --json` records its commit and port, so a version mismatch is visible instead of mysterious |
+| model weights | **`kwik setup`**, after you pick a menu option | Hugging Face, into a cache (`KWIK_MODEL_DIR`, `HF_HOME`, ComfyUI's `models/`) | sizes are printed before anything downloads |
+| Python, Docker, `nvidia-container-toolkit` | **never** | — | `--native` creates its own venv; `--docker` *detects* Docker and prints the install block instead of installing it |
+
+Two consequences worth knowing before you read the menu:
+
+- **`kwik setup --native`** is `venv + Guaardvark + ComfyUI as its plugin`, bound to `127.0.0.1`. It
+  does not install a second backend, and it does not install ComfyUI separately — Guaardvark owns it.
+- **`kwik setup --docker`** drives **the fork's own** `docker-compose.yml` +
+  `docker-compose.gpu.yml`, pinned by commit. There is no third stack of ours to drift from it.
+- **You may already have ComfyUI, and that is a supported answer.** Detection comes first: a ComfyUI
+  you point at (port or path) or one already listening is used as it is, and only when there is none
+  does the setup provide one. It is your installation, with your models and your custom nodes — the
+  rule is *use*, never adopt: no second copy, no model migration, no node installs. What Kwik does
+  record is the commit and the port, because "identical bytes to the bench" is a claim that only
+  holds when both sides name the same ComfyUI.
+
+**`kwik setup` installs Kwik's fork, and that is deliberate.** The backend is
+[Kwik-Dev/guaardvark](https://github.com/Kwik-Dev/guaardvark) on the **`cloud-plus`** branch: upstream
+Guaardvark plus the cloud chat providers upstream removed, plus the fork's own work. It is the fork,
+not upstream, that `kwik` is developed and tested against, so the pin is a commit on that branch.
+Installing [upstream](https://github.com/guaardvark/guaardvark) instead will look familiar and may
+work for some tools, but it is not the pin — `kwik doctor --json` reports the commit and branch it
+found, so the mismatch is visible rather than mysterious.
+[04 — The local backend](04-local-backend.md#the-local-backend) has the reasoning, including what
+happens when the fork lags upstream.
+
+> **Not built yet.** `kwik setup` and `kwik doctor` are specified (D14, `media-requirements.md` §1b,
+> REX.3–REX.7) and unimplemented; until they ship, every row above except the first two is done by
+> hand — Guaardvark from its own instructions, ComfyUI with it.
+
 `kwik setup` asks one question and installs nothing until you answer:
 
 ```
   Local backend — what should generation use? (nothing downloads until you pick)
 
-  ▸ 1  no local models — cloud generation     0 GB    (needs a Polar key)
+  ▸ 1  no local models — cloud generation     0 GB    (needs cloud credits)
     2  page art only         Z-Image Turbo     ~12 GB   (recommended for local use)
     3  art + narration       + Kokoro          ~13 GB
     4  art + narration + music  + ACE-Step     ~27 GB
@@ -133,6 +146,8 @@ Rules the command must honour:
   and downloads no model; `--with art` adds one.
 - **Nothing downloads before its size and time are printed.** A silent 20 GB pull is the same class
   of bug as a silent charge.
+- **An existing install is used, never duplicated or adopted.** `kwik doctor` reports what it found
+  (Guaardvark, ComfyUI, their commits, the port) before `kwik setup` proposes to add anything.
 - **No `sudo`, ever.** `kwik setup --docker` detects Docker and `nvidia-container-toolkit`; if either
   is missing it prints the exact per-OS install block and exits 1. `--print-install` prints that same
   block, so what you paste is what we test.

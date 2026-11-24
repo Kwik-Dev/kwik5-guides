@@ -20,21 +20,90 @@ assets, running the Simulator — is free and local (D2).
 | 1 credit | **$0.10** |
 | free tier | **30 credits, once per customer** (D16) — not monthly, not per key |
 | top-up | <https://kwiksher.com/cloud/credits/> |
-| identity | your **Polar licence key**. There is no account and no password: the key bought the credits, so the key is the identity |
+| identity | your **licence key**, issued by Polar when you buy credits. There is no account and no password: the key bought the credits, so the key is the identity. You never need a Polar account, and you never log into this site to render |
+
+### Putting the key in
+
+You get the key with your credits: the free 30, or a top-up from
+[the credits page](https://kwiksher.com/cloud/credits/). It is one line of characters, and it is the
+account — there is nothing else to register.
+
+**Interactive, the normal case.** The prompt does not echo, so the key never appears on screen or in
+your shell history:
 
 ```bash
-kwik cloud login          # hidden prompt; stores the key 0600 and prints a fingerprint only
-kwik cloud credits        # balance + the price list
-kwik cloud status         # endpoint, key fingerprint, last job; exit 3 if not signed in
+kwik cloud login
+# Licence key:            ← paste, then Enter. Nothing is displayed while you paste.
 ```
 
-The key is never written to a log, a command line, a commit or a TUI frame. If you ever see a key in
-one of those, treat it as compromised and rotate it.
+**From a file, or from the clipboard.** `--key-stdin` reads the key from stdin, which is what you want
+in a script or when the key is already saved somewhere:
+
+```bash
+kwik cloud login --key-stdin < ~/Documents/kwik-licence-key.txt
+pbpaste | kwik cloud login --key-stdin            # macOS: straight from the clipboard
+```
+
+**Then check it took.**
+
+```bash
+kwik cloud status         # endpoint, key fingerprint, last job — exit 3 if not signed in
+kwik cloud credits        # balance and the price list
+```
+
+What is printed back is a **fingerprint**, never the key. That is why there is no
+`kwik cloud login <key>` form: an argument lands in your shell history and in every process list on the
+machine, and a key in either of those is a key to rotate.
+
+### Where it is stored
+
+One file, outside every project, mode **0600** (its directory 0700):
+
+| OS | path |
+| --- | --- |
+| macOS | `~/Library/Application Support/kwik/credentials` |
+| Linux | `~/.config/kwik/credentials` |
+| Windows | `%AppData%\kwik\credentials` |
+
+`KWIK_CONFIG_DIR` overrides the directory, which is what a CI job or a second profile wants.
+`kwik cloud status` prints the path it used and the key's fingerprint, so a "which key is this
+machine using?" question is answered by the machine rather than by memory.
+
+It deliberately does **not** live in `.kwik/` inside a project: that directory is tracked
+(`.kwik/project.json`) and a credential must never be one `git add -f` away from a repository.
+
+### Replacing it, and signing out
+
+```bash
+kwik cloud login                 # writes the new key over the old one — atomic, old key not kept
+kwik cloud status                # the fingerprint changes; that is how you confirm the swap
+```
+
+There is no logout command and no need for one: the file **is** the session.
+
+```bash
+rm ~/.config/kwik/credentials    # Linux — signed out; `kwik cloud status` then exits 3
+```
+
+### Keeping it safe
+
+- **Treat it like an SSH private key.** It buys credits. Anyone holding it can spend them.
+- **Never paste it into an issue, a chat, a log or a screenshot.** `kwik` prints a fingerprint
+  precisely so that this is never necessary.
+- **Exclude the file from backups and dotfile repositories** — Time Machine, `chezmoi`, `stow`,
+  a synced Documents folder. A credential in a backup is a credential in someone else's backup.
+- **One key per machine is not required, and one key per person is.** Logging in on a second machine
+  with the same key is normal; sharing a key with a colleague is not.
+- **If it leaks:** assume the credits are gone, re-issue the key from
+  [the credits page](https://kwiksher.com/cloud/credits/), run `kwik cloud login` with the new one,
+  and only then look at `kwik cloud credits` for the damage. Rotating first is what stops the drain.
+- **Check the mode if you ever copy the file by hand:** `ls -l` must show `-rw-------`. A key in a
+  world-readable file is already compromised; `chmod 600` it and rotate.
 
 ## Prices
 
 The one table of features, local-vs-cloud and prices, is
-[01 — Install § What you get, and where it runs](01-install.md#what-you-get-and-where-it-runs). The
+[07 — What runs where](07-what-runs-where.md). The
 cloud-specific rules are:
 
 | | |
@@ -62,7 +131,7 @@ HTTP `402`. Never `403`, never `500`. Over MCP the same body arrives as a **tool
 | status | meaning | what to do |
 | --- | --- | --- |
 | `400` | bad request — missing `Idempotency-Key`, unknown tool, bad unit, over a duration cap | fix the request; nothing was charged |
-| `401` | missing or invalid Polar key | `kwik cloud login` |
+| `401` | missing or invalid licence key | `kwik cloud login` |
 | `402` | not enough credits | read `estimated_cost` and `top_up_url`; do not loop |
 | `404` | unknown job (or a job that belongs to another customer) | check the id |
 | `409` | same `Idempotency-Key`, different body | use a new key for different work |
@@ -95,7 +164,7 @@ the runner's own execution limit owns it.
 | | |
 | --- | --- |
 | endpoint | `POST https://kwik5-cloud-api.kwiksher.workers.dev/mcp` (JSON-RPC: `initialize`, `tools/list`, `tools/call`) — the Worker's own hostname; there is no `api.kwiksher.com` record |
-| auth | the same Polar key as a bearer token |
+| auth | the same licence key as a bearer token |
 | discovery | `GET /v1/tools.json` — machine-readable; `GET /v1/skill` — the Markdown an agent reads |
 | local facade | `kwik mcp` over stdio lists the cloud tools and proxies them, so an agent sees one toolbox and does not need to know which tool is paid |
 

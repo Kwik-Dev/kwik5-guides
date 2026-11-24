@@ -9,17 +9,23 @@ updated: 2026-11-13
 
 # The local backend
 
-[Guaardvark](https://github.com/guaardvark) is the local AI backend: Cast subjects and LoRA training,
-image generation, an audio foundry, video workflows, upscaling. It is MIT, it is what produced every
-asset in `biscuit-comes-home`, and it starts **ComfyUI** as a plugin when a render needs it.
+Kwik's local backend is **[Kwik-Dev/guaardvark](https://github.com/Kwik-Dev/guaardvark)**, branch
+**`cloud-plus`**: upstream Guaardvark plus the cloud chat providers upstream removed, plus the fork's
+own work. That is what `kwik setup` installs and what `kwik` is developed and tested against — the
+default, not an option. Guaardvark is MIT, it is what produced every asset in `biscuit-comes-home`,
+and it starts **ComfyUI** as a plugin when a render needs it.
 
-**Upstream, or Kwik's fork?** Install [upstream](https://github.com/guaardvark/guaardvark) —
-Guaardvark's own instructions are the steps, and the backend Kwik talks to is the same program. Kwik
-also maintains a fork, [Kwik-Dev/guaardvark](https://github.com/Kwik-Dev/guaardvark), whose one
-deliberate difference is that it keeps the cloud chat providers upstream removed; `main` there is a
-pure mirror of upstream, and the fork's work lives on its own branch. If you want those chat
-providers, use the fork; otherwise upstream is the simpler answer, and **nothing on this page changes
-between them** — casting, LoRAs, ComfyUI, the audio tools and the upscaling plugin are all upstream's.
+**Upstream is the source of the substance.** [guaardvark/guaardvark](https://github.com/guaardvark/guaardvark)
+is the original project and its author's work; the fork's `main` is a pure mirror of `upstream/main`,
+so every capability described on this page — casting, LoRAs, ComfyUI, the audio tools, the upscaling
+plugin — is upstream's, credited to Albenze, Inc. and its contributors (MIT). What the fork adds is
+the cloud chat providers upstream deliberately removed, and the branch of that work.
+
+**One thing to keep in mind:** `cloud-plus` tracks upstream and periodically lags it. Upstream moves
+fast, so a fork commit can be behind by a lot of commits at any moment. `kwik doctor --json` reports
+the branch and commit it found, and that receipt is the only honest way to compare two machines — see
+[05 — Media specs](05-media-specs.md) for what parity claims do and do not cover. If you installed
+upstream yourself instead, expect it to look the same and be reported as a mismatch.
 
 Nothing here is required. With no local backend, every media tool runs in the cloud and costs credits
 ([03 — The cloud](03-cloud.md)).
@@ -27,7 +33,7 @@ Nothing here is required. With no local backend, every media tool runs in the cl
 ## What runs where
 
 Which features exist, what they cost and whether they are built:
-[01 — Install](01-install.md#what-you-get-and-where-it-runs). This table is only the part that is
+[07 — What runs where](07-what-runs-where.md). This table is only the part that is
 local-specific — **what this machine will pick**, in order, and how far you can trust the result:
 
 | tool | device order | honest label |

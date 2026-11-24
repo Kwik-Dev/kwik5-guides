@@ -450,6 +450,41 @@ img { max-width: 100%; height: auto; }
 .doc-body hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
 .ref { font-weight: 500; border-bottom: 1px dotted var(--fg-soft); color: var(--fg); }
 
+/* real artifacts shown inside a guide (layouts/shortcodes/artifact.html) */
+.doc-body .artifact {
+  margin: 1.4rem 0;
+  padding: 0;
+}
+.doc-body .artifact img,
+.doc-body .artifact video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+}
+.doc-body .artifact--audio audio {
+  display: block;
+  width: 100%;
+  max-width: 32rem;
+}
+.doc-body .artifact figcaption {
+  font-size: .8rem;
+  line-height: 1.5;
+  color: var(--fg-soft);
+  margin-top: .45rem;
+  max-width: 44rem;
+}
+.doc-body .artifact figcaption code { font-size: .85em; }
+.doc-body .artifact-pair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  align-items: flex-start;
+}
+.doc-body .artifact-pair > .artifact { flex: 1 1 18rem; margin: 0 0 1.4rem; }
+
 .doc-pager {
   display: flex;
   gap: 1rem;

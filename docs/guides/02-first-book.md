@@ -4,7 +4,7 @@ description: One page from nothing — create, render, narrate, score, run — w
 order: 2
 audience: author
 status: partly available (see per step) — D14/D18 steps are not built
-updated: 2026-11-13
+updated: 2026-11-24
 ---
 
 # Your first page
@@ -152,3 +152,93 @@ ten 4-second clips.
 
 Your first 30 credits are free (once per customer, D16) — enough for a fully rendered, narrated and
 scored page, which is the point of the loop above.
+
+## Where the assets land
+
+Everything a page produces stays inside the project directory. Nothing is global except two files: the
+cloud credential ([03 — The cloud](03-cloud.md#where-it-is-stored)) and `~/.kwik/venv`, which is the
+only Python `kwik` ever installs into. This is `my-book/` from step 1, with the paths as they exist in
+the reference book:
+
+```
+my-book/
+├── .kwik/                                 state, not the book
+│   ├── project.json                       `kwik new` — what makes a directory a project
+│   ├── scenes/<book>/<page>.json           `kwik book set` (step 2)
+│   ├── out/                                `kwik cloud wait --download` (step 4)
+│   ├── logs/                              simulator.log, screenshot.png, recording.mp4
+│   └── exporter/                          the panel ↔ CLI mailbox
+├── Photoshop/<book>/<page>/
+│   ├── <page>.psd                         the designer's master — yours, or the Exporter's
+│   ├── art/                               page art as it arrived (bg.png, bg-large.png)
+│   └── png/<layer>.png                    one PNG per layer, after the bleed crop
+├── Solar2D/App/<book>/
+│   ├── components/<page>/layers/*.lua     the emitted Lua, one file per layer
+│   ├── assets/images/<page>/<layer>.png   what the app actually loads
+│   ├── assets/audios/                     narration and music beds
+│   └── assets/videos/                     clips, including the .ogv
+├── UXP/                                   the Exporter panel (.ccx), installed by `kwik new`
+└── Scripts/  BookServer/  docs/           the template's own tools
+```
+
+Which step leaves what behind:
+
+| step | writes | where |
+| --- | --- | --- |
+| 1 `kwik new` | the project, `.kwik/project.json`, `UXP/` | the whole directory |
+| 2 `kwik book set` | the scene JSON, and `page.layers.yaml` for a layered page | `.kwik/scenes/<book>/<page>.json` |
+| 3–4 render + download | the PNG the cloud rendered | `.kwik/out/`, then the page's `Photoshop/<book>/<page>/art/` |
+| 5 `kwik build` | upscaled and bleed-cropped layer PNGs, `page.psd`, one Lua file per layer, the md5 manifest | `Photoshop/<book>/<page>/png/`, `Solar2D/App/<book>/assets/images/<page>/`, `Solar2D/App/<book>/components/<page>/layers/` |
+| 6 `kwik music` | the bed | `Solar2D/App/<book>/assets/audios/` |
+| 7 `kwik cloud tts` | the narration | `Solar2D/App/<book>/assets/audios/` |
+| 8 `kwik run` | the simulator log, recordings, screenshots | `.kwik/logs/` |
+
+Two things worth knowing about that tree:
+
+- **`Solar2D/App/<book>/assets/` is the book.** `Photoshop/` is source and `.kwik/` is state; neither
+  ships. The reference book's installed images are ~58 MB for ten pages — check with
+  `du -sh Solar2D/App/<book>/assets` when you wonder where the disk went.
+- **Deleting `.kwik/` deletes your page definitions, not your pages.** The scene JSON is what
+  `kwik book` and `kwik render` read, and the logs are only logs — but the art under `Photoshop/` and
+  the assets the app loads are untouched.
+
+Steps 5–7 are not built yet (D18, D15), so today those paths are written by the template's Python
+scripts and the Exporter panel. They are the same paths: that is how `biscuit-comes-home` was built,
+and why the layout above can be given as a fact rather than a plan.
+
+## Real files from the reference book
+
+Everything below was produced by the loop above, on **page 1 of `biscuit-comes-home`** — whose
+Fountain scene is *“@ellie walks through the wildflower meadow below @meadow, picking flowers”*, the
+same action as step 2. These are the files, not mockups, and the audio and video play.
+
+**Before the loop**, the scene was written in step 2. `kwik book set` records the tags, the action and
+the seed, which is what makes the render repeatable:
+
+{{< artifact src="img/biscuit/p1-page.jpg" caption="**The page, finished** — one 1920×1280 plate, one keyed character layer, one caption layer, composed and readable. At `/cloud-sandbox/` this page runs: caption, z-order and legibility are checked by eye, because no numeric gate can see a caption clipped by its plate." >}}
+
+**Step 3 — the art.** One `zimage-turbo` render at 1536×1024, upscaled once to the 1920×1280 page
+frame. No characters in it: they are added as layers, so the meadow can be reused and re-lit:
+
+{{< artifact src="img/biscuit/p1-art-bg.jpg" caption="`Photoshop/biscuit/p1/art/bg.png` — the background plate, rendered from the `@meadow` subject only. The 2776×1440 bleed is a *crop* of a larger approved source (`bg-large.png`), never a reflection." >}}
+
+**Step 5 — the layers.** One cut-out per character, keyed from a flat `#00B140` field, then one PNG
+and one Lua file each. The props are PSD pixels verbatim — `x`/`y` is the layer centre, and there is
+no per-axis scale, which is what made the geometry debuggable:
+
+{{< artifact src="img/biscuit/p1-layer-ellie.png" alt="Ellie, keyed out of the plate: a seven-year-old in a sage pinafore and yellow ribbon, holding a bunch of wildflowers" caption="`Solar2D/App/biscuit/assets/images/p1/ellie.png` — 500×668, RGBA, chroma-keyed. The `.lua` beside it carries exactly these pixels: `x = 1125, y = 704, width = 500, height = 668, anchorX = 0.5`." >}}
+
+**Step 6 — a music bed, and step 7 — the narration.** Kokoro read the caption; ACE-Step scored it. A
+partial minute is a full credit, so a 30 s bed costs 1:
+
+{{< artifact type="audio" src="img/biscuit/p1-narration.mp3" caption="`assets/audios/narration_p1.wav` — 9.05 s of Kokoro narration for this page. The voice is Kokoro's own id (`af_heart` is the default), validated before any credit is held." >}}
+
+**Clips arrive on a chroma key, not with alpha.** A video job returns a flat-green take and the app
+keys it at runtime with `filter.chromaKey` — that is the format, so this clip is green on purpose:
+
+{{< artifact src="img/biscuit/p1-clip.mp4" poster="img/biscuit/p1-clip.jpg" caption="`out/ellie-picks-wildflowers/clip.mp4` — 1.6 s, the character on `#00B140`. A transparent `.ogv` is not a thing: Theora has no alpha channel and `plugin_movie` decodes through theoraplay, so the key is the only way to put a clip over a page." >}}
+
+Three things this shows that the tables above cannot: the caption is a layer with its own scrim, not
+text baked into the art; the character layer is genuinely separate from the plate (which is why
+`kwik book set` validates every `@tag` before a render is charged); and the narration is a file in
+`assets/audios/`, so re-recording one page costs one minute of metering, not a re-render of the page.

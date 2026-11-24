@@ -274,7 +274,8 @@ the template's `to_ogv.py` wraps, `-pix_fmt yuv420p` and `-ac 2` included becaus
 both:
 
 ```bash
-ffmpeg -i clip.mp4 -c:v libtheora -q:v 7 -pix_fmt yuv420p -c:a libvorbis -ac 2 clip.ogv
+ffmpeg -i clip.mp4 -c:v libtheora -q:v 7 -pix_fmt yuv420p \
+       -c:a libvorbis -ac 2 clip.ogv
 ```
 
 {{< artifact src="img/biscuit/p1-clip.mp4" poster="img/biscuit/p1-clip.jpg" caption="`out/ellie-picks-wildflowers/clip.mp4` — 1.6 s, the character on `#00B140`. A transparent `.ogv` is not a thing: Theora has no alpha channel and `plugin_movie` decodes through theoraplay, so the key is the only way to put a clip over a page." >}}
@@ -283,3 +284,36 @@ Three things this shows that the tables above cannot: the caption is a layer wit
 text baked into the art; the character layer is genuinely separate from the plate (which is why
 `kwik book set` validates every `@tag` before a render is charged); and the narration is a file in
 `assets/audios/`, so re-recording one page costs one minute of metering, not a re-render of the page.
+
+## How that clip was actually made
+
+The clip has no `kwik` command, so here is the chain that does produce it — the template's Python
+pipeline driving Guaardvark's video API. It is worth reading because it is what `video_clip` has to
+replace, and because three of its decisions are not obvious.
+
+**Two authored sources, everything else derived:** `Scripts/book.fountain` (story, cast) and
+`Scripts/book.video.yaml` (motion, camera, timing, sprite placement as fractions, the keying contract).
+
+| step | what it does |
+| --- | --- |
+| `video_stories.py --chroma` | writes `video/requests/<shot>.json` (a ready-to-POST body), and builds `video/frames/<shot>.png`: **the approved cast sprite**, keyed, pasted onto a flat `#00B140` canvas at the authored fractions |
+| `render_local.py --shot <id> --promote` | POSTs that body to `/api/batch-video/generate/image`, polls `/api/batch-video/status/<batch>`, copies the result to `out/<slug>/raw/<stamp>_<shot>.mp4` |
+| → `clip.mp4` | `--promote` copies the take again; **`clip.mp4` is byte-identical to the chosen take** (same md5), so the master is never re-encoded |
+| `chroma_key.py probe` | the purity gate: a take that does not clear 0.9 on `#00B140` is never promoted |
+| `to_ogv.py` | encodes `clip.ogv` for `plugin.movie` — Theora, `yuv420p`, `-ac 2`, cropped to the measured character box while the mp4 master stays full canvas |
+| `video_stories.py --app` | emits `Solar2D/App/<book>-video/` with the chroma settings on the layer |
+
+The three decisions worth keeping:
+
+- **Identity comes from the sprite, not from a keyframe.** The reference frame is the cast sprite the
+  book already ships, keyed and placed, so the model is not asked to re-invent a character.
+- **The delivery profile is not the render profile.** The request body asks for `wan22-5b` at 1280×720 /
+  121 frames / 30 steps; that model returns black or noise under Metal, so the local run overrides it
+  with `wan22-14b-i2v` at **512×288, 25 frames, 16 fps, 4 steps** — about **110 s** per clip on an MPS
+  box. Same script, two profiles, and the file you get is labelled with which one ran.
+- **The evidence is a file.** `out/<slug>/chroma.json` and `meta.json` carry the batch id, the render
+  block, the reference frame, the keying parameters and the key purity — which is how the page above
+  can state `#00B140`, 1.6 s and purity 1.000 instead of describing them.
+
+None of it is `kwik` today. When `video_clip` lands (5 credits per second, 15 s cap), the chain becomes
+one command and those two JSON files become the receipt the guide already promises.

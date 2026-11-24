@@ -212,29 +212,70 @@ Everything below was produced by the loop above, on **page 1 of `biscuit-comes-h
 Fountain scene is *“@ellie walks through the wildflower meadow below @meadow, picking flowers”*, the
 same action as step 2. These are the files, not mockups, and the audio and video play.
 
+Each one is shown with the command from this guide that produces it, and that command's status today.
+The files themselves were made by the template's Python scripts and the Exporter panel, before those
+commands existed; the paths are the same, which is the point of listing them together.
+
 **Before the loop**, the scene was written in step 2. `kwik book set` records the tags, the action and
-the seed, which is what makes the render repeatable:
+the seed, which is what makes the render repeatable. **Available** in the CLI today:
+
+```bash
+kwik book set my-book p1 --tags ellie,meadow --action "@ellie walks through @meadow"
+```
 
 {{< artifact src="img/biscuit/p1-page.jpg" caption="**The page, finished** — one 1920×1280 plate, one keyed character layer, one caption layer, composed and readable. At `/cloud-sandbox/` this page runs: caption, z-order and legibility are checked by eye, because no numeric gate can see a caption clipped by its plate." >}}
 
 **Step 3 — the art.** One `zimage-turbo` render at 1536×1024, upscaled once to the 1920×1280 page
-frame. No characters in it: they are added as layers, so the meadow can be reused and re-lit:
+frame. No characters in it: they are added as layers, so the meadow can be reused and re-lit.
+**Available** — `--cloud` works today; `--local` needs a backend, and `--auto` is the default:
+
+```bash
+kwik render --book my-book --page p1 --cloud    # 2 credits, printed before it spends
+```
 
 {{< artifact src="img/biscuit/p1-art-bg.jpg" caption="`Photoshop/biscuit/p1/art/bg.png` — the background plate, rendered from the `@meadow` subject only. The 2776×1440 bleed is a *crop* of a larger approved source (`bg-large.png`), never a reflection." >}}
 
 **Step 5 — the layers.** One cut-out per character, keyed from a flat `#00B140` field, then one PNG
 and one Lua file each. The props are PSD pixels verbatim — `x`/`y` is the layer centre, and there is
-no per-axis scale, which is what made the geometry debuggable:
+no per-axis scale, which is what made the geometry debuggable. **Decided, not built** (D18):
+
+```bash
+kwik build      # upscale, bleed crop, per-layer PNG, page.psd, Lua, md5 gate
+```
 
 {{< artifact src="img/biscuit/p1-layer-ellie.png" alt="Ellie, keyed out of the plate: a seven-year-old in a sage pinafore and yellow ribbon, holding a bunch of wildflowers" caption="`Solar2D/App/biscuit/assets/images/p1/ellie.png` — 500×668, RGBA, chroma-keyed. The `.lua` beside it carries exactly these pixels: `x = 1125, y = 704, width = 500, height = 668, anchorX = 0.5`." >}}
 
-**Step 6 — a music bed, and step 7 — the narration.** Kokoro read the caption; ACE-Step scored it. A
-partial minute is a full credit, so a 30 s bed costs 1:
+**Step 7 — the narration.** Kokoro read the caption. The voice is a Kokoro id, checked against the
+shipped list **before** credits are held, so a typo costs nothing. **Decided, not built:**
+
+```bash
+kwik cloud tts --page p1                        # af_heart by default
+kwik cloud tts --page p1 --voice am_michael     # a Kokoro voice id, validated first
+```
 
 {{< artifact type="audio" src="img/biscuit/p1-narration.mp3" caption="`assets/audios/narration_p1.wav` — 9.05 s of Kokoro narration for this page. The voice is Kokoro's own id (`af_heart` is the default), validated before any credit is held." >}}
 
-**Clips arrive on a chroma key, not with alpha.** A video job returns a flat-green take and the app
-keys it at runtime with `filter.chromaKey` — that is the format, so this clip is green on purpose:
+**Step 6 — the music bed.** ACE-Step scores the page, and a partial minute is a full credit, so a 30 s
+bed costs 1. **Decided, not built** (D15):
+
+```bash
+kwik music --page p1 --duration 30 --loop    # 1 credit, or free locally
+```
+
+A narration file and a music bed differ only in which of those two commands wrote them: both land in
+`Solar2D/App/<book>/assets/audios/`, and both are metered per *started* minute.
+
+**A clip, which has no `kwik` command yet.** A video job returns a flat-green take and the app keys it
+at runtime with `filter.chromaKey` — that is the format, so this clip is green on purpose. The tool is
+specified as `video_clip` (5 credits per second, 15 s cap, so 75 credits is the largest single clip the
+product allows) but no CLI subcommand owns it: today it is a ComfyUI job whose output lands in `out/`,
+and the app's copy is then encoded to Theora with an ffmpeg that has libtheora — which is exactly what
+the template's `to_ogv.py` wraps, `-pix_fmt yuv420p` and `-ac 2` included because `plugin.movie` needs
+both:
+
+```bash
+ffmpeg -i clip.mp4 -c:v libtheora -q:v 7 -pix_fmt yuv420p -c:a libvorbis -ac 2 clip.ogv
+```
 
 {{< artifact src="img/biscuit/p1-clip.mp4" poster="img/biscuit/p1-clip.jpg" caption="`out/ellie-picks-wildflowers/clip.mp4` — 1.6 s, the character on `#00B140`. A transparent `.ogv` is not a thing: Theora has no alpha channel and `plugin_movie` decodes through theoraplay, so the key is the only way to put a clip over a page." >}}
 

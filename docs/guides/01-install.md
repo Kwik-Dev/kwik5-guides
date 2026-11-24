@@ -1,6 +1,6 @@
 ---
 title: Install
-description: What to install, what it costs in disk and time, and how to install nothing at all
+description: What to install, what it costs in time, and how to install nothing at all
 order: 1
 audience: author
 status: decided (D14, D18) — not built
@@ -9,25 +9,26 @@ updated: 2026-11-24
 
 # Install
 
-> **Status: decided, not built.** `kwik setup` and `kwik doctor` are specified in D14 /
-> `media-requirements.md` §1b (`REX.3`–`REX.7`), and no implementation exists yet. Until they ship,
-> the local backend is installed by hand from
-> [Guaardvark's own instructions](https://github.com/guaardvark) and the cloud needs nothing at all.
-> This page is the spec the command has to satisfy.
+> `kwik setup` and `kwik doctor` are specified in D14 / `media-requirements.md` §1b
+> (`REX.3`–`REX.7`), and no implementation exists yet. Until they ship, the local backend is installed
+> by hand from [Guaardvark's own instructions](https://github.com/guaardvark) and the cloud needs
+> nothing at all. This page is the spec the command has to satisfy.
 
 ## Requirements
 
-Short list, because it is shorter than people expect:
+Short list, because it is shorter than people expect. **Nothing here is needed for the cloud path** —
+the machine that does local generation, and the outside tools that are not part of the software, are on
+[00 — Your machine](00-env.md) instead, so this page is only what `kwik` installs and places.
 
 | what | needed for | notes |
 | --- | --- | --- |
 | **`kwik`** | everything that is files and code | one Go binary, ~10 MB; macOS, Linux, Windows |
 | **Solar2D Simulator** | playing and building the book | **your download from [solar2d.com](https://solar2d.com/#download)** — `kwik` locates it, never installs it |
-| **A GPU** | local generation, and only that | CUDA or Apple-Silicon MPS; the cloud needs none |
+| **A GPU** | local generation, and only that | CUDA or Apple-Silicon MPS; the cloud needs none — sizes in [Machine spec](00-env.md#machine-spec) |
 | **Disk** | local generation, and only that | 12–41 GB of model weights, by the choice in the setup menu — nothing downloads until you pick |
-| **Adobe Photoshop** (2022+) | refining page images by hand, and running the Exporter panel | **not mandatory — recommended.** The only application the **Kwik Exporter** panel runs in; see [Photoshop](#photoshop-recommended-not-required) |
-| **ffmpeg** | `kwik record`, and encoding a clip to `ogv` | **only where you use those two.** `kwik` and every image step need none of it; the `ogv` encoder must be built with libtheora, which stock Homebrew `ffmpeg` is not — see [ffmpeg](#ffmpeg-installed-where-you-use-it) |
-| **Python 3** + `psd-tools`, `pillow`, `pyyaml`, `numpy` | `kwik psd new`, `kwik icon` — authoring a PSD and an icon set | **not needed to build, render or run a book.** `kwik setup` offers to put it in its own venv, `~/.kwik/venv`, and never touches the system Python; see [the toolchain](#the-toolchain-kwik-setup-asks-about) |
+| **Adobe Photoshop** (2022+) | refining page images by hand, and running the Exporter panel | **not mandatory — recommended.** The only application the **Kwik Exporter** panel runs in; see [Photoshop](00-env.md#photoshop-recommended-not-required) |
+| **ffmpeg** | `kwik record`, and encoding a clip to `ogv` | **only where you use those two.** `kwik` and every image step need none of it; the `ogv` encoder must be built with libtheora, which stock Homebrew `ffmpeg` is not — see [ffmpeg](00-env.md#ffmpeg-installed-where-you-use-it) |
+| **Python 3** + `psd-tools`, `pillow`, `pyyaml`, `numpy` | `kwik psd new`, `kwik icon` — authoring a PSD and an icon set | **not needed to build, render or run a book.** `kwik setup` offers to put it in its own venv, `~/.kwik/venv`, and never touches the system Python; see [the toolchain](00-env.md#the-toolchain-kwik-setup-asks-about) |
 | **Node, Docker, a compiler** | **nothing** | the free path needs none of them |
 
 The local backend is **Guaardvark**, which starts ComfyUI as a plugin and hosts the audio tools — you
@@ -39,69 +40,6 @@ required.
 product: credits, and the licence key that identifies them, belong to it and are read only when you ask
 the cloud to render something. Nothing above needs an account, a key or a network connection.
 [03 — The cloud](03-cloud.md).
-
-## Machine spec
-
-**The cloud path has no machine spec.** `kwik` is a single binary and a project is text and PNGs, so
-any laptop that runs a browser runs the cloud path. Everything below is about **local generation**, and
-the numbers are not ours: they are the ones the backend itself enforces, from
-[`guaardvark/docs/HARDWARE.md`](https://github.com/Kwik-Dev/guaardvark/blob/cloud-plus/docs/HARDWARE.md),
-calibrated on a 16 GB card with a 32 GB machine. `kwik doctor` reports what *your* machine will
-actually do — a static table goes stale, and a stale capability claim costs an afternoon.
-
-### By platform
-
-| platform | local backend | GPU path | notes |
-| --- | --- | --- | --- |
-| **macOS, Apple Silicon** | native | **Metal / MPS** | the only GPU path a Mac has; Docker cannot pass Metal into a container, so a container is CPU-only |
-| **macOS, Intel** | native | **CPU only** | it works and it is slow; treat local generation as "images, eventually" |
-| **Windows 11** | **WSL2** | CUDA inside WSL2 | there is no native Windows backend: Guaardvark's Windows support *is* WSL2, and it is still being verified — the `kwik` binary, the project and the Simulator stay on the Windows side |
-| **Linux** | native or Docker | CUDA (Docker needs `nvidia-container-toolkit`) | the primary target, and the only place everything is tested |
-
-The Simulator runs on all four. `kwik` itself runs on all four. It is the *backend* that is
-platform-dependent, and the cloud is the answer when yours is not in the comfortable column.
-
-### By workload
-
-| | floor | comfortable | why |
-| --- | --- | --- | --- |
-| **system RAM** | **32 GB** | 64 GB | a Z-Image or Krea 2 still is 21–24 GB of resident memory per job; SDXL is ~10 GB |
-| **NVIDIA VRAM**, page art only | **8–12 GB** | 16 GB | the 8–12 GB tier does SDXL-class images, upscaling and music |
-| **NVIDIA VRAM**, everything | **16 GB** | 20–24 GB | clips refuse below 16 GB — the preflight wants a 16 GB-class card, ~0.5 GB of grace |
-| **disk** | 12–41 GB | + tens of GB | the weights you pick in the setup menu; a video model is 9–20 GB on its own |
-| **swap** (Linux, WSL2) | ≥ 16 GB, low swappiness | — | so a spike degrades instead of freezing the desktop |
-
-Two traps in that table, both measured:
-
-- **RAM decides, not VRAM.** Z-Image and Krea 2 always run with CPU offload, so their weights live in
-  system memory between stages *even on a 24 GB card*. A 16 GB-RAM machine is refused with
-  `system RAM too low (not VRAM)` no matter what is in the slot, and swap does not count toward the gate.
-- **Under ~8 GB of RAM** the backend installs a small text-only model tier instead of the real one. The
-  install succeeds, the page renders, and the results are not what the guide's examples show.
-
-### On a Mac, read "RAM" as unified memory
-
-Apple Silicon has no separate VRAM: the weights and the offload live in the same pool, which is why the
-RAM column matters more there, not less. What Guaardvark has actually verified on Metal is **Z-Image and
-Krea 2 image generation and LoRA training** (slow). **Not** verified on a Mac, by the project's own
-statement: clips through ComfyUI on Metal — there is no render on file — so treat video as a cloud job,
-and treat every Mac number as "images, yes; video, unproven".
-
-### On Windows, the split is WSL2
-
-Install the NVIDIA driver on Windows and let WSL2 see it; the backend, its Python and its models then
-live inside the distro, where `kwik setup --native` can put them. Give the distro the RAM: WSL2 takes
-roughly half of the host's by default, which on a 32 GB machine is 16 GB — under the floor above. Add to
-`%UserProfile%\.wslconfig`:
-
-```ini
-[wsl2]
-memory=24GB
-swap=8GB
-```
-
-If you want Docker instead of the native install, `nvidia-container-toolkit` goes inside the distro
-([Docker](#docker)), not on Windows.
 
 ## The short version
 
@@ -131,104 +69,6 @@ Every tool, on your machine or in the cloud, with its cost and whether it is bui
 
 `kwik doctor` reports what is present, and `kwik doctor --json` reports it for scripts and agents.
 
-## Photoshop: recommended, not required
-
-Nothing in the pipeline needs an Adobe application. The layered `page.psd` is generated by
-`kwik build`, so it opens in Affinity Photo, GIMP, Photopea or Krita just as well
-([05 — Media specs](05-media-specs.md)).
-
-**Adobe Photoshop (2022 or later) is recommended anyway**, because it is the one application the
-**Kwik Exporter** panel runs in. The panel is a UXP plugin: `kwik new` drops its `.ccx` (~25 MB) into
-the project's `UXP/` directory, and it requires Photoshop `23.0.0` or newer. A designer uses it to
-refine page images by hand and to publish them into the book — the panel walks the `.psd`, exports
-layers and images, renders the Solar2D `components/`/`models/` Lua, and keeps `index.lua` in step.
-
-So the split is worth stating plainly:
-
-| who | needs Photoshop? |
-| --- | --- |
-| an author writing pages, rendering art, building and running the book | **no** |
-| a designer refining and manually publishing page images for the book | **yes** — and only Photoshop; the panel declares `host: PS` and will not load in another application |
-
-Skipping it is supported: `kwik new --no-exporter` leaves the `.ccx` out of the project entirely, and
-nothing else changes.
-
-## ffmpeg: installed where you use it
-
-No image step shells out to an external tool. Resizing, the bleed crop, per-layer PNGs and the layered
-`page.psd` are `kwik` itself, so **ImageMagick is not used anywhere** — not by the CLI, not by the
-Exporter panel, not by the project pipeline. `kwik icon` writes the `.ico` directly, and only the
-`.icns` needs `iconutil`, which macOS already has (`kwik doctor` warns when it is missing).
-
-Two features do reach for the **ffmpeg** family, and neither is on the path to a finished book:
-
-| command | needs | when it is missing |
-| --- | --- | --- |
-| `kwik record` | **ffmpeg** — it assembles the Simulator's frames into a video | exit 3, and the frames are kept with the directory named |
-| `kwik asset` (the HTML report) | **ffprobe**, only to show durations | a warning, and durations are omitted — not an error |
-| `ogv` output | **ffmpeg built with libtheora + libvorbis** | the step refuses, rather than emitting a file `plugin.movie` cannot decode |
-
-The libtheora part is the one people get wrong: stock Homebrew `ffmpeg` no longer ships it
-(`ffmpeg-full` does). Probe before assuming:
-
-```bash
-ffmpeg -encoders 2>/dev/null | grep -c theora   # 0 means this ffmpeg cannot produce ogv
-```
-
-`ffprobe` ships with `ffmpeg`, so one install covers the first two rows. `kwik doctor` must report
-which encoder it will use (D14, `media-requirements.md` RVC.3b) rather than leave `kwik build` to
-discover it.
-
-## The toolchain `kwik setup` asks about
-
-Four tools sit outside Guaardvark and outside a book build, and none of them is a prerequisite. They
-are still needed by *some* command, so both commands name them rather than letting a command fail
-later:
-
-| tool | what it gates | what happens without it |
-| --- | --- | --- |
-| **ffmpeg** | `kwik record`, `ogv` output | record exits 3 with the frames kept; `ogv` refuses |
-| **ffprobe** | durations in the `kwik asset` HTML report | the report omits durations, with a warning |
-| **python3** + `psd-tools pillow pyyaml numpy` | `kwik psd new`, `kwik icon` | both exit 8 with the pip line to run |
-| **iconutil** (macOS only) | the `.icns` half of `kwik icon` | the iconset is kept and the `.icns` is skipped |
-
-**`kwik doctor` reports, `kwik setup` asks.** Doctor is read-only and prints each tool next to the
-command it gates. Setup asks about each one that is missing, and runs nothing until you answer:
-
-```
-  ffmpeg is not installed — `kwik record` and `ogv` output need it.
-
-  ▸ 1  install it now    brew install ffmpeg-full          (no sudo)
-    2  print the command, I'll run it
-    3  skip — record and ogv stay unavailable; everything else works
-```
-
-What each answer may do is bounded by the same rule as everything else here:
-
-- **An install is offered only where it needs no privileges** — Homebrew, `winget`, `pip --user`.
-  Where it would need root — `apt`, `dnf`, `pacman` — setup **prints the command and stops**, and
-  there is no menu entry that runs it:
-
-  ```
-  ffmpeg is not installed, and installing it here needs root.
-  Run this, then `kwik doctor` will see it:
-
-      sudo apt install ffmpeg
-  ```
-
-  `kwik` never asks for your password, never pipes a script to a shell, and never retries the check
-  on its own — re-run `kwik doctor` when you have.
-- **Python goes into `~/.kwik/venv`**, never the system interpreter, so accepting the offer cannot
-  break a distro's Python. `kwik doctor` prefers that venv over `PATH` and says which it used.
-- **`--print-install` covers these too**, so the block you would paste is the block we test.
-- **Non-interactive:** `--tools=install|print|skip`, with `ask` as the default; on a locked-down
-  machine `KWIK_NO_DOWNLOADS=1` means `skip`.
-- **The asymmetry is deliberate.** A missing *model weight* fails a locked-down setup, because the
-  tool that was asked for cannot run at all. A missing *tool* only narrows what the CLI can do, so
-  it is skippable: no tool here is needed to build, render or run a book.
-- **A present-but-wrong tool is reported as wrong.** An `ffmpeg` without a theora encoder is not
-  "ffmpeg ✓" — doctor says so, and setup offers `ffmpeg-full`.
-
 ## The local backend (optional)
 
 The local backend is **Guaardvark**, which starts **ComfyUI** as a plugin and hosts the audio tools.
@@ -244,9 +84,9 @@ installed by *you* except `kwik` itself.
 | `kwik` | **you** | one binary, ~10 MB | the only thing you download and place yourself |
 | **Solar2D Simulator** | **you** | [solar2d.com/#download](https://solar2d.com/#download) | the engine and the Simulator; `kwik run` locates it, `kwik` never bundles or downloads it |
 | Kwik **plugin** modules | **`kwik new`** | the plugin release, downloaded into the project | seconds; `--no-exporter` additionally skips the ~25 MB `.ccx` |
-| **Adobe Photoshop** (2022+) — hosting the Exporter panel | **you**, and only if you or your designer wants it | adobe.com | not installed, not required and not detectable by `kwik`; the panel needs Photoshop `23.0.0`+, and `kwik` works without it |
-| **ffmpeg / ffprobe** | **`kwik setup`**, after you pick an option | `brew install ffmpeg-full`, `apt install ffmpeg`, or the vendor build | printed, never executed, where it needs root; `kwik` needs it only for `kwik record`, the asset report and `ogv` |
-| **Python 3** + `psd-tools pillow pyyaml numpy` | **`kwik setup`**, into `~/.kwik/venv` | PyPI, at your answer | only for `kwik psd new` and `kwik icon`; the system interpreter is never touched |
+| **Adobe Photoshop** (2022+) — hosting the Exporter panel | **you**, and only if you or your designer wants it | adobe.com | not installed, not required and not detectable by `kwik`; the panel needs Photoshop `23.0.0`+, and `kwik` works without it — [00 — Your machine](00-env.md#photoshop-recommended-not-required) |
+| **ffmpeg / ffprobe** | **`kwik setup`**, after you pick an option | `brew install ffmpeg-full`, `apt install ffmpeg`, or the vendor build | printed, never executed, where it needs root; `kwik` needs it only for `kwik record`, the asset report and `ogv` — [00 — Your machine](00-env.md#the-toolchain-kwik-setup-asks-about) |
+| **Python 3** + `psd-tools pillow pyyaml numpy` | **`kwik setup`**, into `~/.kwik/venv` | PyPI, at your answer | only for `kwik psd new` and `kwik icon`; the system interpreter is never touched — [00 — Your machine](00-env.md#the-toolchain-kwik-setup-asks-about) |
 | **ImageMagick** | **never** | — | not used at all: every image step is `kwik` itself, and `kwik icon` writes the `.ico` directly |
 | **Guaardvark** | **`kwik setup`** (`--native` or `--docker`) | **[Kwik-Dev/guaardvark](https://github.com/Kwik-Dev/guaardvark), branch `cloud-plus`**, pinned to a commit | the backend Kwik is built and tested against; `kwik` never runs its own copy of it |
 | **ComfyUI** — if you have none | **`kwik setup`**, as Guaardvark's own dependency | upstream's `requirements`/compose | never installed *alongside* Guaardvark — Guaardvark starts it as a plugin, and its `models/` directory is where clip weights land |
@@ -318,9 +158,9 @@ Rules the command must honour:
   (Guaardvark, ComfyUI, their commits, the port) before `kwik setup` proposes to add anything.
 - **No `sudo`, ever.** `kwik setup --docker` detects Docker and `nvidia-container-toolkit`; if either
   is missing it prints the exact per-OS install block and exits 1. `--print-install` prints that same
-  block, so what you paste is what we test. The same block discipline covers the toolchain
-  ([above](#the-toolchain-kwik-setup-asks-about)), with one addition: where an install needs no
-  privileges, setup offers to run it, after asking.
+  block, so what you paste is what we test. The same block discipline covers the toolchain, with one
+  addition: where an install needs no privileges, setup offers to run it, after asking
+  ([00 — Your machine](00-env.md#the-toolchain-kwik-setup-asks-about)).
 - **`--cloud-only`** is the non-interactive "install nothing"; `KWIK_NO_DOWNLOADS=1` fails instead of
   prompting on a locked-down machine.
 - **`kwik setup --remove`** stops services and deletes the cache only after you confirm. It never

@@ -414,6 +414,11 @@ img { max-width: 100%; height: auto; }
 
 /* ============ prose ============ */
 
+/* every guide opens with `# Title` so the markdown reads on its own in the planning repo; the layout
+   already renders that title in .doc-head, so the body's copy would be a second h1 — and a visible
+   duplicate whenever the table of contents sits between them */
+.doc-body > h1:first-child { display: none; }
+
 .doc-body h2 { font-size: 1.35rem; margin: 2.4rem 0 .7rem; letter-spacing: -0.01em; }
 .doc-body h3 { font-size: 1.1rem; margin: 1.8rem 0 .5rem; }
 .doc-body h4 { font-size: 1rem; margin: 1.4rem 0 .4rem; }

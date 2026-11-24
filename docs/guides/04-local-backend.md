@@ -63,8 +63,7 @@ The Docker path drives **Guaardvark's own** `docker-compose.yml` + `docker-compo
 commit. It is not a parallel stack that will drift.
 
 How much RAM, VRAM and disk this machine needs, per platform and per workload — including the WSL2
-memory split, which defaults to less than the floor:
-[01 — Install, Machine spec](01-install.md#machine-spec).
+memory split, which defaults to less than the floor: [00 — Your machine](00-env.md#machine-spec).
 
 ## A worker is not the app
 

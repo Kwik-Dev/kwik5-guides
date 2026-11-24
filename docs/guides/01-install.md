@@ -40,6 +40,69 @@ product: credits, and the licence key that identifies them, belong to it and are
 the cloud to render something. Nothing above needs an account, a key or a network connection.
 [03 — The cloud](03-cloud.md).
 
+## Machine spec
+
+**The cloud path has no machine spec.** `kwik` is a single binary and a project is text and PNGs, so
+any laptop that runs a browser runs the cloud path. Everything below is about **local generation**, and
+the numbers are not ours: they are the ones the backend itself enforces, from
+[`guaardvark/docs/HARDWARE.md`](https://github.com/Kwik-Dev/guaardvark/blob/cloud-plus/docs/HARDWARE.md),
+calibrated on a 16 GB card with a 32 GB machine. `kwik doctor` reports what *your* machine will
+actually do — a static table goes stale, and a stale capability claim costs an afternoon.
+
+### By platform
+
+| platform | local backend | GPU path | notes |
+| --- | --- | --- | --- |
+| **macOS, Apple Silicon** | native | **Metal / MPS** | the only GPU path a Mac has; Docker cannot pass Metal into a container, so a container is CPU-only |
+| **macOS, Intel** | native | **CPU only** | it works and it is slow; treat local generation as "images, eventually" |
+| **Windows 11** | **WSL2** | CUDA inside WSL2 | there is no native Windows backend: Guaardvark's Windows support *is* WSL2, and it is still being verified — the `kwik` binary, the project and the Simulator stay on the Windows side |
+| **Linux** | native or Docker | CUDA (Docker needs `nvidia-container-toolkit`) | the primary target, and the only place everything is tested |
+
+The Simulator runs on all four. `kwik` itself runs on all four. It is the *backend* that is
+platform-dependent, and the cloud is the answer when yours is not in the comfortable column.
+
+### By workload
+
+| | floor | comfortable | why |
+| --- | --- | --- | --- |
+| **system RAM** | **32 GB** | 64 GB | a Z-Image or Krea 2 still is 21–24 GB of resident memory per job; SDXL is ~10 GB |
+| **NVIDIA VRAM**, page art only | **8–12 GB** | 16 GB | the 8–12 GB tier does SDXL-class images, upscaling and music |
+| **NVIDIA VRAM**, everything | **16 GB** | 20–24 GB | clips refuse below 16 GB — the preflight wants a 16 GB-class card, ~0.5 GB of grace |
+| **disk** | 12–41 GB | + tens of GB | the weights you pick in the setup menu; a video model is 9–20 GB on its own |
+| **swap** (Linux, WSL2) | ≥ 16 GB, low swappiness | — | so a spike degrades instead of freezing the desktop |
+
+Two traps in that table, both measured:
+
+- **RAM decides, not VRAM.** Z-Image and Krea 2 always run with CPU offload, so their weights live in
+  system memory between stages *even on a 24 GB card*. A 16 GB-RAM machine is refused with
+  `system RAM too low (not VRAM)` no matter what is in the slot, and swap does not count toward the gate.
+- **Under ~8 GB of RAM** the backend installs a small text-only model tier instead of the real one. The
+  install succeeds, the page renders, and the results are not what the guide's examples show.
+
+### On a Mac, read "RAM" as unified memory
+
+Apple Silicon has no separate VRAM: the weights and the offload live in the same pool, which is why the
+RAM column matters more there, not less. What Guaardvark has actually verified on Metal is **Z-Image and
+Krea 2 image generation and LoRA training** (slow). **Not** verified on a Mac, by the project's own
+statement: clips through ComfyUI on Metal — there is no render on file — so treat video as a cloud job,
+and treat every Mac number as "images, yes; video, unproven".
+
+### On Windows, the split is WSL2
+
+Install the NVIDIA driver on Windows and let WSL2 see it; the backend, its Python and its models then
+live inside the distro, where `kwik setup --native` can put them. Give the distro the RAM: WSL2 takes
+roughly half of the host's by default, which on a 32 GB machine is 16 GB — under the floor above. Add to
+`%UserProfile%\.wslconfig`:
+
+```ini
+[wsl2]
+memory=24GB
+swap=8GB
+```
+
+If you want Docker instead of the native install, `nvidia-container-toolkit` goes inside the distro
+([Docker](#docker)), not on Windows.
+
 ## The short version
 
 Two things exist, and they are independent:

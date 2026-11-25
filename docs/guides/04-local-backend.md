@@ -50,6 +50,47 @@ local-specific — **what this machine will pick**, in order, and how far you ca
 cannot run — it does not keep a static list, because a static list goes stale and a stale capability
 claim is how an author loses an afternoon.
 
+## How a project actually reaches the backend today
+
+**Not through `kwik`.** Nothing in the CLI talks to the backend: `kwik render --local` is spec'd and not
+built, and `kwik setup` installs the four outside tools (`ffmpeg`, `ffprobe`, `python3`, `iconutil`), not
+Guaardvark. What is real today is **the four Python scripts every project is created with**, in
+`Scripts/`, which call the backend's HTTP API on this machine:
+
+| script | what it renders | talks to |
+| --- | --- | --- |
+| `Scripts/render_pages.py <page>…` | the page's background art, from `page.model.md` | Guaardvark `POST /api/batch-image/generate/prompts` + `/api/batch-image/status/<id>` |
+| `Scripts/render_local.py --page <slug>` | one clip for a page, on the local MPS profile | Guaardvark `POST /api/batch-video/generate/{image,text}` + `/api/batch-video/status/<id>` |
+| `Scripts/upscale_plates.py` | the bleed plate, through the backend's upscaler | Guaardvark's upscale plugin (`--server` overrides) |
+| `Scripts/render_audio.py` | narration | the **audio service**, a separate port |
+
+So the loop is: the Simulator runs the book, `kwik` owns the project, the PSD and the Lua, and **the
+scripts own generation**. That split is why `kwik doctor` can be green on a machine where nothing has
+ever been rendered locally.
+
+**Where the backend answers.** It binds loopback only, and the port depends on the platform: `5055` on
+macOS (AirPlay Receiver owns `5000`) and `5000` elsewhere. The art and clip scripts default to
+`http://127.0.0.1:5055` and take `GUAARDVARK_SERVER` as an override:
+
+```bash
+GUAARDVARK_SERVER=http://127.0.0.1:5000 python3 Scripts/render_pages.py p4
+```
+
+Narration does **not** go through that port: `render_audio.py` speaks to the audio service on `8206`
+(`AUDIO_FOUNDRY` overrides), which is the plugin Guaardvark starts — the same process tree, a different
+socket.
+
+A dry run prints the request before it spends anything, which is the closest thing the scripts have to
+the CLI's “show the price first” rule:
+
+```bash
+python3 Scripts/render_pages.py p4 --dry-run
+python3 Scripts/render_local.py --list
+```
+
+When `kwik render --local` ships (D14, `07 — What runs where`), the first three rows become one command
+and these scripts become the reference implementation rather than the interface.
+
 ## Native vs Docker
 
 | | native | Docker |

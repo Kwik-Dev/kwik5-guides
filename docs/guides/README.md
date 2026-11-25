@@ -20,7 +20,7 @@ page says which one.
 
 | page | what it answers | audience |
 | --- | --- | --- |
-| [00 — Your machine](00-env.md) | what local generation needs (RAM, VRAM, disk, platform) and the four outside tools `kwik` shells out to | author, designer |
+| [00 — Your machine](00-env.md) | the small minimum for a cloud-only machine, what local generation needs (RAM, VRAM, disk, platform), and the four outside tools `kwik` shells out to | author, designer |
 | [01 — Install](01-install.md) | what to install, what it costs in time, and how to install **nothing at all** | author |
 | [02 — Your first page](02-first-book.md) | one page from nothing: create, render, narrate, score, run — with the price shown before each spend | author |
 | [03 — The cloud](03-cloud.md) | credits, keys, what a refusal means, and the agent surface (MCP + skill file) | author, agent |

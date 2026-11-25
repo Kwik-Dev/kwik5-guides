@@ -4,7 +4,7 @@ description: What local generation needs — RAM, VRAM, disk, platform — and t
 order: 0
 audience: author
 status: hardware numbers are the backend's, not ours; kwik setup is decided (D14, REX.3c) — not built
-updated: 2026-11-24
+updated: 2026-11-25
 ---
 
 # Your machine
@@ -15,6 +15,34 @@ a single binary, a project is text and PNGs, and every media step happens somewh
 
 This page is about the other case — the machine that generates art, narration, music and clips itself —
 and about the four external tools `kwik` shells out to, which are not part of the software either.
+
+## Minimum spec, if you never generate locally
+
+The 32 GB / 16 GB-VRAM floor further down is **not** a Kwik requirement. It is what the local backend
+enforces on a machine that runs a 21 GB image model. If every media step is a cloud job, none of that
+applies, and the honest minimum is the one for "run a Go binary and open a window":
+
+| | minimum | why that is the whole story |
+| --- | --- | --- |
+| **system RAM** | **4 GB** | `kwik` is one ~10 MB binary; a project is text and PNGs; the Solar2D Simulator is a small SDL window. Nothing loads model weights |
+| **GPU** | **none** | no step renders on your machine — the CUDA/Metal paths only exist for generation |
+| **disk** | **~1 GB free** | the binary, the Solar2D Simulator, and one book's page art. Not 12–41 GB: that is weights, and you download none |
+| **display** | any windowed desktop | the Simulator shows the book at 320×480 and scales it; page art is authored large but never displayed at full size here |
+
+In practice: any 64-bit Mac (Intel or Apple Silicon, including an 8 GB M1 Air), any Windows 10/11
+machine that can run the Simulator, any Linux desktop. **A Mac does not need 32 GB, and does not need
+Apple Silicon, to use Kwik** — it needs Apple Silicon (or a lot of patience on CPU) only to *generate*,
+which is the cloud's job in this case.
+
+Two things worth knowing about this row of the table:
+
+- **It is not an enforced gate.** Guaardvark refuses a job when the hardware is too small; nothing
+  refuses `kwik new`, `kwik build` or the Simulator, because there is nothing to refuse. These numbers
+  are what the local path actually loads, not a measured threshold, and `kwik doctor` is the only
+  place that will ever print them.
+- **Cloud-only is the setup default anyway.** `kwik setup` offers *no local models — cloud generation*
+  first, at 0 GB ([01 — Install](01-install.md#the-short-version)). The spec below is the other answer
+  to the same question.
 
 ## Machine spec
 

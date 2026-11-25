@@ -52,10 +52,11 @@ claim is how an author loses an afternoon.
 
 ## How a project actually reaches the backend today
 
-**Not through `kwik`.** Nothing in the CLI talks to the backend: `kwik render --local` is spec'd and not
+**Not through `kwik` yet.** Nothing in the CLI talks to the backend: `kwik render --local` is spec'd and not
 built, and `kwik setup` installs the four outside tools (`ffmpeg`, `ffprobe`, `python3`, `iconutil`), not
-Guaardvark. What is real today is **the four Python scripts every project is created with**, in
-`Scripts/`, which call the backend's HTTP API on this machine:
+Guaardvark. What is real today is **four Python scripts in the project's `Scripts/`**, which call the
+backend's HTTP API on this machine. (They move into `kwik` itself — D19 — after which the invocation is
+`kwik script run <name>`; the endpoints below do not change.)
 
 | script | what it renders | talks to |
 | --- | --- | --- |
@@ -88,8 +89,8 @@ python3 Scripts/render_pages.py p4 --dry-run
 python3 Scripts/render_local.py --list
 ```
 
-When `kwik render --local` ships (D14, `07 — What runs where`), the first three rows become one command
-and these scripts become the reference implementation rather than the interface.
+When `kwik render --local` ships (D14, `07 — What runs where`), the first three rows become one command;
+D19 makes even the intermediate form a `kwik` invocation rather than a file in the project.
 
 ## Native vs Docker
 

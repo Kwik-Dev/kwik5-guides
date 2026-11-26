@@ -14,9 +14,9 @@ updated: 2026-11-25
 > `biscuit-comes-home`), and the cloud's half runs against the stage deployment with an ES256 key.
 > The daily anchor runs too: two days are published (`2026-11-25`, `2026-11-26`), and the
 > [club page](https://kwiksher.com/cloud-sandbox/club/) counts them from the manifests themselves.
-> Two things are still missing on stage and tracked in
-> [#17](https://github.com/Kwik-Dev/kwik5-siteground/issues/17): the bucket rule that keeps a published
-> manifest past seven days, and the OpenTimestamps proof beside it. The design is
+> The bucket rule that keeps a published manifest past seven days is set (2026-11-26), and an
+> OpenTimestamps proof sits beside each manifest; what is still hand-run rather than nightly is the job
+> that stamps them, which [#17](https://github.com/Kwik-Dev/kwik5-siteground/issues/17) now tracks alone. The design is
 > [`../provenance-plan.md`](../provenance-plan.md), the reasoning
 > [`../membership-model.md`](../membership-model.md) §7.
 
@@ -26,7 +26,7 @@ they came from. **The book's seal** is that binding: one small file, `book.prove
 travels inside the book bundle, signed, and verifiable on a machine that is offline, has no account,
 and has no software of ours installed beyond `kwik`.
 
-## What it will prove
+## What it proves
 
 | Proves | Does not prove |
 | --- | --- |
@@ -102,9 +102,10 @@ not yet distributed. So it is a separate choice from linking, and the prompt say
 In Japanese publishing terms the two are different objects, and the page shows the mark:
 **奥付** is the colophon page, **落款** is the maker's seal on the work.
 
-## What you will run
+## What you run
 
-The four that exist are local and offline; the three marked *not built* are the cloud's half:
+All six exist. `build`, `verify`, `link`, `unlink` and `colophon` are local and offline; `attest`, `anchor`
+and `verify --anchor` are the only ones that talk to the network, and they send hashes, never a file:
 
 ```bash
 kwik provenance build .            # hash the tree, write book.provenance.json (your device key)
@@ -176,7 +177,7 @@ and per book.
 
 | You want | Do this | Effect |
 | --- | --- | --- |
-| no trace at all | never run `attest`, never run `anchor` | nothing exists anywhere but your disk — and today that is every seal, because neither verb is built |
+| no trace at all | never run `attest`, never run `anchor` | nothing exists anywhere but your disk — the service keeps no copy of the document, only the 32-byte leaf you choose to submit |
 | stop linking to a membership | `kwik provenance unlink book.yaml` | the entry disappears from the club index; already-anchored days keep their hash and prove nothing |
 | delete what we hold about you | ask | the roster/index entry goes; the public leaf cannot be un-anchored **and does not need to be** — it is a hash of a document we never had |
 

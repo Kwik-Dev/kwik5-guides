@@ -43,9 +43,11 @@ the author's machine, so a reader learns *that* a book was sealed on a day — n
 whose, or what is in it. If you hold a published book, you can hash it and find its leaf; that is
 the point of a timestamp.
 
-The table below is generated, not typed: `deploy/club-claim.py` fetches the published manifests and
-counts them. If it shows nothing, nothing has been published — the page never fills the gap with a
-number it cannot show the working for.
+The table below is generated, not typed, and it mixes two public sources: **seats, books and the member
+fingerprints** come from `GET /v1/club/index`; the **published days and their roots** come from the anchor
+manifests. The **cap of 100** is a business number in the page's own tool, not a read. If the table shows
+nothing, nothing has been published — the page never fills the gap with a number it cannot show the working
+for.
 
 ## What the membership is not
 

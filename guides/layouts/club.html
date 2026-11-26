@@ -20,6 +20,28 @@
 </div>
 
 <section class="club-claim">
+  <h2>Seats and books, counted from public files</h2>
+  <table>
+    <thead><tr><th>Seats in use</th><th>Cap</th><th>Books in the index</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>{{ $club.seats_in_use | default 0 }}</td>
+        <td>{{ $club.seat_cap | default 100 }}</td>
+        <td>{{ $club.listed_books | default 0 }}</td>
+      </tr>
+    </tbody>
+  </table>
+  {{ if gt (int ($club.listed_books | default 0)) 0 }}
+    <p class="muted">Listed members, by the short form of the public key they chose to publish — never a
+      name, and withdrawn the moment they ask:</p>
+    <ul>
+      {{ range $club.members }}<li><code>{{ . }}…</code></li>{{ end }}
+    </ul>
+  {{ else }}
+    <p class="muted">No member has listed a book yet. The seat count comes from the index at
+      <code>/v1/club/index</code>, which anyone can read.</p>
+  {{ end }}
+
   <h2>What is published right now</h2>
   {{ if gt (int $club.days_published) 0 }}
     <table>

@@ -1,7 +1,13 @@
 {
   "api": "https://kwik5-cloud-api-stage.kwiksher.workers.dev",
-  "generated_at": "2026-11-26T04:35:28Z",
-  "days_scanned": 5,
+  "seats_in_use": 1,
+  "seat_cap": 100,
+  "listed_books": 1,
+  "members": [
+    "lLzwSiLare69KH96"
+  ],
+  "generated_at": "2026-11-26T07:32:51Z",
+  "days_scanned": 3,
   "anchors": [
     {
       "day": "2026-11-26",

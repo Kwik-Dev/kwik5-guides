@@ -13,7 +13,10 @@ updated: 2026-11-25
 > and `anchor` all exist; two real projects are sealed (`kwik5-project-template`,
 > `biscuit-comes-home`), and the cloud's half runs against the stage deployment with an ES256 key.
 > The daily anchor runs too: two days are published (`2026-11-25`, `2026-11-26`), and the
-> [club page](https://kwiksher.com/cloud-sandbox/club/) counts them from the manifests themselves. The design is
+> [club page](https://kwiksher.com/cloud-sandbox/club/) counts them from the manifests themselves.
+> Two things are still missing on stage and tracked in
+> [#17](https://github.com/Kwik-Dev/kwik5-siteground/issues/17): the bucket rule that keeps a published
+> manifest past seven days, and the OpenTimestamps proof beside it. The design is
 > [`../provenance-plan.md`](../provenance-plan.md), the reasoning
 > [`../membership-model.md`](../membership-model.md) §7.
 

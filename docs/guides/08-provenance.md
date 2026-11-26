@@ -133,10 +133,11 @@ everything `assembly`. A `render` row appears only when the thing that submits t
 the cloud's own upload path today, not the CLI:
 
 ```
-signature   ok   (kwik, device key local-c7ef2706)
-cloud       ok   · 0 render row(s) attested · 0 unverified
-artifacts   43/43  (43 assembly)
-note        provenance is not authorship
+ ok signature ok (kwik, device key local-c7ef2706)
+    artifacts 43/43 ok
+    issuers   render 0 (kwik cloud, not attested) · assembly 43 (kwik) · unscoped 0
+    cloud     ok · 0 render row(s) attested · 0 unverified
+    provenance is not authorship
 ```
 
 ## Why "seal" and not "stamp" or "receipt"

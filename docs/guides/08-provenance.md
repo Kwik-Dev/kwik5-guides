@@ -3,7 +3,7 @@ title: The book's seal
 description: A verifiable seal on a finished book — what it proves, what it does not, what Kwik actually stores (one hash), and what it is for on both sides
 order: 8
 audience: author, designer, agent
-status: available on stage — build, verify, link, colophon, attest and the leaf submission work against the stage cloud; the daily anchor is built and not yet published
+status: available on stage — build, verify, link, colophon, attest, the leaf submission and the daily anchor all run against the stage cloud
 updated: 2026-11-25
 ---
 
@@ -12,7 +12,8 @@ updated: 2026-11-25
 > **Available on stage.** `kwik provenance build`, `verify`, `link`, `unlink`, `colophon`, `attest`
 > and `anchor` all exist; two real projects are sealed (`kwik5-project-template`,
 > `biscuit-comes-home`), and the cloud's half runs against the stage deployment with an ES256 key.
-> What is **not** published yet is the first daily anchor timestamp itself. The design is
+> The daily anchor runs too: two days are published (`2026-11-25`, `2026-11-26`), and the
+> [club page](https://kwiksher.com/cloud-sandbox/club/) counts them from the manifests themselves. The design is
 > [`../provenance-plan.md`](../provenance-plan.md), the reasoning
 > [`../membership-model.md`](../membership-model.md) §7.
 

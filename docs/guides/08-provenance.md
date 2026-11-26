@@ -52,9 +52,10 @@ what*:
 Your copy is the one that holds the whole graph, because your machine is what assembled the book. The
 cloud's copy only claims what the cloud did. Neither can silently stand in for the other.
 
-That split also makes a book *partly* verifiable, honestly: if you touch up a page in Photoshop after
-the build, the chain breaks at that page and the seal says so instead of pretending otherwise.
-Re-running the build records the new bytes and marks the edge as edited outside the pipeline.
+That split also makes a book *partly* verifiable, honestly: if you touch up a page in Photoshop after the
+build, that page is reported as **`changed since it was sealed`** and the seal says so instead of pretending
+otherwise. Re-running the build records the new bytes and **drops** the stale derivation edge, so the receipt
+stops claiming a source it can no longer point at.
 
 ## Three levels, and none of them needs a wallet
 
@@ -94,7 +95,8 @@ Two things make this more than decoration:
 - **Every word is yours.** Title, credit name, imprint, edition — you supply them. We never fill a
   page from our records, because we do not have your name.
 - **The page is part of the seal.** `page/colophon` is an artifact in the provenance graph, so editing
-  the colophon after the build breaks the chain exactly like editing a page image does.
+  the colophon after the build is reported as **`changed since it was sealed`**, exactly as an edited page image
+  is. It carries no derivation edge — the page is generated from your book's metadata, not from artifact bytes.
 
 It is also the one part of this feature that is **irreversible**: the page ships inside the book, to
 your host, to a reader. Opting in prints a name; the only way back is a rebuild, and only for copies

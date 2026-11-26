@@ -115,7 +115,7 @@ kwik provenance build . --include 'Photoshop/biscuit/**' --include 'Solar2D/**'
 kwik verify book.provenance.json   # re-hash the files, check the signature
 kwik verify book.provenance.json --no-files   # a reader on another machine: signature only
 kwik provenance link .             # let the book count towards a membership (a public key)
-kwik provenance unlink .           # withdraw it; the document is re-issued and re-signed
+kwik provenance unlink .           # remove the holder key from your document (local; re-signed)
 
 kwik provenance attest .           # the cloud's half: render hashes only, never a file
 kwik provenance anchor .           # submit the 32-byte leaf for the daily timestamp

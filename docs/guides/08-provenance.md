@@ -125,12 +125,15 @@ kwik provenance publish .          # list this book in the club index (needs `li
 kwik provenance withdraw bk_…      # remove the listing; the book keeps verifying
 ```
 
-Verification is local and offline by default, and it prints the split rather than a single verdict:
+Verification is local and offline by default, and it prints the split rather than a single verdict. The render count
+is **0** for a book the CLI built: `build` hashes a tree and cannot know which bytes came off a GPU, so it declares
+everything `assembly`. A `render` row appears only when the thing that submits the document knows the job — which is
+the cloud's own upload path today, not the CLI:
 
 ```
-signature   ok   (kwik cloud, key published at …/provenance-keys.json)
-artifacts   43/43  (40 render · 3 assembly)
-chain       intact (every assembly artifact derives from an attested render)
+signature   ok   (kwik, device key local-c7ef2706)
+cloud       ok   · 0 render row(s) attested · 0 unverified
+artifacts   43/43  (43 assembly)
 note        provenance is not authorship
 ```
 

@@ -105,8 +105,9 @@ In Japanese publishing terms the two are different objects, and the page shows t
 
 ## What you run
 
-All six exist. `build`, `verify`, `link`, `unlink` and `colophon` are local and offline; `attest`, `anchor`
-and `verify --anchor` are the only ones that talk to the network, and they send hashes, never a file:
+All nine verbs exist. `build`, `verify`, `link`, `unlink` and `colophon` are local and offline; `attest`,
+`anchor`, `verify --anchor`, `publish` and `withdraw` talk to the cloud, and they send hashes, opaque ids and
+your public key — never a file, never your name:
 
 ```bash
 kwik provenance build .            # hash the tree, write book.provenance.json (your device key)

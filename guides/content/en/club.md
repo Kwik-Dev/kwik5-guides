@@ -5,9 +5,10 @@ layout: club
 ---
 
 > **Stage page.** This is the rehearsal build of a page that does not exist in production. It sits
-> behind the beta gate. Every number on it is generated from the published anchor manifests by
-> `deploy/club-claim.py` — when there is nothing to count, the table says so instead of showing a
-> placeholder that looks like data.
+> behind the beta gate. Seats, books and member fingerprints are read from the public club index
+> (`GET /v1/club/index`); the published-day counts are read from the anchor manifests. Both are fetched by
+> `deploy/club-claim.py`, so nothing on the page is typed — and when there is nothing to count it says so
+> instead of showing a placeholder that looks like data.
 
 The page shows the member index itself: **seats in use** (distinct holder keys listed), **books** (one row
 per listed book), and the **16-character fingerprint** of each key a member chose to publish. It is generated

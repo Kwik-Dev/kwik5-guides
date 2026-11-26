@@ -3,8 +3,8 @@ title: The book's seal
 description: A verifiable seal on a finished book — what it proves, what it does not, what Kwik actually stores (one hash), and what it is for on both sides
 order: 8
 audience: author, designer, agent
-status: available on stage — build, verify, link, colophon, attest, the leaf submission and the daily anchor all run against the stage cloud
-updated: 2026-11-25
+status: available on stage — build, verify, link, unlink, publish, withdraw, colophon, attest, anchor and the daily anchor job all run against the stage cloud
+updated: 2026-11-26
 ---
 
 # The book's seal
@@ -120,6 +120,8 @@ kwik provenance attest .           # the cloud's half: render hashes only, never
 kwik provenance anchor .           # submit the 32-byte leaf for the daily timestamp
 kwik verify book.provenance.json --anchor --base-url <deployment>   # find this leaf in a published manifest
 kwik provenance colophon . --name "A. Author" --imprint "Kwik Studio"   # the credits page (奥付)
+kwik provenance publish .          # list this book in the club index (needs `link` first)
+kwik provenance withdraw bk_…      # remove the listing; the book keeps verifying
 ```
 
 Verification is local and offline by default, and it prints the split rather than a single verdict:
@@ -179,7 +181,7 @@ and per book.
 | You want | Do this | Effect |
 | --- | --- | --- |
 | no trace at all | never run `attest`, never run `anchor` | nothing exists anywhere but your disk — the service keeps no copy of the document, only the 32-byte leaf you choose to submit |
-| stop linking to a membership | `kwik provenance unlink book.yaml` | the holder key is removed and the document re-issued; already-anchored days keep their hash and prove nothing. (There is no club index yet, so nothing is removed from one) |
+| stop linking to a membership | `kwik provenance unlink book.yaml` | the holder key is removed and the document re-issued; already-anchored days keep their hash and prove nothing. (that removes the listing from the club index; the leaf itself stays, because un-anchoring is impossible) |
 | delete what we hold about you | `kwik provenance withdraw <book>` for a listing, or ask | a listing is one row and goes on request; the public leaf stays (un-anchoring is impossible, and it is a hash of a document we never had) |
 
 None of this requires an account, and none of it is a support ticket you have to justify.

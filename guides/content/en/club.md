@@ -9,8 +9,11 @@ layout: club
 > `deploy/club-claim.py` — when there is nothing to count, the table says so instead of showing a
 > placeholder that looks like data.
 
-Nothing here is a member index: no member is listed, because no member exists yet and the page does not
-invent one. The counts below are books, not people.
+The page shows the member index itself: **seats in use** (distinct holder keys listed), **books** (one row
+per listed book), and the **16-character fingerprint** of each key a member chose to publish. It is generated
+from `GET /v1/club/index`, which anyone can read without an account — so the count is checkable rather than
+believed. A member who runs `kwik provenance withdraw` disappears from it, and their book and its receipts
+keep verifying.
 
 The club is capped at **100 seats**, and the cap is not a marketing number: it is the number of
 people one operator can answer within the two business days the support page already promises. Each
@@ -19,11 +22,12 @@ training, and the book's seal on everything the member ships.
 
 ## What we claim, and how to disagree with us
 
-Two claims are checkable from public files, with no account and no software of ours:
+Two claims are checkable from public files, with no account and no software of ours — the member index and the
+anchor manifests:
 
 | Claim | Where it comes from | How to check it |
 | --- | --- | --- |
-| seats are capped | the number of active memberships | ask for the count; the cap is enforced by the grant job, not by a banner. There is no member index on this page — the roster is not published |
+| seats are capped | `GET /v1/club/index` — distinct holder keys, capped at 100 | read the index yourself: `curl https://kwik5-cloud-api-stage.kwiksher.workers.dev/v1/club/index`. The 101st distinct key is refused with `409 club_full` |
 | books shipped, all verifiable | the daily anchor manifests | fetch `/.well-known/kwik-anchors/<day>.json` from the cloud API and count the entries |
 
 The second one is the one nobody can fake. Each manifest lists the 32-byte leaves submitted that

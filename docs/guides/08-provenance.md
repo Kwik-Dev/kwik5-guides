@@ -14,9 +14,10 @@ updated: 2026-11-25
 > `biscuit-comes-home`), and the cloud's half runs against the stage deployment with an ES256 key.
 > The daily anchor runs too: two days are published (`2026-11-25`, `2026-11-26`), and the
 > [club page](https://kwiksher.com/cloud-sandbox/club/) counts them from the manifests themselves.
-> The bucket rule that keeps a published manifest past seven days is set (2026-11-26), and an
-> OpenTimestamps proof sits beside each manifest; what is still hand-run rather than nightly is the job
-> that stamps them, which [#17](https://github.com/Kwik-Dev/kwik5-siteground/issues/17) now tracks alone. The design is
+> The bucket rule that keeps a published manifest past seven days is set (2026-11-26), and the nightly
+> job writes an OpenTimestamps proof beside each manifest — it ran for the first time that night, so #17 is
+> closed. The one dated loose end: objects written before the rule changed keep the old 7-day header until
+> R2's migration sweep finishes (by 2026-11-27T06:21Z). The design is
 > [`../provenance-plan.md`](../provenance-plan.md), the reasoning
 > [`../membership-model.md`](../membership-model.md) §7.
 

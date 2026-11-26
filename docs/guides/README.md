@@ -27,7 +27,7 @@ page says which one.
 | [05 — Media specs](05-media-specs.md) | the numbers: frames, formats, codecs, alpha, durations, sizes, retention | author, designer, agent |
 | [06 — Troubleshooting](06-troubleshooting.md) | what each exit code and error body means, and the one thing to do next | everyone |
 | [07 — What runs where](07-what-runs-where.md) | every tool, on your machine or in the cloud, what it costs, and whether it is built — the status column is the truth | author, agent |
-| [08 — The book's seal](08-provenance.md) | a verifiable seal on a finished book: what it proves, what it does not, who signs which file, **what Kwik actually stores (one 32-byte hash — there is no seal database)**, the colophon page (奥付) that prints it, use cases for authors and for Kwik, and why no wallet is involved. **available on stage** — the local verbs and the cloud half both run; the member index it mentions does not exist | author, designer, agent |
+| [08 — The book's seal](08-provenance.md) | a verifiable seal on a finished book: what it proves, what it does not, who signs which file, **what Kwik actually stores (one 32-byte hash — there is no seal database)**, the colophon page (奥付) that prints it, use cases for authors and for Kwik, and why no wallet is involved. **available on stage** — every verb runs, including `publish`/`withdraw` and the public member index at `/v1/club/index` | author, designer, agent |
 
 ## The one rule these pages follow
 

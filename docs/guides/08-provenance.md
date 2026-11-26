@@ -181,7 +181,8 @@ and per book.
 | You want | Do this | Effect |
 | --- | --- | --- |
 | no trace at all | never run `attest`, never run `anchor` | nothing exists anywhere but your disk — the service keeps no copy of the document, only the 32-byte leaf you choose to submit |
-| stop linking to a membership | `kwik provenance unlink book.yaml` | the holder key is removed and the document re-issued; already-anchored days keep their hash and prove nothing. (that removes the listing from the club index; the leaf itself stays, because un-anchoring is impossible) |
+| stop linking to a membership | `kwik provenance unlink book.yaml` | removes the holder key **from your document** and re-issues it — a local change, no server involved. A club-index listing is a separate row and survives until `kwik provenance withdraw <bk_…>` |
+| leave the club index | `kwik provenance withdraw <bk_…>` | removes the listing row: the seat and the book leave the public count, the fingerprint disappears, and the document plus its receipts keep verifying (the leaf cannot be un-anchored, and does not need to be) |
 | delete what we hold about you | `kwik provenance withdraw <book>` for a listing, or ask | a listing is one row and goes on request; the public leaf stays (un-anchoring is impossible, and it is a hash of a document we never had) |
 
 None of this requires an account, and none of it is a support ticket you have to justify.

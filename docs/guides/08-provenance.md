@@ -135,10 +135,13 @@ the cloud's own upload path today, not the CLI:
 ```
  ok signature ok (kwik, device key local-c7ef2706)
     artifacts 43/43 ok
-    issuers   render 0 (kwik cloud, not attested) · assembly 43 (kwik) · unscoped 0
+    issuers   render 0 (kwik cloud) · assembly 43 (kwik) · unscoped 0
     cloud     ok · 0 render row(s) attested · 0 unverified
     provenance is not authorship
 ```
+
+That `cloud` line appears only when the cloud's half is beside your document; if you never attested, the same run
+prints `issuers render 0 (kwik cloud, not attested)` and no `cloud` line at all.
 
 ## Why "seal" and not "stamp" or "receipt"
 

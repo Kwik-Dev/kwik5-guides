@@ -220,8 +220,9 @@ every sentence on this page is about the *document*, not the person.
 - **Not a copyright registration.** It is evidence about production, not ownership.
 - **Not a DRM or an anti-copy measure.** It does not stop anyone doing anything.
 - **Not a copy of your book on our servers.** There is nothing to leak and nothing to delete.
-- **Not a rendered page yet.** `colophon` writes the content — `page/colophon.json` and `.txt` — and
-  seals it; drawing it as a page is the book's own job, and that piece is not built.
+- **The colophon is content, not pixels.** `colophon` writes `page/colophon.json` and `.txt` and seals
+  them; drawing that text as a page is the book's own job, done by the runtime, and deliberately outside
+  this command.
 - **Not a wallet, a token, or an investment.** There is nothing to buy and nothing to hold.
 - **Not required.** A book without a seal is a book. Nothing in the build, the publish path, or the
   simulator depends on one existing.

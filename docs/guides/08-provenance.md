@@ -53,9 +53,11 @@ Your copy is the one that holds the whole graph, because your machine is what as
 cloud's copy only claims what the cloud did. Neither can silently stand in for the other.
 
 That split also makes a book *partly* verifiable, honestly: if you touch up a page in Photoshop after the
-build, that page is reported as **`changed since it was sealed`** and the seal says so instead of pretending
-otherwise. Re-running the build records the new bytes and **drops** the stale derivation edge, so the receipt
-stops claiming a source it can no longer point at.
+build, that page is reported as **`changed since it was sealed`** — `fail page/03/page.psd  changed since it was
+sealed` — and the seal says so instead of pretending otherwise. Re-running the build records the new bytes and
+**drops** the stale derivation edge, so the receipt stops claiming a source it can no longer point at. A
+`chain BROKEN at <file> ← <digest>` line is a different finding: that file was sealed against a source the
+document no longer contains, which is what a rebuild that dropped the source looks like.
 
 ## Three levels, and none of them needs a wallet
 
@@ -132,16 +134,26 @@ is **0** for a book the CLI built: `build` hashes a tree and cannot know which b
 everything `assembly`. A `render` row appears only when the thing that submits the document knows the job — which is
 the cloud's own upload path today, not the CLI:
 
+A book you sealed locally, with nothing beside it — this is a real run:
+
 ```
  ok signature ok (kwik, device key local-c7ef2706)
-    artifacts 43/43 ok
-    issuers   render 0 (kwik cloud) · assembly 43 (kwik) · unscoped 0
-    cloud     ok · 0 render row(s) attested · 0 unverified
+    artifacts 2/2 ok
+    issuers   render 0 (kwik cloud, not attested) · assembly 2 (kwik) · unscoped 0
+    book id   bk_517b5ac94b709a8816713ece5ed7af39
+    anchored  no — the date is claimed, not proven
     provenance is not authorship
 ```
 
-That `cloud` line appears only when the cloud's half is beside your document; if you never attested, the same run
-prints `issuers render 0 (kwik cloud, not attested)` and no `cloud` line at all.
+With the cloud's half beside your document (`book.provenance.cloud.json`) the same command adds one line, and the
+`issuers` line stops saying "not attested":
+
+```
+    issuers   render 0 (kwik cloud) · assembly 2 (kwik) · unscoped 0
+    cloud     ok · 0 render row(s) attested · 0 unverified
+```
+
+They never appear together with "not attested": that suffix is exactly the signal that there is no cloud document.
 
 ## Why "seal" and not "stamp" or "receipt"
 

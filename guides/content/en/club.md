@@ -1,7 +1,7 @@
 ---
 title: The club
 description: What the membership is, what a seat includes, and how to check the claim yourself.
-layout: page
+layout: club
 ---
 
 > **Stage page.** This is the rehearsal build of a page that does not exist in production. It sits
@@ -34,9 +34,9 @@ the author's machine, so a reader learns *that* a book was sealed on a day — n
 whose, or what is in it. If you hold a published book, you can hash it and find its leaf; that is
 the point of a timestamp.
 
-**No numbers yet.** No anchor has been published from this environment, so this page shows none. A
-date, a count and a root will appear here once the nightly anchor has run once — and a page that
-invented them would be worse than this one.
+The table below is generated, not typed: `deploy/club-claim.py` fetches the published manifests and
+counts them. If it shows nothing, nothing has been published — the page never fills the gap with a
+number it cannot show the working for.
 
 ## What the membership is not
 

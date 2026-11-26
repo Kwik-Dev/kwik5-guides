@@ -1,0 +1,57 @@
+{{ define "main" }}
+{{/* The claim, rendered from `data/en/club.json`, which `deploy/club-claim.py` generates by fetching
+     the manifests an outsider can fetch too. No JavaScript, no live call: the number a reader sees
+     has to be the number the person checking it by hand gets. */}}
+{{ $club := dict "days_published" 0 "documents" 0 "anchors" (slice) "api" "" "generated_at" "" }}
+{{ with os.ReadFile "data/en/club.json" }}
+  {{ $club = . | transform.Unmarshal }}
+{{ end }}
+
+<article class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+  <p class="doc-meta">
+    {{ with .Params.updated }}<span class="muted">{{ i18n "doc.updated" (dict "date" .) }}</span>{{ end }}
+  </p>
+</article>
+
+<div class="page-layout">
+  <div class="page-body doc-body">{{ .Content }}</div>
+</div>
+
+<section class="club-claim">
+  <h2>What is published right now</h2>
+  {{ if gt (int $club.days_published) 0 }}
+    <table>
+      <thead>
+        <tr><th>Published day</th><th>Documents</th><th>Merkle root</th></tr>
+      </thead>
+      <tbody>
+        {{ range $club.anchors }}
+          <tr>
+            <td><code>{{ .day }}</code></td>
+            <td>{{ .count }}</td>
+            <td><code title="{{ .root }}">{{ substr .root 0 16 }}…</code></td>
+          </tr>
+        {{ end }}
+      </tbody>
+    </table>
+    <p class="muted">
+      {{ $club.documents }} sealed document(s) across {{ $club.days_published }} published
+      day(s), counted on {{ $club.generated_at }} by fetching the manifests below.
+      A document is a book's provenance file; it is never stored here — only its leaf hash.
+    </p>
+  {{ else }}
+    <p><strong>No anchor has been published yet.</strong> Nothing on this page is a placeholder:
+      when the first manifest exists, its day, count and root appear here.</p>
+  {{ end }}
+
+  <p>Recount it yourself, with nothing but curl:</p>
+  <pre><code>curl -s {{ with $club.api }}{{ . }}{{ else }}https://kwik5-cloud-api-stage.kwiksher.workers.dev{{ end }}/.well-known/kwik-anchors/&lt;day&gt;.json</code></pre>
+  <p class="muted">
+    Each manifest lists the leaves it covers and the root computed over them, so the count is
+    checkable rather than claimed. Recomputing that root is what <code>kwik verify --anchor</code>
+    does before it trusts a day.
+  </p>
+</section>
+{{ end }}

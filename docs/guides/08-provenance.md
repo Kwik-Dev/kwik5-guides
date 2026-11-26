@@ -158,7 +158,7 @@ The complete list of everything Kwik holds, without exception:
 | **One leaf hash per anchored book** (32 bytes) | the day's **public** manifest | forever, and public | it is simultaneously the anchor's input and its proof |
 | The artifact hash we verified (`jobs.output_sha256`) | our ledger, beside the job row | with the row | it describes files we already hold for 30 days — no new exposure |
 | An attestation counter (`customer`, `day`, `count`) | our ledger | 90 days | rate limiting. **A number, not content** |
-| Your entry in the **club index** — only if you chose `public-linked` | our storage | until you unlink | it is what you asked to publish |
+| A **`holder` public key** in your document — only if you run `kwik provenance link` | **your document**, not a server | until you unlink | it is what makes your books countable, and it is a key, never your name. **No club index is built**: we hold no roster of members |
 | A membership claim (`customer`, book hash) — only for member books | our ledger | until you revoke | a roster row, not a book |
 
 ### What Kwik cannot reconstruct, ever
@@ -179,7 +179,7 @@ and per book.
 | You want | Do this | Effect |
 | --- | --- | --- |
 | no trace at all | never run `attest`, never run `anchor` | nothing exists anywhere but your disk — the service keeps no copy of the document, only the 32-byte leaf you choose to submit |
-| stop linking to a membership | `kwik provenance unlink book.yaml` | the entry disappears from the club index; already-anchored days keep their hash and prove nothing |
+| stop linking to a membership | `kwik provenance unlink book.yaml` | the holder key is removed and the document re-issued; already-anchored days keep their hash and prove nothing. (There is no club index yet, so nothing is removed from one) |
 | delete what we hold about you | ask | the roster/index entry goes; the public leaf cannot be un-anchored **and does not need to be** — it is a hash of a document we never had |
 
 None of this requires an account, and none of it is a support ticket you have to justify.

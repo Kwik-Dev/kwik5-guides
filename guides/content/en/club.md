@@ -5,8 +5,12 @@ layout: club
 ---
 
 > **Stage page.** This is the rehearsal build of a page that does not exist in production. It sits
-> behind the beta gate, ships no live numbers, and says so rather than showing a placeholder that
-> looks like data.
+> behind the beta gate. Every number on it is generated from the published anchor manifests by
+> `deploy/club-claim.py` — when there is nothing to count, the table says so instead of showing a
+> placeholder that looks like data.
+
+Nothing here is a member index: no member is listed, because no member exists yet and the page does not
+invent one. The counts below are books, not people.
 
 The club is capped at **100 seats**, and the cap is not a marketing number: it is the number of
 people one operator can answer within the two business days the support page already promises. Each
@@ -19,7 +23,7 @@ Two claims are checkable from public files, with no account and no software of o
 
 | Claim | Where it comes from | How to check it |
 | --- | --- | --- |
-| seats are capped | the number of active memberships | ask for the count; the cap is enforced by the grant job, not by a banner |
+| seats are capped | the number of active memberships | ask for the count; the cap is enforced by the grant job, not by a banner. There is no member index on this page — the roster is not published |
 | books shipped, all verifiable | the daily anchor manifests | fetch `/.well-known/kwik-anchors/<day>.json` from the cloud API and count the entries |
 
 The second one is the one nobody can fake. Each manifest lists the 32-byte leaves submitted that

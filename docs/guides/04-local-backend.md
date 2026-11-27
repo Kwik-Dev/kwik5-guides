@@ -54,19 +54,19 @@ claim is how an author loses an afternoon.
 
 **Not through `kwik` yet.** Nothing in the CLI talks to the backend: `kwik render --local` is spec'd and not
 built, and `kwik setup` installs the four outside tools (`ffmpeg`, `ffprobe`, `python3`, `iconutil`), not
-Guaardvark. What is real today is **four Python scripts in the project's `Scripts/`**, which call the
-backend's HTTP API on this machine. (They move into `kwik` itself — D19 — after which the invocation is
-`kwik script run <name>`; the endpoints below do not change.)
+Guaardvark. What is real today is **four pipeline scripts inside `kwik`** — D19 moved them out of the
+project; the template ships no `Scripts/` — and they call the backend's HTTP API on this machine as
+`kwik script run <name>`. The endpoints below do not change.
 
 | script | what it renders | talks to |
 | --- | --- | --- |
-| `Scripts/render_pages.py <page>…` | the page's background art, from `page.model.md` | Guaardvark `POST /api/batch-image/generate/prompts` + `/api/batch-image/status/<id>` |
-| `Scripts/render_local.py --page <slug>` | one clip for a page, on the local MPS profile | Guaardvark `POST /api/batch-video/generate/{image,text}` + `/api/batch-video/status/<id>` |
-| `Scripts/upscale_plates.py` | the bleed plate, through the backend's upscaler | Guaardvark's upscale plugin (`--server` overrides) |
-| `Scripts/render_audio.py` | narration | the **audio service**, a separate port |
+| `kwik script run render_pages <page>…` | the page's background art, from `page.model.md` | Guaardvark `POST /api/batch-image/generate/prompts` + `/api/batch-image/status/<id>` |
+| `kwik script run render_local --page <slug>` | one clip for a page, on the local MPS profile | Guaardvark `POST /api/batch-video/generate/{image,text}` + `/api/batch-video/status/<id>` |
+| `kwik script run upscale_plates` | the bleed plate, through the backend's upscaler | Guaardvark's upscale plugin (`--server` overrides) |
+| `kwik script run render_audio` | narration | the **audio service**, a separate port |
 
 So the loop is: the Simulator runs the book, `kwik` owns the project, the PSD and the Lua, and **the
-scripts own generation**. That split is why `kwik doctor` can be green on a machine where nothing has
+pipeline scripts own generation**. That split is why `kwik doctor` can be green on a machine where nothing has
 ever been rendered locally.
 
 **Where the backend answers.** It binds loopback only, and the port depends on the platform: `5055` on
@@ -74,10 +74,10 @@ macOS (AirPlay Receiver owns `5000`) and `5000` elsewhere. The art and clip scri
 `http://127.0.0.1:5055` and take `GUAARDVARK_SERVER` as an override:
 
 ```bash
-GUAARDVARK_SERVER=http://127.0.0.1:5000 python3 Scripts/render_pages.py p4
+GUAARDVARK_SERVER=http://127.0.0.1:5000 kwik script run render_pages p4
 ```
 
-Narration does **not** go through that port: `render_audio.py` speaks to the audio service on `8206`
+Narration does **not** go through that port: `kwik script run render_audio` speaks to the audio service on `8206`
 (`AUDIO_FOUNDRY` overrides), which is the plugin Guaardvark starts — the same process tree, a different
 socket.
 
@@ -85,12 +85,12 @@ A dry run prints the request before it spends anything, which is the closest thi
 the CLI's “show the price first” rule:
 
 ```bash
-python3 Scripts/render_pages.py p4 --dry-run
-python3 Scripts/render_local.py --list
+kwik script run render_pages p4 --dry-run
+kwik script run render_local --list
 ```
 
-When `kwik render --local` ships (D14, `07 — What runs where`), the first three rows become one command;
-D19 makes even the intermediate form a `kwik` invocation rather than a file in the project.
+When `kwik render --local` ships (D14, `07 — What runs where`), the first three rows become one command.
+D19 already makes the intermediate form a `kwik` invocation (`kwik script run`), not a file in the project.
 
 ## Native vs Docker
 

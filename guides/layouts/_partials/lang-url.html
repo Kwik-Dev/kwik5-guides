@@ -1,0 +1,24 @@
+{{/* Localized URL for one of the site's page paths ("credits", "about", "guides").
+     Callers pass a bare key: the header's nav loop, the footer's link list, the home
+     hero's buttons.
+
+     Falling back to the default language when a translation does not exist yet is
+     the whole point: the pilot ships /ja/ with one translated page, and its nav still
+     has to work — a missing translation must degrade to English, never to a 404. */}}
+{{- $key := . -}}
+{{- $path := printf "%s/" $key -}}
+
+{{- /* The page in this language, when it has one. */ -}}
+{{- with site.GetPage $key -}}
+  {{- .RelPermalink -}}
+{{- else -}}
+  {{- /* No translation: point at the default language's copy rather than at a path
+         that does not exist under /ja/. */ -}}
+  {{- with site.Sites.Default.GetPage $key -}}
+    {{- .RelPermalink -}}
+  {{- else -}}
+    {{- /* Neither language has such a page; emit the path anyway so a caller can see
+           the mistake in the link instead of getting an empty href. */ -}}
+    {{- $path | relURL -}}
+  {{- end -}}
+{{- end -}}

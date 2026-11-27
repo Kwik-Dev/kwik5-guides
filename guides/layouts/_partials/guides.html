@@ -1,0 +1,18 @@
+{{/*
+  The ordered guide list, from docs/guides/ mounted at /guides.
+
+  README.md is the repo's own index for its readers. It is in content because it
+  is part of the mounted directory, so it is filtered out here rather than by a
+  mount glob — ordering must never depend on filenames.
+*/}}
+{{- $pages := slice -}}
+{{- with site.GetPage "/guides" -}}
+  {{- range .RegularPages -}}
+    {{- if ne (lower .File.BaseFileName) "readme" -}}
+      {{- $pages = $pages | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{/* A language without a /guides section (Japanese, today) gets an empty slice, not an error:
+       ByParam on a []interface{} panics, and a half-translated site must still build. */}}
+{{- with $pages -}}{{ return (.ByParam "order") }}{{- else -}}{{ return $pages }}{{- end -}}

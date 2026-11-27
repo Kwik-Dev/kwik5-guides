@@ -1,0 +1,33 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .IsHome }}{{ site.Title }} — {{ i18n "hero.title" }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ i18n "seo.description" }}{{ end }}">
+  <link rel="canonical" href="{{ .Permalink }}">
+
+  {{/* hreflang: the landing page has no theme to do this for it. `x-default` is the default
+       language's own URL, which is what a search engine should fall back to. */}}
+  {{ if .IsTranslated }}
+    {{ range .AllTranslations }}
+      <link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}">
+    {{ end }}
+    <link rel="alternate" hreflang="x-default" href="{{ (index .AllTranslations 0).Permalink }}">
+  {{ end }}
+
+  {{/* A stage build is reachable, unauthenticated, and looks like a shop. It must never be
+       indexed, and it must never compete with the live page in a search result. "Stage" is
+       derived from the build's own baseURL — see layouts/_partials/is-stage.html — so the
+       production build cannot be marked noindex by accident. */}}
+  {{ if partial "is-stage.html" . }}<meta name="robots" content="noindex, nofollow">{{ end }}
+
+  {{ $css := resources.Get "css/site.css" | resources.Minify | resources.Fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+  <meta property="og:site_name" content="{{ site.Title }}">
+  <meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+  <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ i18n "seo.description" }}{{ end }}">
+  <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {{ if partial "is-stage.html" . }}<meta name="kwik-build" content="stage">{{ end }}
+</head>

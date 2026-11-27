@@ -1,0 +1,47 @@
+{{- /*
+  artifact — a real generated file, shown where the guide talks about it.
+
+  Markdown pages are rendered with `unsafe = false`, so a raw <video> or <audio> in a
+  doc/guides/*.md page would be escaped into text. A shortcode is the way a page in the
+  planning repo can show a playable file without turning HTML on site-wide.
+
+  Usage:
+    {{< artifact src="img/biscuit/p1-page.jpg" caption="…" >}}
+    {{< artifact type="audio" src="img/biscuit/p1-narration.mp3" caption="…" >}}
+    {{< artifact src="img/biscuit/p1-clip.mp4" poster="img/biscuit/p1-clip.jpg" caption="…" >}}
+
+  The type is inferred from the extension when it is not given. `caption` is markdown.
+*/ -}}
+{{- $src := .Get "src" -}}
+{{- if not $src -}}{{ errorf "artifact: src is required (%s)" .Position }}{{- end -}}
+{{- $caption := .Get "caption" -}}
+{{- $poster := .Get "poster" -}}
+{{- /* markdown → html → plain text: `plainify` alone would leave the ** and ` marks in place */ -}}
+{{- $plain := "" -}}
+{{- with $caption -}}{{- $plain = . | markdownify | plainify -}}{{- end -}}
+{{- $alt := .Get "alt" | default $plain | default $src -}}
+{{- $type := .Get "type" -}}
+{{- if not $type -}}
+  {{- if or (strings.HasSuffix $src ".mp4") (strings.HasSuffix $src ".webm") -}}
+    {{- $type = "video" -}}
+  {{- else if or (strings.HasSuffix $src ".mp3") (strings.HasSuffix $src ".ogg") (strings.HasSuffix $src ".m4a") (strings.HasSuffix $src ".wav") -}}
+    {{- $type = "audio" -}}
+  {{- else -}}
+    {{- $type = "image" -}}
+  {{- end -}}
+{{- end -}}
+<figure class="artifact artifact--{{ $type }}">
+  {{- if eq $type "video" }}
+  <video controls preload="metadata" playsinline{{ with $poster }} poster="{{ . | relURL }}"{{ end }}>
+    <source src="{{ $src | relURL }}" type="video/mp4">
+    <a href="{{ $src | relURL }}">{{ $alt }}</a>
+  </video>
+  {{- else if eq $type "audio" }}
+  <audio controls preload="metadata" src="{{ $src | relURL }}">{{ $alt }}</audio>
+  {{- else }}
+  <img src="{{ $src | relURL }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+  {{- end }}
+  {{- with $caption }}
+  <figcaption>{{ . | markdownify }}</figcaption>
+  {{- end }}
+</figure>

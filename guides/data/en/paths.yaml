@@ -1,0 +1,36 @@
+# Where page art comes from. Three paths, all first-class, ordered as a user would
+# actually hit them: draw it yourself, generate it locally, or rent a GPU.
+#
+# Constrained by docs/decisions.md — D2 (everything the customer runs is OSS),
+# D14 (local generation is first-class; the cloud is acceleration, never a silent
+# fallback), D13/D16 (cloud is credits, 30 free once per customer).
+
+lede: >-
+  Nothing in Kwik requires a GPU, and nothing requires generated art. A book can be drawn
+  entirely in Photoshop, with no cloud account at all.
+
+paths:
+  - title: Draw it in Photoshop
+    tag: always free
+    body: >-
+      Your pages are PSD files, one group per layer. Painted, inked, scanned, photographed,
+      or assembled with Photoshop's own AI features — Generative Fill, Generative Expand, any
+      of it. Kwik reads the file; it does not care how the pixels got there.
+    note: No account, no key, no upload.
+
+  - title: Generate locally
+    tag: free, open source
+    body: >-
+      Guaardvark — a fork of guaardvark/guaardvark, MIT, © Albenze, Inc. — does art, narration and
+      music locally, from the same job envelope the cloud uses, so a local render and a cloud
+      render of the same page are comparable. The command is kwik setup — it installs the backend,
+      native or Docker.
+    note: Needs a GPU of your own. Nothing leaves the machine.
+
+  - title: Use the cloud GPU
+    tag: optional, metered
+    body: >-
+      The cloud is the option, not the requirement — for the laptop that cannot run the model,
+      a video-heavy page, or a Cast LoRA. It is metered in credits and it never takes over
+      silently: a job that would spend money says so, with the price, before it runs.
+    note: 30 credits free, once per customer (D16).

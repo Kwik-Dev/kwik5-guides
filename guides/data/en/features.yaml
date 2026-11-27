@@ -1,0 +1,27 @@
+# Landing-page copy. Kept in data so the structure is visible without reading
+# templates. Everything here is draft unless a decision is named.
+
+steps:
+  - title: Draw in Photoshop
+    body: Your pages are PSD files, one group per layer. No new tool to learn, no export dance.
+  - title: Publish from Kwik Exporter
+    body: The UXP plugin turns layer groups into pages, sets bleed and overscan, and writes the page tree.
+  - title: Build with Solar2D
+    body: Run it in the simulator or build for iOS, Android and desktop. Same art, four screens.
+    points:
+      - "The runtime plugin ships Kwik's editor: book and page navigation, and manual editing of the page in front of you."
+      - It works through kwik-CLI, so an AI agent can drive the same commands where you would click — animation, transitions, interactions, page logic.
+
+features:
+  - title: Retina export
+    body: Artwork stays sharp on every device. One source PSD, no second set of assets.
+  - title: Audio and text sync
+    body: Per-page narration with word highlighting, driven by the same page tree the art uses.
+  - title: In-app purchases
+    body: Solar2D plugins, wired for you, without a second codebase.
+  - title: Lua when you want it
+    body: Scripted pages and editor servers for the parts a designer should not have to click.
+  - title: Two editor surfaces
+    body: UXP inside Photoshop for Kwik Exporter, and Lua for everything the book does at runtime.
+  - title: Free and open
+    body: The exporter, the editor and the runtime are open source. No licence gate, no phone-home.

@@ -1,0 +1,55 @@
+# What is open source. Source of truth: docs/decisions.md D2 and
+# docs/kwik-cloud-plan.md §1 ("what is OSS, what is the product").
+#
+# Only the hosted GPU endpoints, the credit ledger and the Cast LoRA store are
+# proprietary (D3). Everything listed here is MIT/Apache and self-hostable.
+#
+# `url` links the project's own home; `upstream` + `credit` mark a fork and say
+# whose work it is. A fork that hides its upstream is a lie about provenance, so
+# guaardvark is labelled everywhere it is named.
+
+lede: >-
+  Everything you run on your own machine is open source — MIT or Apache-2.0, no licence key,
+  no phone-home (D2). The only thing sold is GPU time you do not have. Two entries below were not
+  written by us — guaardvark, a fork, and Solar2D, the engine everything stands on — and both say so.
+
+components:
+  - name: kwik5-exporter
+    artifact: .ccx
+    role: Kwik Exporter — the UXP plugin for Photoshop that turns layer groups into pages, sets bleed and overscan, and writes the page tree.
+  - name: kwik5-CLI
+    artifact: kwik
+    role: The whole pipeline without Photoshop or Python — upscale, bleed crop, layered page.psd, Lua, the md5 asset gate, the ogv transcode (D18).
+  - name: kwik5-plugin
+    artifact: runtime
+    role: The Solar2D runtime plugin your book runs on, at build time and at play time.
+  - name: kwik5-project-template
+    artifact: template
+    role: The skeleton a new book starts from — Solar2D config, build settings, the page tree wire format.
+  - name: guaardvark
+    url: https://github.com/guaardvark/guaardvark
+    fork: https://github.com/Kwik-Dev/guaardvark
+    artifact: local backend
+    role: The local generation stack (its own GPU server + ComfyUI). Art, narration and music on your own machine, free and offline.
+    credit: >-
+      A fork of guaardvark/guaardvark — MIT, © 2025–2026 Albenze, Inc. The original
+      project, its author and its documentation keep the credit for everything that is upstream;
+      our changes live on the fork's own branch and are ours to answer for. Upstream is not ours to
+      relicense or to speak for.
+  - name: kwik5-sample-books
+    artifact: books
+    role: Sample books, including biscuit-comes-home — the book the proof strip above is made from.
+  - name: Solar2D
+    url: https://solar2d.com/
+    artifact: engine
+    role: The engine the book runs on — one code base for iOS, tvOS, Android, macOS, Windows, Linux and HTML5, with a simulator you iterate in.
+    credit: >-
+      Also not ours. MIT-licensed, the official open-source fork of Corona SDK, community-maintained
+      since Corona Labs stopped supporting the original (principal developer Vlad Shcherban). Kwik is a
+      plugin and a pipeline on top of it, not a private runtime.
+
+footnote: >-
+  Self-host the whole thing and you owe nothing. The paid part is the queue, the models and
+  the GPUs behind the cloud tools, which is the one piece a laptop cannot fake. Two entries are not
+  ours and are credited as what they are: Solar2D, the engine everything is built on, and guaardvark,
+  Albenze, Inc.'s MIT project, which this fork of ours depends on.

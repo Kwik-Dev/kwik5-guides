@@ -178,7 +178,7 @@ my-book/
 │   ├── assets/audios/                     narration and music beds
 │   └── assets/videos/                     clips, including the .ogv
 ├── UXP/                                   the Exporter panel (.ccx), installed by `kwik new`
-└── Scripts/  BookServer/  docs/           the template's own tools
+└── BookServer/  docs/                   the template's own data and docs
 ```
 
 Which step leaves what behind:
@@ -270,7 +270,7 @@ at runtime with `filter.chromaKey` — that is the format, so this clip is green
 specified as `video_clip` (5 credits per second, 15 s cap, so 75 credits is the largest single clip the
 product allows) but no CLI subcommand owns it: today it is a ComfyUI job whose output lands in `out/`,
 and the app's copy is then encoded to Theora with an ffmpeg that has libtheora — which is exactly what
-the template's `to_ogv.py` wraps, `-pix_fmt yuv420p` and `-ac 2` included because `plugin.movie` needs
+`kwik script run to_ogv` wraps, `-pix_fmt yuv420p` and `-ac 2` included because `plugin.movie` needs
 both:
 
 ```bash
@@ -291,17 +291,17 @@ The clip has no `kwik` command, so here is the chain that does produce it — th
 pipeline driving Guaardvark's video API. It is worth reading because it is what `video_clip` has to
 replace, and because three of its decisions are not obvious.
 
-**Two authored sources, everything else derived:** `Scripts/book.fountain` (story, cast) and
-`Scripts/book.video.yaml` (motion, camera, timing, sprite placement as fractions, the keying contract).
+**Two authored sources, everything else derived:** `book.fountain` (story, cast) and
+`book.video.yaml` (motion, camera, timing, sprite placement as fractions, the keying contract).
 
 | step | what it does |
 | --- | --- |
-| `video_stories.py --chroma` | writes `video/requests/<shot>.json` (a ready-to-POST body), and builds `video/frames/<shot>.png`: **the approved cast sprite**, keyed, pasted onto a flat `#00B140` canvas at the authored fractions |
-| `render_local.py --shot <id> --promote` | POSTs that body to `/api/batch-video/generate/image`, polls `/api/batch-video/status/<batch>`, copies the result to `out/<slug>/raw/<stamp>_<shot>.mp4` |
+| `kwik script run video_stories --chroma` | writes `video/requests/<shot>.json` (a ready-to-POST body), and builds `video/frames/<shot>.png`: **the approved cast sprite**, keyed, pasted onto a flat `#00B140` canvas at the authored fractions |
+| `kwik script run render_local --shot <id> --promote` | POSTs that body to `/api/batch-video/generate/image`, polls `/api/batch-video/status/<batch>`, copies the result to `out/<slug>/raw/<stamp>_<shot>.mp4` |
 | → `clip.mp4` | `--promote` copies the take again; **`clip.mp4` is byte-identical to the chosen take** (same md5), so the master is never re-encoded |
-| `chroma_key.py probe` | the purity gate: a take that does not clear 0.9 on `#00B140` is never promoted |
-| `to_ogv.py` | encodes `clip.ogv` for `plugin.movie` — Theora, `yuv420p`, `-ac 2`, cropped to the measured character box while the mp4 master stays full canvas |
-| `video_stories.py --app` | emits `Solar2D/App/<book>-video/` with the chroma settings on the layer |
+| `kwik script run chroma_key probe` | the purity gate: a take that does not clear 0.9 on `#00B140` is never promoted |
+| `kwik script run to_ogv` | encodes `clip.ogv` for `plugin.movie` — Theora, `yuv420p`, `-ac 2`, cropped to the measured character box while the mp4 master stays full canvas |
+| `kwik script run video_stories --app` | emits `Solar2D/App/<book>-video/` with the chroma settings on the layer |
 
 The three decisions worth keeping:
 

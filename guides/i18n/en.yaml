@@ -1,0 +1,170 @@
+# Landing-page interface strings.
+#
+# Everything a reader sees that is not content (front matter/markdown) and not data
+# (features, faq, pricing …) lives here, so a translation is a YAML file, not a template edit.
+# Templates call these with {{ i18n "key" }}; a missing key renders the key name, which is why
+# translate/check.py fails the build on key-set mismatch.
+#
+# Values containing markup end in `_html` and are rendered with `| safeHTML`. Keep the markup
+# minimal — it is here for emphasis and inline <code>, not layout.
+
+nav.how: How it works
+nav.art: Your art
+nav.features: Features
+nav.oss: Open source
+nav.pricing: Pricing
+nav.faq: FAQ
+nav.credits: Credits
+nav.about: About
+nav.guides: Guides
+nav.reference: Reference
+nav.github: GitHub
+
+seo.description: >-
+  Kwik reads a layered PSD — hand-drawn, or AI-generated and then refined — and turns it into an
+  interactive storybook or game for iOS, Android and desktop. Every layer stays yours to change.
+
+hero.eyebrow: Layered PSD → Solar2D
+hero.title: Your PSD is the project. Draw it, generate it, refine it.
+hero.sub: >-
+  Kwik Exporter — a free UXP plugin for Photoshop — and a Solar2D editor for interactive
+  storybooks and games. Layers become pages, and pages run on Solar2D — iOS, Android and desktop.
+  Hand-draw the art, generate it, or take a model's draft and fix it — either way it lands in a
+  layered PSD, and every layer stays yours to change. The cloud GPU is an option, never a
+  requirement.
+hero.cta_guides: Read the guides
+hero.cta_pricing: What it costs
+hero.cta_credits: Buy credits
+hero.fact.licence: No licence gate
+hero.fact.art: Your own art, drawn in Photoshop
+hero.fact.local: Local generation is free and open source
+hero.fact.cloud: "Cloud GPU optional: 30 free credits"
+
+preview.strip_html: >-
+  <strong>Structure preview.</strong> Landing copy is draft, the proof strip and testimonials are
+  placeholders, and the Polar checkout button arrives with the Astro build. The guides are real.
+
+proof.note_html: >-
+  One book, four artefacts — the cover, the cast on one page, the first sprite batch, and a
+  1.6-second clip rendered for a single page. All of it ships in <code>biscuit-comes-home</code>.
+proof.caption.cover_html: "<b>biscuit</b> · cover"
+proof.caption.design_html: "<b>biscuit_design</b> · image page — Ellie, Biscuit, Dad"
+proof.caption.clip_html: "<b>biscuit-video</b> · biscuit-bounds-out"
+proof.caption.sprites_html: "<b>biscuit_sprites</b> · first batch — standing, running, play bow, sitting, sleeping, snarl-shake"
+proof.alt.cover: "The cover of Biscuit Comes Home: Ellie kneeling beside Biscuit in front of a cottage"
+proof.alt.design: "The design book's image page: Ellie, Biscuit and Dad rendered as separate cast figures on one canvas"
+proof.alt.clip: "A short clip of Biscuit bounding out of frame, looping"
+proof.alt.poster: "Biscuit mid-bound, the first frame of the clip"
+proof.alt.sprites: "Six painted poses of Biscuit from the first sprite batch: standing, running, play bow, sitting, sleeping, snarl-shake"
+
+section.how: How it works
+section.art: Your art, or generated art — your machine, or ours
+section.features: Features
+section.oss: Everything you run is open source
+section.pricing: Pricing
+section.faq: FAQ
+
+oss.table.component: Component
+oss.table.ships_as: Ships as
+oss.fork_link: Kwik-Dev fork ↗
+
+pricing.lede_html: >-
+  The software is free. Credits buy cloud GPU time, at <strong>${{ .usd }}</strong> per credit,
+  and a ten-page book is about <strong>{{ .credits }} credits</strong>.
+pricing.free_label: Free tier
+pricing.credits_unit: credits
+pricing.table.tool: Cloud tool
+pricing.table.credits: Credits
+pricing.note_html: >-
+  Credits are decisions (D13, D16), not measured timings. Already bought credits? Sign in with
+  your licence key — <code>kwik cloud login</code>.
+
+footer.blurb: >-
+  Kwik Exporter — a free UXP plugin for Photoshop — and a Solar2D editor for interactive
+  storybooks and games.
+footer.product: Product
+footer.elsewhere: Elsewhere
+footer.link.guides: Guides
+footer.link.reference: Reference manual
+footer.link.pricing: Pricing
+footer.link.credits: Buy credits
+footer.link.faq: FAQ
+footer.link.docs: Docs source
+footer.link.github: GitHub
+footer.link.archive: Old site (archive)
+footer.link.about: About
+footer.link.privacy: Privacy
+footer.prices_note: >-
+  Prices and credit costs come from the decision log; each guide names the decisions it rests on.
+
+guides.title: Guides
+guides.all: All guides
+doc.updated: updated {{ .date }}
+doc.toc: On this page
+doc.pager.prev: Previous
+doc.pager.next: Next
+
+notfound.title: That page isn’t here
+notfound.body: >-
+  The guides only publish six pages, so a link may have moved or a planning note may have leaked
+  into the manual.
+notfound.back: All guides
+
+lang.current: English
+lang.switch: 日本語
+
+credits.sandbox_strip_html: >-
+  <strong>Sandbox.</strong> These are test products on Polar’s sandbox server. Test card
+  <code>4242 4242 4242 4242</code>, any future expiry — nothing is charged, and credits bought
+  here do not exist in production.
+credits.pick_pack: Pick a pack
+credits.buy: Buy {{ .name }}
+credits.not_on_sale: Not on sale yet
+credits.packs_note: >-
+  The packs above are placeholders until a Polar checkout link exists for each one. Prices come
+  from D13 (1 credit = $0.10); nothing here is charged until a checkout link is configured.
+credits.already_bought: Already bought credits?
+credits.step1_title: Find your key
+credits.step1_body_html: >-
+  Your licence key <em>is</em> your account — there is no password. Polar holds it for you:
+  <a href="{{ .portal }}" rel="noopener">open the {{ .mode }} customer portal</a> and ask for a
+  sign-in link by email.
+credits.step2_title: Sign in from the terminal
+credits.step2_body_html: >-
+  Paste the key when prompted, or pipe it in: <code>kwik cloud login --key-stdin</code>. Then
+  <code>kwik cloud credits</code> shows your balance and <code>kwik cloud status</code> the
+  endpoint you are talking to.
+credits.api_note_html: >-
+  Balance and job history are read with the key against the API. A browser view of the same
+  numbers is not built yet: the Worker sends no CORS headers, so a page on this domain cannot call
+  it. See <a href="{{ .issues }}" rel="noopener">the issue tracker</a>.
+
+# --- the stage beta's ceiling, shown only on the cloud-sandbox build ---
+credits.beta.title: This beta is capped at 100 credits
+credits.beta.lede_html: >-
+  You start at <strong>zero</strong> — the free tier is off on this build — and the $10 Starter pack is
+  the only thing for sale. <strong>One purchase, 100 credits</strong>, and no second top-up: past the
+  ceiling the API refuses the grant instead of taking money it cannot credit.
+credits.beta.col.what: what
+credits.beta.col.credits: credits
+credits.beta.col.of_cap: of the {{ .cap }}
+credits.beta.row.image: one page image
+credits.beta.row.narration: one minute of narration
+credits.beta.row.music: one minute of a music bed
+credits.beta.row.lora: a Cast LoRA, one subject, reused on every page
+credits.beta.row.clip_default: a clip, 6 seconds (the default)
+credits.beta.row.clip_max: a clip, 15 seconds (the maximum the product allows)
+credits.beta.foot_html: >-
+  So: <strong>one 15-second clip, or a chapter of a book — not both.</strong> The largest single job is
+  <strong>{{ .max }} credits</strong>; anything above that is refused before a credit is held.
+credits.beta.refusals_title: Refusals you may see here
+credits.beta.refusal.cap_html: >-
+  <code>409 beta_cap_reached</code> — this account is already at {{ .cap }} credits. A second purchase
+  cannot be credited; mail <a href="mailto:support@kwiksher.com">support@kwiksher.com</a> and we will
+  sort out the payment.
+credits.beta.refusal.large_html: >-
+  <code>400 job_too_large</code> — the job costs more than {{ .max }} credits in one go, for example a
+  60-second clip (300 credits). Nothing was held and nothing was charged; ask for a smaller job.
+credits.beta.refusal.credits_html: >-
+  <code>402 insufficient_credits</code> — the balance is below the job's own price. This is the ordinary
+  "not enough credits" answer, not the beta ceiling.

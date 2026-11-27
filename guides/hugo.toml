@@ -9,7 +9,7 @@
 #   cloud           https://kwiksher.com/cloud/           production (not published yet)
 #
 # TOP-LEVEL KEYS FIRST. In TOML a bare key after a table header belongs to that table, so
-# `disableKinds` written below [languages.ja.params] silently configures the Japanese params map and
+# `disableKinds` written below a [languages.*] table silently configures that language's params map and
 # the taxonomy pages come back. Everything that is not a table lives above the first [header].
 
 baseURL = 'https://kwiksher.com/cloud/'
@@ -30,14 +30,6 @@ defaultContentLanguageInSubdir = false
 
   [languages.en.params]
     switchLabel = '日本語'
-
-[languages.ja]
-  label = '日本語'
-  locale = 'ja-JP'
-  weight = 2
-
-  [languages.ja.params]
-    switchLabel = 'English'
 
 [build]
   writeStats = false
@@ -66,20 +58,14 @@ defaultContentLanguageInSubdir = false
   preview = true
 
 [module]
-  # Mounts are per language: content/en and content/ja are separate trees, and the manual exists in
-  # English only. Without the restriction a mount lands in every language and Japanese readers get
-  # English text at /ja/guides/.
+  # One language (English), one content tree — the Japanese tree was removed because a
+  # half-translated manual lags every edit. The mount below is still explicit so the
+  # manual from the planning repo can be restricted to the tree it belongs to.
   [[module.mounts]]
     source = 'content/en'
     target = 'content'
     [module.mounts.sites.matrix]
       languages = ['en']
-
-  [[module.mounts]]
-    source = 'content/ja'
-    target = 'content'
-    [module.mounts.sites.matrix]
-      languages = ['ja']
 
   # The manual, mounted from the planning repo so editing it edits the site.
   [[module.mounts]]

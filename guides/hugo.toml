@@ -67,7 +67,11 @@ defaultContentLanguageInSubdir = false
     [module.mounts.sites.matrix]
       languages = ['en']
 
-  # The manual, mounted from the planning repo so editing it edits the site.
+  # The manual. Since the OSS split (issue #14 Phase 6.2) `docs/guides/` and this site
+  # live in the **same** repository (`Kwik-Dev/kwik5-guides`), so this is an ordinary
+  # local mount: editing the manual edits the site, with no cross-repo dependency and
+  # no checkout to keep in sync. It stays a mount rather than a move because the pages
+  # are numbered `NN-name.md` and `README.md` is the index, not a page.
   [[module.mounts]]
     source = '../docs/guides'
     target = 'content/guides'

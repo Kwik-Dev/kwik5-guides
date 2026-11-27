@@ -1,0 +1,21 @@
+{{ define "main" }}
+<article class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+  <p class="doc-meta">
+    {{ with .Params.updated }}<span class="muted">{{ i18n "doc.updated" (dict "date" .) }}</span>{{ end }}
+  </p>
+</article>
+
+<div class="page-layout">
+  {{ with .TableOfContents }}
+    {{ if gt (len .) 100 }}
+      <nav class="toc page-toc" aria-label="On this page">
+        <p class="toc-title">{{ i18n "doc.toc" }}</p>
+        {{ . }}
+      </nav>
+    {{ end }}
+  {{ end }}
+  <div class="page-body doc-body">{{ .Content }}</div>
+</div>
+{{ end }}

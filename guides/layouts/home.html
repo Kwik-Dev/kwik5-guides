@@ -1,0 +1,189 @@
+{{ define "main" }}
+{{ $d := partial "lang-data.html" . }}
+
+{{ if site.Params.preview }}
+  <p class="preview-strip">{{ i18n "preview.strip_html" | safeHTML }}</p>
+{{ end }}
+
+<section class="hero-landing">
+  <p class="eyebrow">{{ i18n "hero.eyebrow" }}</p>
+  <h1>{{ i18n "hero.title" }}</h1>
+  <p class="hero-sub">{{ i18n "hero.sub" }}</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{{ partial "lang-url.html" "guides" }}">{{ i18n "hero.cta_guides" }}</a>
+    <a class="btn" href="#pricing">{{ i18n "hero.cta_pricing" }}</a>
+    <a class="btn" href="{{ partial "lang-url.html" "credits" }}">{{ i18n "hero.cta_credits" }}</a>
+  </div>
+  <ul class="hero-facts">
+    <li>{{ i18n "hero.fact.licence" }}</li>
+    <li>{{ i18n "hero.fact.art" }}</li>
+    <li>{{ i18n "hero.fact.local" }}</li>
+    <li>{{ i18n "hero.fact.cloud" }}</li>
+  </ul>
+</section>
+
+{{/* Real art, not placeholders: every tile below is a file in this repository, copied from
+     `biscuit-comes-home` and captioned with the book/page it came from. `deploy/site.sh` does not
+     assert on this section — if an asset is missing the page shows a broken image, which is a
+     visible failure rather than a silent one. */}}
+<section class="proof" aria-label="From a Photoshop page to a playable scene">
+  <p class="proof-note">{{ i18n "proof.note_html" | safeHTML }}</p>
+  <div class="proof-grid">
+    <figure class="proof-tile">
+      <img src="{{ "img/biscuit/cover.jpg" | relURL }}" width="1400" height="934" decoding="async"
+           alt="{{ i18n "proof.alt.cover" }}">
+      <figcaption>{{ i18n "proof.caption.cover_html" | safeHTML }}</figcaption>
+    </figure>
+    <figure class="proof-tile">
+      <img src="{{ "img/biscuit/design-image-page.jpg" | relURL }}" width="480" height="320" loading="lazy" decoding="async"
+           alt="{{ i18n "proof.alt.design" }}">
+      <figcaption>{{ i18n "proof.caption.design_html" | safeHTML }}</figcaption>
+    </figure>
+
+    <figure class="proof-tile proof-tile--video">
+      <video autoplay loop muted playsinline preload="metadata"
+             width="512" height="288" poster="{{ "img/biscuit/bounds-out.jpg" | relURL }}"
+             aria-label="{{ i18n "proof.alt.clip" }}">
+        <source src="{{ "img/biscuit/bounds-out.mp4" | relURL }}" type="video/mp4">
+        <source src="{{ "img/biscuit/bounds-out.webm" | relURL }}" type="video/webm">
+      </video>
+      <img class="proof-poster" src="{{ "img/biscuit/bounds-out.jpg" | relURL }}" width="512" height="288"
+           loading="lazy" decoding="async" alt="{{ i18n "proof.alt.poster" }}">
+      <figcaption>{{ i18n "proof.caption.clip_html" | safeHTML }}</figcaption>
+    </figure>
+    <figure class="proof-tile proof-tile--sheet">
+      <img src="{{ "img/biscuit/sprites-batch.jpg" | relURL }}" width="1400" height="290" loading="lazy" decoding="async"
+           alt="{{ i18n "proof.alt.sprites" }}">
+      <figcaption>{{ i18n "proof.caption.sprites_html" | safeHTML }}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="how" class="section">
+  <h2>{{ i18n "section.how" }}</h2>
+  <ol class="steps">
+    {{ range $d.features.steps }}
+      <li>
+        <h3>{{ .title }}</h3>
+        <p>{{ .body }}</p>
+        {{ with .points }}
+          <ul class="step-points">
+            {{ range . }}<li>{{ . }}</li>{{ end }}
+          </ul>
+        {{ end }}
+      </li>
+    {{ end }}
+  </ol>
+</section>
+
+{{/* Where the art comes from. The load-bearing claim: hand-drawn Photoshop art is a complete
+     path on its own — no GPU, no account — and the cloud is only ever acceleration (D14). */}}
+<section id="art" class="section">
+  <h2>{{ i18n "section.art" }}</h2>
+  <p class="section-lede">{{ $d.paths.lede }}</p>
+
+  <div class="feature-grid">
+    {{ range $d.paths.paths }}
+      <article class="feature">
+        <h3>{{ .title }} <span class="chip">{{ .tag }}</span></h3>
+        <p>{{ .body }}</p>
+        <p class="muted small">{{ .note }}</p>
+      </article>
+    {{ end }}
+  </div>
+</section>
+
+<section id="features" class="section">
+  <h2>{{ i18n "section.features" }}</h2>
+  <div class="feature-grid">
+    {{ range $d.features.features }}
+      <article class="feature">
+        <h3>{{ .title }}</h3>
+        <p>{{ .body }}</p>
+      </article>
+    {{ end }}
+  </div>
+</section>
+
+{{/* Everything the customer runs is OSS (D2); only the hosted GPU endpoints, the ledger and
+     the Cast LoRA store are not (D3). Names come from kwik-cloud-plan.md §1.
+
+     `upstream`/`credit` exist for forks. guaardvark is Albenze, Inc.'s project and is labelled as
+     a fork wherever the page names it — the credit is not an afterthought in the footer. */}}
+<section id="oss" class="section">
+  <h2>{{ i18n "section.oss" }}</h2>
+  <p class="section-lede">{{ $d.oss.lede }}</p>
+
+  <table class="price-table oss-table">
+    <thead><tr><th>{{ i18n "oss.table.component" }}</th><th>{{ i18n "oss.table.ships_as" }}</th><th></th></tr></thead>
+    <tbody>
+      {{ range $d.oss.components }}
+        {{ $c := . }}
+        <tr>
+          <td>
+            {{ with $c.url }}<a href="{{ . }}" rel="noopener">{{ end }}<code>{{ $c.name }}</code>{{ with $c.url }}</a>{{ end }}
+          </td>
+          <td class="muted">{{ $c.artifact }}</td>
+          <td>
+            {{ $c.role }}
+            {{ with $c.credit }}
+              <p class="muted small oss-credit">
+                {{ . }}
+                {{ with $c.fork }}<a href="{{ . }}" rel="noopener">Kwik-Dev fork ↗</a>{{ end }}
+              </p>
+            {{ end }}
+          </td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  <p class="muted small">{{ $d.oss.footnote }}</p>
+</section>
+
+<section id="pricing" class="section">
+  <h2>{{ i18n "section.pricing" }}</h2>
+  <p class="section-lede">
+    {{ i18n "pricing.lede_html" (dict "usd" $d.pricing.creditUSD "credits" $d.pricing.book.credits) | safeHTML }}
+  </p>
+
+  <div class="price-grid">
+    <div class="price-card">
+      <p class="price-label">{{ $d.pricing.book.label }}</p>
+      <p class="price-amount"><span>{{ $d.pricing.book.credits }}</span> {{ i18n "pricing.credits_unit" }}</p>
+      <p class="price-note">{{ $d.pricing.book.note }}</p>
+    </div>
+    <div class="price-card price-card-free">
+      <p class="price-label">{{ i18n "pricing.free_label" }}</p>
+      <p class="price-amount"><span>{{ $d.pricing.freeCredits }}</span> {{ i18n "pricing.credits_unit" }}</p>
+      <p class="price-note">{{ $d.pricing.freeNote }}</p>
+    </div>
+  </div>
+
+  <table class="price-table">
+    <thead><tr><th>{{ i18n "pricing.table.tool" }}</th><th>{{ i18n "pricing.table.credits" }}</th><th></th></tr></thead>
+    <tbody>
+      {{ range $d.pricing.tools }}
+        <tr>
+          <td>{{ .name }}</td>
+          <td>{{ .credits }}</td>
+          <td class="muted">{{ with .unit }}{{ . }}{{ else }}{{ .note }}{{ end }}</td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  <p class="muted small">{{ i18n "pricing.note_html" | safeHTML }}</p>
+</section>
+
+<section id="faq" class="section">
+  <h2>{{ i18n "section.faq" }}</h2>
+  <div class="faq">
+    {{ range $d.faq.items }}
+      <details>
+        <summary>{{ .q }}</summary>
+        <p>{{ .a }}</p>
+      </details>
+    {{ end }}
+  </div>
+</section>
+
+{{ end }}

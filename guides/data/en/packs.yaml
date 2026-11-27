@@ -1,0 +1,61 @@
+# Credit packs, sold through Polar.
+#
+# Two environments, no "test mode": production at polar.sh, an isolated sandbox
+# server at sandbox.polar.sh. Tokens, products, orgs and customers are separate
+# in each. `site.Params.polarMode` in hugo.toml picks which column is used.
+#
+# Credits: 1 credit = $0.10 (D13). A ten-page book is ~290 credits, so a pack
+# smaller than that cannot finish a book on its own — say so on the page.
+#
+# Process for the sandbox: docs/polar-sandbox-testing.md.
+
+# The stage beta's ceilings, mirrored from `kwik5-cloud/api/wrangler.toml` [env.stage.vars]:
+#   MAX_GRANTED_CREDITS = 100   lifetime granted per customer, so one purchase is all there is
+#   MAX_JOB_CREDITS     = 75    one job, which is exactly the product's largest clip (15 s × 5)
+# Change one side without the other and the credits page lies about what the API will refuse.
+beta:
+  capCredits: 100
+  maxJobCredits: 75
+
+portal:
+  production: https://polar.sh/kwiksher/portal
+  sandbox: https://sandbox.polar.sh/kwiksher/portal
+
+# `checkout` is a Polar checkout link (dashboard → Products → Checkout links).
+# Empty means the pack renders as "not on sale yet" — never a dead button.
+
+# One link per product. A Polar checkout link is bound to exactly one product, so each pack
+# takes that product's own link and no other. Prove a link before pasting it:
+#   curl -sL '<link>' | grep -oE '<title>[^<]+'
+# The three rows must print three different product names, each matching its pack.
+# If a pack has no link yet, leave it '' — empty renders "Not on sale yet".
+packs:
+  - name: Starter
+    credits: 100
+    price: 10
+    note: about a third of a book — enough to try the paid path on one chapter
+    checkout:
+      production: 'https://buy.polar.sh/polar_cl_nip01ow6GGdVOwjhnSH6fTvo8etrfeiT43FqI1JGf1w'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_p7MVNHLqKA86YT4fgivdA0DvF4y6kVdEyyVIg0HPaZO/redirect'
+
+  - name: Book
+    credits: 300
+    price: 30
+    # Production only. The stage build is a 100-credit beta (2026-11-23): one pack, one purchase, and
+    # the Worker refuses any grant past 100 lifetime credits — so offering a 300-credit pack here
+    # would be selling something the deployment cannot credit.
+    productionOnly: true
+    note: a ten-page book end to end, with a little left over
+    featured: true
+    checkout:
+      production: 'https://buy.polar.sh/polar_cl_5JkOws8kLAO056B6gEAOYUUsMFE75cRo5IFXI3rl8hU'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_ii7v2sIfI3BfwBpknaZzR9bqNXJA0fs0suvbr08MhQB/redirect'
+
+  - name: Studio
+    credits: 1000
+    price: 100
+    productionOnly: true
+    note: three books, or one heavy video chapter
+    checkout:
+      production: 'https://buy.polar.sh/polar_cl_Ed7aElSNf7T4fr2Q7Jr55jVdo395SpgaM8aro2MtboL'
+      sandbox: 'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_DxmlKuzVY498dKl6WD25b2i67xLX4jJIxY1Lq31tjY8/redirect'

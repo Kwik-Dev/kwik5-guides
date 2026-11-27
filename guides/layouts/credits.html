@@ -1,0 +1,101 @@
+{{ define "main" }}
+{{ $d := partial "lang-data.html" . }}
+<article class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+  <div class="page-body">{{ .Content }}</div>
+</article>
+
+{{ $mode := site.Params.polarMode | default "sandbox" }}
+
+{{ if eq $mode "sandbox" }}
+  <p class="preview-strip">{{ i18n "credits.sandbox_strip_html" | safeHTML }}</p>
+{{ end }}
+
+{{/* The beta ceiling. Stage-only, and drawn from $d.packs.beta + $d.pricing.tools so the numbers here
+     are the same ones the price list and the Worker's stage vars carry. */}}
+{{ if partial "is-stage.html" . }}
+{{ $cap := $d.packs.beta.capCredits }}
+{{ $max := $d.packs.beta.maxJobCredits }}
+{{ $price := dict }}
+{{ range $d.pricing.tools }}{{ $t := . }}{{ with $t.key }}{{ $price = merge $price (dict . $t.credits) }}{{ end }}{{ end }}
+<section class="section section-tight beta-ceiling">
+  <h2>{{ i18n "credits.beta.title" }}</h2>
+  <p class="section-lede">{{ i18n "credits.beta.lede_html" | safeHTML }}</p>
+  <table class="price-table">
+    <thead><tr>
+      <th>{{ i18n "credits.beta.col.what" }}</th>
+      <th>{{ i18n "credits.beta.col.credits" }}</th>
+      <th>{{ i18n "credits.beta.col.of_cap" (dict "cap" $cap) }}</th>
+    </tr></thead>
+    <tbody>
+      {{/* quantity × the tool's per-unit price, read from data/en/pricing.yaml */}}
+      {{ range slice
+          (dict "key" "cast_render" "qty" 1  "label" "credits.beta.row.image")
+          (dict "key" "tts_speak"   "qty" 1  "label" "credits.beta.row.narration")
+          (dict "key" "music_bed"   "qty" 1  "label" "credits.beta.row.music")
+          (dict "key" "cast_train"  "qty" 1  "label" "credits.beta.row.lora")
+          (dict "key" "video_clip"  "qty" 6  "label" "credits.beta.row.clip_default")
+          (dict "key" "video_clip"  "qty" 15 "label" "credits.beta.row.clip_max") }}
+        {{ $cost := mul (index $price .key) .qty }}
+        <tr>
+          <td>{{ i18n .label }}</td>
+          <td>{{ $cost }}</td>
+          <td class="muted">{{ $cost }} / {{ $cap }}</td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  <p class="muted small">{{ i18n "credits.beta.foot_html" (dict "max" $max) | safeHTML }}</p>
+
+  <h3 class="beta-refusals-title">{{ i18n "credits.beta.refusals_title" }}</h3>
+  <ul class="beta-refusals">
+    <li>{{ i18n "credits.beta.refusal.cap_html" (dict "cap" $cap) | safeHTML }}</li>
+    <li>{{ i18n "credits.beta.refusal.large_html" (dict "max" $max) | safeHTML }}</li>
+    <li>{{ i18n "credits.beta.refusal.credits_html" | safeHTML }}</li>
+  </ul>
+</section>
+{{ end }}
+
+<section class="section section-tight">
+  <h2>{{ i18n "credits.pick_pack" }}</h2>
+  <div class="pack-grid">
+    {{ $mode := site.Params.polarMode | default "sandbox" }}
+  {{ $stage := partial "is-stage.html" . }}
+  {{ range $d.packs.packs }}
+      {{/* `productionOnly` packs are hidden on the stage build. The beta Worker caps lifetime grants at
+           100 credits, so a 300- or 1000-credit pack could be paid for and never credited. */}}
+      {{ if or (not $stage) (not .productionOnly) }}
+      <div class="pack{{ if .featured }} pack-featured{{ end }}">
+        <p class="pack-name">{{ .name }}</p>
+        <p class="pack-price">${{ .price }}</p>
+        <p class="pack-credits">{{ .credits }} credits</p>
+        <p class="pack-note">{{ .note }}</p>
+        {{ $url := index .checkout $mode }}
+        {{ if $url }}
+          <a class="btn btn-primary" href="{{ $url }}">{{ i18n "credits.buy" (dict "name" .name) }}</a>
+        {{ else }}
+          <span class="btn btn-disabled" aria-disabled="true">{{ i18n "credits.not_on_sale" }}</span>
+        {{ end }}
+      </div>
+      {{ end }}
+  {{ end }}
+  </div>
+  <p class="muted small">{{ i18n "credits.packs_note" }}</p>
+</section>
+
+<section class="section section-tight">
+  <h2>{{ i18n "credits.already_bought" }}</h2>
+  <ol class="steps steps-two">
+    <li>
+      <h3>{{ i18n "credits.step1_title" }}</h3>
+      <p>{{ i18n "credits.step1_body_html" (dict "portal" (index $d.packs.portal $mode) "mode" $mode) | safeHTML }}</p>
+    </li>
+    <li>
+      <h3>{{ i18n "credits.step2_title" }}</h3>
+      <p>{{ i18n "credits.step2_body_html" | safeHTML }}</p>
+    </li>
+  </ol>
+  <p class="muted small">{{ i18n "credits.api_note_html" (dict "issues" (printf "%s/issues" site.Params.githubURL)) | safeHTML }}</p>
+</section>
+{{ end }}

@@ -1,0 +1,97 @@
+# kwiksher.com — the landing page and the manual, one Hugo build
+#
+#   /                 landing page          (this repo's guides/)
+#   /guides/          the manual, mounted from docs/guides/*.md (never copied)
+#   /about/ /credits/ /privacy/
+#
+# Two publish targets, one source tree, and the only difference is --baseURL (deploy/site.sh):
+#   cloud-sandbox   https://kwiksher.com/cloud-sandbox/   stage Worker, Polar sandbox, gated
+#   cloud           https://kwiksher.com/cloud/           production (not published yet)
+#
+# TOP-LEVEL KEYS FIRST. In TOML a bare key after a table header belongs to that table, so
+# `disableKinds` written below a [languages.*] table silently configures that language's params map and
+# the taxonomy pages come back. Everything that is not a table lives above the first [header].
+
+baseURL = 'https://kwiksher.com/cloud/'
+title = 'Kwik'
+enableRobotsTXT = true
+disableKinds = ['taxonomy', 'term']
+
+# Multilingual, and the one line that must not change later: English stays at the URLs that already
+# exist (/, /about/, /credits/, /guides/), Japanese lives beside it at /ja/. Flip this and every
+# published URL moves, including the credits page a Worker 402 points at.
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
+
+[languages.en]
+  label = 'English'
+  locale = 'en-US'
+  weight = 1
+
+  [languages.en.params]
+    switchLabel = '日本語'
+
+[build]
+  writeStats = false
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = false
+  [markup.highlight]
+    style = 'github'
+    lineNos = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+[params]
+  # Translatable prose lives in i18n/*.yaml (hero.title, seo.description) so that a param can never
+  # be the English string in the Japanese build; see guides/README.md.
+  githubURL = 'https://github.com/kwik-dev'
+  archiveURL = 'https://archive.kwiksher.com/'
+  # The Polar checkout button ships with the Astro landing page; until then the landing CTA points
+  # at the guides, which are real.
+  checkoutURL = ''
+  # 'sandbox' or 'production'. Load-bearing: the /cloud-sandbox/ build relies on it to hand out links
+  # that cannot charge a card. See docs/polar-sandbox-testing.md.
+  polarMode = 'sandbox'
+  preview = true
+
+[module]
+  # One language (English), one content tree — the Japanese tree was removed because a
+  # half-translated manual lags every edit. The mount below is still explicit so the
+  # manual from the planning repo can be restricted to the tree it belongs to.
+  [[module.mounts]]
+    source = 'content/en'
+    target = 'content'
+    [module.mounts.sites.matrix]
+      languages = ['en']
+
+  # The manual. Since the OSS split (issue #14 Phase 6.2) `docs/guides/` and this site
+  # live in the **same** repository (`Kwik-Dev/kwik5-guides`), so this is an ordinary
+  # local mount: editing the manual edits the site, with no cross-repo dependency and
+  # no checkout to keep in sync. It stays a mount rather than a move because the pages
+  # are numbered `NN-name.md` and `README.md` is the index, not a page.
+  [[module.mounts]]
+    source = '../docs/guides'
+    target = 'content/guides'
+    # guides are numbered NN-name.md; README.md is the repo's index, not a page.
+    files = ['[0-9][0-9]-*.md']
+    [module.mounts.sites.matrix]
+      languages = ['en']
+
+  [[module.mounts]]
+    source = 'data'
+    target = 'data'
+
+  [[module.mounts]]
+    source = 'layouts'
+    target = 'layouts'
+
+  [[module.mounts]]
+    source = 'assets'
+    target = 'assets'
+
+  [[module.mounts]]
+    source = 'static'
+    target = 'static'

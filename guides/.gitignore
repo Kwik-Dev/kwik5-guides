@@ -1,0 +1,7 @@
+# build output and caches — the site is generated, never committed
+public/
+# the /cloud-sandbox/ build (deploy/site.sh cloud-sandbox); the stage path is a second baseURL,
+# not a second tree of source
+public-cloud-sandbox/
+resources/
+.hugo_build.lock

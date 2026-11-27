@@ -1,0 +1,15 @@
+{{/* The current language's data bundle (site/data/<lang>/), with the default
+     language's entries as the base.
+
+     A language does not have to translate all of it: /ja/ may ship only the FAQ.
+     Merging rather than switching is what keeps the rest of the page (pricing,
+     packs, the OSS list) from rendering empty, and it is the same rule as
+     `lang-url.html` — a missing translation degrades to English. */}}
+{{- $default := site.Sites.Default.Language.Lang -}}
+{{- $base := index site.Data $default -}}
+{{- $base = $base | default dict -}}
+{{- $own := index site.Data site.Language.Lang -}}
+{{- if and $own (ne site.Language.Lang $default) -}}
+  {{- return merge $base $own -}}
+{{- end -}}
+{{- return $base -}}

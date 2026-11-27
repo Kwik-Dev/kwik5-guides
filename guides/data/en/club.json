@@ -1,0 +1,25 @@
+{
+  "api": "https://kwik5-cloud-api-stage.kwiksher.workers.dev",
+  "seats_in_use": 1,
+  "seat_cap": 100,
+  "listed_books": 1,
+  "members": [
+    "lLzwSiLare69KH96"
+  ],
+  "generated_at": "2026-11-26T07:43:14Z",
+  "days_scanned": 3,
+  "anchors": [
+    {
+      "day": "2026-11-26",
+      "count": 3,
+      "root": "c353cc9aa382b21f13cd8332e87fa78cdf44c13f88199bcc281b130d572c9697"
+    },
+    {
+      "day": "2026-11-25",
+      "count": 1,
+      "root": "e1a81b620eb353ba84634160671d37ab472e9fb96cb03514d6fc31653d2ec4b6"
+    }
+  ],
+  "days_published": 2,
+  "documents": 4
+}

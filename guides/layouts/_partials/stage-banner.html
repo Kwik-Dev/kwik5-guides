@@ -1,0 +1,23 @@
+{{/*
+  Shown only when `stage = true` (deploy/site.sh cloud-sandbox).
+
+  Why a banner and not a separate theme: the stage build serves the same content as production,
+  from a different path, against a different Worker and a different Polar organisation. The one
+  thing a reader must never be able to confuse is "this page is where I spend money", so the
+  banner says which build this is, and the credits page underneath carries sandbox checkout links
+  that cannot charge a card (`polarMode = 'sandbox'` in hugo.toml).
+
+  Since 2026-11-19 this page is the **private beta** surface (deploy/beta-gate.sh puts it behind
+  HTTP Basic auth), so the banner also states the two facts a tester needs to act: which API the
+  beta talks to, and that the card is a test card.
+*/}}
+<div class="stage-banner" role="note">
+  <strong>Private beta</strong> — this is the <code>cloud-sandbox</code> build: the new landing
+  page, running against the <strong>stage</strong> environment.
+  <br>
+  API <code>https://kwik5-cloud-api-stage.kwiksher.workers.dev</code> · credits are Polar
+  <em>sandbox</em> credits — test card <code>4242 4242 4242 4242</code>, any future expiry. Nothing
+  here charges money, and nothing bought here exists in production.
+  <br>
+  The live page for customers is <a href="https://kwiksher.com/cloud/credits/">kwiksher.com/cloud/credits/</a>.
+</div>

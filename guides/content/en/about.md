@@ -11,7 +11,7 @@ sentence it started with, in 2011.
 ## Who we are
 
 **Owner:** Naoya Yamamoto (doing business as Kwiksher), who took over the project in September 2014.
-**Google Play developer name:** `ymmtny` — see the demo app *Kwik The Cat*
+**Google Play developer name:** `<developer name>` — see the demo app *Kwik The Cat*
 (`com.kwiksher.kwikthecat`).
 
 For support, privacy requests or anything else: **support@kwiksher.com**.
